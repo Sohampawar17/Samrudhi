@@ -53,36 +53,27 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: true,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          // decoration: const BoxDecoration(
-          //   color: Colors.white,
-          //   image: DecorationImage(
-          //       fit: BoxFit.fitWidth,
-          //       image: AssetImage('assets/images/erpdata.jpg')),
-          // ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedOpacity(
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: AnimatedOpacity(
                 opacity: opacity,
                 duration: const Duration(seconds: 3),
                 child: const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0.0),
-                  child: Align(
-                    alignment: Alignment.center,
+                  child: Center(
                     child: Text(
-                      'Visitors Management',
+                      'Mobile CRM\n Developed by Quantbit Technologies',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

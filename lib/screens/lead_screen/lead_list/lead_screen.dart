@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:geolocation/screens/lead_screen/lead_list/lead_viewmodel.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
+import '../../../widgets/drop_down.dart';
 
 class LeadListScreen extends StatefulWidget {
   const LeadListScreen({super.key});
@@ -21,13 +23,21 @@ class _LeadListScreenState extends State<LeadListScreen> {
       builder: (context, model, child)=> Scaffold(
         backgroundColor: Colors.grey.shade200,
 appBar: AppBar(title: const Text('Lead'),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.filter_list),
+      onPressed: () {
+        _showBottomSheet(context,model);
+      },
+    ),
+  ],
 leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),),
 body: fullScreenLoader(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      model.leadlist.isNotEmpty
+                      model.filterleadlist.isNotEmpty
                           ? Expanded(
                               child: RefreshIndicator(
                                 onRefresh: ()=>model.refresh(),
@@ -47,7 +57,7 @@ body: fullScreenLoader(
                                       ],
                                     ),
                                         child: GestureDetector(
-                                        onTap: ()=>model.onRowClick(context, model.leadlist[index]),
+                                        onTap: ()=>model.onRowClick(context, model.filterleadlist[index]),
                                           child: Padding(
                                             padding: const EdgeInsets.all(15.0),
                                             child: Column(
@@ -67,7 +77,7 @@ body: fullScreenLoader(
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          model.leadlist[index]
+                                                          model.filterleadlist[index]
                                                                   .name ??
                                                               "",
                                                           style: TextStyle(
@@ -77,7 +87,7 @@ body: fullScreenLoader(
                                                           ),
                                                         ),
                                                         Text(
-                                                          model.leadlist[index]
+                                                          model.filterleadlist[index]
                                                                   .leadName?.toUpperCase() ??
                                                               "",
                                                           style: TextStyle(
@@ -87,13 +97,16 @@ body: fullScreenLoader(
                                                       ],
                                                     ),
                                                     Card(
+                                                      color: model.getColorForStatus(model.filterleadlist[index]
+                                                          .status ??
+                                                          ""),
                                                       shape:
                                                           RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.circular(
                                                                 8.0),
                                                         side: BorderSide(
-                                                            color: Colors.black26,
+                                                            color: Colors.transparent,
                                                             width:
                                                                 1), // Set border color and width
                                                       ),
@@ -104,13 +117,13 @@ body: fullScreenLoader(
                                                             const EdgeInsets.all(
                                                                 10.0),
                                                         child: AutoSizeText(
-                                                          model.leadlist[index]
+                                                          model.filterleadlist[index]
                                                                   .status ??
                                                               "",
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: TextStyle(
-                                                            color: Colors.black,
+                                                            color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           ),
@@ -132,15 +145,15 @@ body: fullScreenLoader(
                                                       children: [
                                                         Text(
                                                           'Company Name',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+
                                                         ),
                                                         Text(
-                                                          model.leadlist[index]
+                                                          model.filterleadlist[index]
                                                                   .companyName?.toUpperCase() ??
-                                                              "",
+                                                              "", style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                        ),
                                                         ),
                                                       ],
                                                     ),
@@ -151,16 +164,16 @@ body: fullScreenLoader(
                                                       children: [
                                                         Text(
                                                           'Territory',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
+
                                                         ),
                                                         Text(
-                                                          model.leadlist[index]
+                                                          model.filterleadlist[index]
                                                                   .territory
                                                                   ?.toString() ??
-                                                              "",
+                                                              "", style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight.bold,
+                                                        ),
                                                         ),
                                                       ],
                                                     ),
@@ -179,10 +192,15 @@ body: fullScreenLoader(
                                         height: 10,
                                       );
                                     },
-                                    itemCount: model.leadlist.length),
+                                    itemCount: model.filterleadlist.length),
                               ),
                             )
-                          : Container()
+                          : Center(
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                          child: Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                      )
                     ],
                   ),
                 ),
@@ -191,5 +209,72 @@ body: fullScreenLoader(
               ),
                 floatingActionButton: FloatingActionButton(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),child: const Icon(Icons.add),),
       ));
+  }
+
+
+  void _showBottomSheet(BuildContext context, LeadListViewModel model) {
+
+    SchedulerBinding.instance.addPostFrameCallback(
+            (_) {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text('Filters'),
+                ),
+                body: Container(
+                  height: 250,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      CustomDropdownButton2(
+                        value: model.custm,
+                        prefixIcon: Icons.person_2,
+                        items: model.customerlist,
+                        hintText: 'Select the Lead Company',
+                        labelText: 'Lead Company',
+                        onChanged: model.setcustomer,
+                      ),
+                      SizedBox(height: 10.0),
+                      CustomDropdownButton2(
+                        value: model.territory,
+                        prefixIcon: Icons.person_2,
+                        items: model.territorylist,
+                        hintText: 'Select the Territory',
+                        labelText: 'Territory',
+                        onChanged: model.setqterritory,
+                      ),
+
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              model.clearfilter();
+                              Navigator.pop(
+                                  context); // Close the bottom sheet
+                            },
+                            child: Text('Clear Filter'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              model.setfilter(model.territory ?? "",
+                                  model.custm ?? "");
+                              Navigator.pop(context);
+                            },
+                            child: Text('Apply Filter'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
+    );
   }
 }

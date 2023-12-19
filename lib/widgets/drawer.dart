@@ -58,6 +58,16 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.person, color: Colors.black),
+            title: const Text(
+              'Profile',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            onTap: () {
+              Navigator.popAndPushNamed(context, Routes.profileScreen);
+            },
+          ),
+          ListTile(
             leading: const Icon(FontAwesome.location_arrow, color: Colors.black),
             title: const Text(
               'Geolocation',

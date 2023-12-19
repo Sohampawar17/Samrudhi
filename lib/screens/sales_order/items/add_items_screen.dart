@@ -31,117 +31,91 @@ class ItemScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,), ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: model.filteredItems.length,
-                  itemBuilder: (context, index) {
-                    final selectedItem = model.filteredItems[index];
-                    return Container(
-                      height: 135,
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
+                  CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,),
+                  SizedBox(height: 15),
+                  ListView.separated(
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: model.filteredItems.length,
+              itemBuilder: (context, index) {
+                final selectedItem = model.filteredItems[index];
+                return CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  tileColor: model.isSelected(selectedItem) ? Colors.blue.withOpacity(0.5) : Colors.white10,
+                  value: model.isSelected(selectedItem),
+                  onChanged: (bool? value) {
+                    if (model.filteredItems.contains(selectedItem)) {
+                      model.toggleSelection(selectedItem);
+                    }
+                  },
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ID: ${selectedItem.itemCode} (${selectedItem.itemName})',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
                         ),
-
-                        contentPadding: const EdgeInsets.all(12.0),
-                        tileColor: model.isSelected(selectedItem) ? Colors.blue.shade200 : Colors.white10, // Adjust the color as needed
-                        onTap: () {
-                          // Handle ListTile tap
-                          if (model.filteredItems.contains(selectedItem)) {
-                            model.toggleSelection(selectedItem);
-                          }
-                        },
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            buildImage(selectedItem.image),
-                            const SizedBox(
-                              height: 2,
+                      ),
+                      const SizedBox(height: 4), // Adjust the height as needed
+                      Row(
+                        children: [
+                          Expanded(flex: 3,child: const AutoSizeText('Quantity:')),
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: const Icon(Icons.remove_circle),
+                              onPressed: () {
+                                if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 0.0) {
+                                  model.removeitem(index);
+                                }
+                              },
                             ),
-                            AutoSizeText(
-                              'Rate: ${selectedItem.rate?.toString() ?? "0.0"}',
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: AutoSizeText(
+                              model.getQuantity(selectedItem).toString(),
                               style: const TextStyle(
-                                color: Colors.green,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
-                        title: Column(
-                          mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ID: ${selectedItem.itemCode} (${selectedItem.itemName})',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                            ),
                           ),
-                          const SizedBox(height: 4), // Adjust the height as needed
-                          Row(
-                            children: [
-                              Expanded(flex: 2,child: const AutoSizeText('Quantity:')),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  icon: const Icon(Icons.remove_circle),
-                                  onPressed: () {
-                                    if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 0.0) {
-                                      model.removeitem(index);
-                                    }
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: AutoSizeText(
-                                  model.getQuantity(selectedItem).toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  icon: const Icon(Icons.add_circle),
-                                  onPressed: () {
-                                    model.additem(index);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 4), // Adjust the height as needed
-                          AutoSizeText(
-                            'Actual Quantity: ${selectedItem.actualQty}',
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Colors.grey,
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: const Icon(Icons.add_circle),
+                              onPressed: () {
+                                model.additem(index);
+                              },
                             ),
                           ),
                         ],
                       ),
-
-                      trailing: GestureDetector(
-                          onTap: () {
-                            // Handle chip tap
-                            model.toggleSelection(selectedItem);
-                          },
-                          child: Icon(
-                            Icons.check_circle_rounded,
-                            color: model.isSelected(selectedItem) ? Colors.green : Colors.grey,
-                          ),
+                      const SizedBox(height: 4), // Adjust the height as needed
+                      AutoSizeText(
+                        'Actual Quantity: ${selectedItem.actualQty}',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
                         ),
                       ),
-                    );
-                  }, separatorBuilder: (BuildContext context, int index) { return const Divider(thickness: 1,); },
-
-                )],
-              ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const Divider(thickness: 1,);
+              },
+            )
+]
+            ),
             ),
           ),
           bottomSheet: BottomSheetWidget(
@@ -186,7 +160,7 @@ class ItemScreen extends StatelessWidget {
 class BottomSheetWidget extends StatefulWidget {
   final ItemListModel model;
 
-  const BottomSheetWidget({Key? key, required this.model}) : super(key: key);
+  const BottomSheetWidget({super.key, required this.model});
 
   @override
   _BottomSheetWidgetState createState() => _BottomSheetWidgetState();

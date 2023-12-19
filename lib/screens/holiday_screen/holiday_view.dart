@@ -14,13 +14,12 @@ class HolidayScreen extends StatelessWidget {
         viewModelBuilder: () => Holidayviewmodel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=> Scaffold(
-          backgroundColor: Colors.grey.shade200,
-          appBar: AppBar(title: const Text('Holiday',style: TextStyle(color: Colors.blueAccent),),
-            backgroundColor: Colors.grey.shade200,
-            leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back),color: Colors.blueAccent,),
-
-          bottom:  PreferredSize(preferredSize: Size(20, 75), child:Padding(
-            padding: const EdgeInsets.all(8.0),
+backgroundColor: Colors.grey.shade300,
+          appBar: AppBar(title: const Text('Holiday'),
+            leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
+          bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.white,
             child: DropdownButtonFormField<int>(
               value: model.selectedYear, // The currently selected year
               onChanged: (int? year) {

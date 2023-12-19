@@ -16,7 +16,7 @@ class GeolocationViewModel extends BaseViewModel {
 
   void initialise(BuildContext context) async {
     setBusy(true);
-    locationid = await getlocationid();
+
     geolocationdata =
         await CheckinServices().getmember(locationid) ?? GeolocationModel();
 
@@ -57,7 +57,7 @@ class GeolocationViewModel extends BaseViewModel {
 
 // Handle directionsResponse
   void onmapready() async {
-    String locationid = await getlocationid();
+
     geolocationdata =
         await CheckinServices().getmember(locationid) ?? GeolocationModel();
     // leadlist = await homeservices().fetchLead();

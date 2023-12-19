@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
@@ -11,6 +12,7 @@ List<Expenselist> _expenselist=[];
   final List<int> _availableYears = [2022,2023,2024,2025,2026,2027];
   int? _selectedYear;
   int? _selectedmonth;
+String? monthname;
 
   List<Expenselist> get expenselist => _expenselist;
   List<int> get availableYears => _availableYears;
@@ -24,10 +26,42 @@ List<Expenselist> _expenselist=[];
     setBusy(false);
   }
 
+IconData getIconForStatus(String status) {
+  switch (status) {
+    case 'Draft':
+      return
+        Icons.drafts; // Set the color for Draft status// Set the color for On Hold status
+    case 'Rejected':
+      return Icons.close; // Set the color for To Deliver and Bill status
+  // Set the color for To Deliver status
+    case 'Approved':
+      return Icons.check; // Set the color for Completed status
+// Set the color for Closed status
+    default:
+      return Icons.drafts; // Set a default color for unknown status
+  }
+}
+
+Color getColorForStatus(String status) {
+  switch (status) {
+    case 'Draft':
+      return
+          Colors
+              .grey; // Set the color for Draft status// Set the color for On Hold status
+    case 'Rejected':
+      return Colors.redAccent; // Set the color for To Deliver and Bill status
+  // Set the color for To Deliver status
+    case 'Approved':
+      return Colors.green; // Set the color for Completed status
+// Set the color for Closed status
+    default:
+      return Colors.black87; // Set a default color for unknown status
+  }
+}
   Future<List<Expenselist>> fetchHolidaysForCurrentYear() async {
     _selectedYear = DateTime.now().year.toInt();
     _selectedmonth=DateTime.now().month;
-    List<Expenselist> holidays = await ExpenseServices().fetchexpense();
+    List<Expenselist> holidays = await ExpenseServices().fetchexpense(_selectedmonth!,_selectedYear!);
     return holidays;
   }
 
@@ -38,16 +72,17 @@ List<Expenselist> _expenselist=[];
     notifyListeners();
   }
 
-  void updateSelectedmonth(int? month) {
+  void updateSelectedmonth(int month) {
     // Update the selected year and fetch holidays for the selected year
     _selectedmonth = month;
+     monthname= getMonthName(month);
     fetchHolidaysForSelectedYear();
     notifyListeners();
   }
 
   Future<void> fetchHolidaysForSelectedYear() async {
     if (_selectedYear != null && _selectedmonth != null) {
-      _expenselist = await await ExpenseServices().fetchexpense();
+      _expenselist =  await ExpenseServices().fetchexpense(_selectedmonth!,_selectedYear!);
       notifyListeners();
     }
   }

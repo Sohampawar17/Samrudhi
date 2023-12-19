@@ -38,7 +38,7 @@ body: fullScreenLoader(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                        Row(
-                       
+                       mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(flex: 3,child: AutoSizeText(model.leaddata.name ?? ""),),
                           Expanded(
@@ -103,11 +103,13 @@ body: fullScreenLoader(
                     const SizedBox(height: 10,),
                     buildItemColumn(labelText:'Industry type',additionalText: '${model.leaddata.industry}'),
                      const Divider(thickness: 1),
-                     const Text('------------------------  Notes  ------------------------',style: TextStyle(fontWeight: FontWeight.bold)),
-                     CustomSmallTextFormField(controller: model.controller, hintText: 'Add your notes here', labelText: 'Add Notes',suffixicon: IconButton(
+                     Center(child: const Text('----------------------------  Notes  -----------------------------',style: TextStyle(fontWeight: FontWeight.bold),)),
+                     CustomSmallTextFormField(controller: model.controller, hintText: 'Add your notes here', labelText: 'Add Notes',suffixicon: IconButton.outlined(style: ButtonStyle(
+
+                     ),
           onPressed: () {model.addnote(widget.updateId,model.controller.text);
             }, // Implement edit functionality
-          icon: const Icon(Icons.send_rounded),
+          icon: const Icon(Icons.send_rounded,color: Colors.blueAccent,),
         ), ),
                      ListView.builder(
                       shrinkWrap: true,

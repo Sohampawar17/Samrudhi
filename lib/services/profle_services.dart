@@ -3,15 +3,16 @@ import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
-import '../model/dashboard.dart';
+import '../model/chane_password.dart';
+import '../model/employee_details.dart';
 
-class HomeServices {
- Future<Dashboard?> dashboard() async {
+class ProfileServices{
+  Future<EmployeeDetails?> profile() async {
     baseurl =  await geturl();
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.app.get_dashboard',
+        '$baseurl/api/method/mobile.mobile_env.app.get_profile',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -20,7 +21,7 @@ class HomeServices {
 
       if (response.statusCode == 200) {
         Logger().i(response.data["data"]);
-        return   Dashboard.fromJson(response.data["data"]);
+        return   EmployeeDetails.fromJson(response.data["data"]);
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO data!");
         return null;
@@ -32,34 +33,33 @@ class HomeServices {
     return null;
   }
 
-
-
-    Future<bool> employeecheckin(String logtype) async {
+  Future<bool> changepassword(ChangePassword orderdetails) async {
     baseurl =  await geturl();
-    var data = {'log_type': logtype.toString()};
 
+    Logger().i(orderdetails.toJson().toString());
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.app.create_employee_log',
+        '$baseurl/api/method/mobile.mobile_env.app.change_password',
         options: Options(
           method: 'POST',
           headers: {'Authorization': await getTocken()},
         ),
-        data: data,
+        data:  orderdetails.toJson(),
       );
-
       if (response.statusCode == 200) {
-   
-   Logger().i(response.data["data"].toString());
-   Fluttertoast.showToast(gravity: ToastGravity.SNACKBAR,msg: response.data["message"].toString().toUpperCase(),textColor:Color(0xFFFFFFFF),backgroundColor: Color.fromARGB(255, 26, 186, 29),);
+        Fluttertoast.showToast(msg: "Password Change successfully");
         return true;
       } else {
-        Fluttertoast.showToast(msg: "UNABLE TO delete notes!");
+        Fluttertoast.showToast(msg: "UNABLE TO Order!");
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(
+        msg: "${e.response?.data['message'].toString()}",
+        backgroundColor: Color(0xFFBA1A1A),
+        textColor: Color(0xFFFFFFFF),
+      );
       Logger().e(e);
     }
     return false;

@@ -78,6 +78,7 @@ class AttendanceServices{
       }
     } on DioException catch (e) {
       Fluttertoast.showToast(
+        gravity: ToastGravity.TOP,
         msg: "${e.response?.data['message'].toString()}",
         backgroundColor: Color(0xFFBA1A1A),
         textColor: Color(0xFFFFFFFF),

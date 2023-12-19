@@ -6,6 +6,7 @@ import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../model/addquotation_model.dart';
 import '../../../router.router.dart';
+import '../../../widgets/customtextfield.dart';
 import '../../../widgets/drop_down.dart';
 import '../../../widgets/full_screen_loader.dart';
 import '../../../widgets/text_button.dart';
@@ -67,25 +68,15 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                     prefixIcon: Icons.person_2,
                     items: model.searchcustomer,
                     hintText: 'Select the customer',
-                    // labelText: model.setquotationto,
+
                     labelText: model.customerLabel,
                     onChanged: model.setcustomer,
                   ),
-                  // SizedBox(
-                  //   height: 60,
-                  //   child: DropdownSearch<String>(
-                  //       popupProps: const PopupProps.menu(
-                  //         showSearchBox: true,
-                  //   showSelectedItems: true,
-                  //       ),
-                  //       items:model.searchcutomer,
-                  //       dropdownDecoratorProps:  DropDownDecoratorProps(
-                  //   dropdownSearchDecoration: AppInputDecorations.textFieldDecoration(labelText: 'Customers', hintText: 'select the customers', prefixIcon: Icons.person_2_outlined),
-                  //       ),
-                  //       onChanged: model.setcustomer,
-                  //       selectedItem: model.orderdata.customer,
-                  //   ),
-                  // ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+
+                  CustomSmallTextFormField(prefixIcon: Icons.person_pin,controller: model.customernamecontroller,labelText:'Party Name' ,hintText: 'Enter the Party'),
 
                   const SizedBox(
                     height: 15,
@@ -271,8 +262,8 @@ class _AddQuotationViewState extends State<AddQuotationView> {
 
 
                   TextFormField(
-                    controller: model.itemController,
                     readOnly: true,
+                    initialValue: '${model.selectedItems.length} items selected',
                     onTap: () async {
                       final SelectedItems = await Navigator.pushNamed(
                         context,
@@ -280,20 +271,12 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                         arguments: QuotationItemScreenArguments(items: model.selectedItems),
                       ) as List<Items>?;
 
-
                       if (SelectedItems != null) {
                         Logger().i(SelectedItems.length);
 
                         // Update the model or perform any actions with the selected items
                         model.setSelectedItems(SelectedItems);
 
-                        // Update the value of the TextFormField
-                        updateTextFieldValue(model);
-
-                        // Listen for item removal callback and update the TextFormField when an item is removed
-                        model.listenForItemRemoval((removedItem) {
-                          updateTextFieldValue(model);
-                        });
                       }
                     },
                     decoration: InputDecoration(
@@ -327,11 +310,6 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                       ),
                     ),
                   ),
-
-
-
-
-
                   const SizedBox(
                     height: 15,
                   ),
@@ -576,11 +554,6 @@ class _AddQuotationViewState extends State<AddQuotationView> {
     );
   }
 
-  void updateTextFieldValue(AddQuotationModel model) {
-    final selectedItemsValue = model.selectedItems.isEmpty
-        ? ''
-        : 'Selected ${model.selectedItems.length} item(s)';
-    model.itemController.text = selectedItemsValue;
-  }
+
 }
 

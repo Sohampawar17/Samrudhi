@@ -34,39 +34,13 @@ Future<String> getTocken() async {
   return formattedString;
 }
 
-Future<String> getUser() async {
-  final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-  final SharedPreferences prefs = await prefs0;
-  String? user = prefs.getString("user") ?? "";
-  return user;
-}
+
 
 Future<String> geturl() async {
   final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
   final SharedPreferences prefs = await prefs0;
   String? url = prefs.getString("url") ?? "";
   return url;
-}
-
-Future<String> getEmpId() async {
-  final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-  final SharedPreferences prefs = await prefs0;
-  String? employeeId = prefs.getString("employee_id") ?? "";
-  return employeeId;
-}
-
-Future<String> getlocationid() async {
-  final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-  final SharedPreferences prefs = await prefs0;
-  String? locationId = prefs.getString("locationid") ?? "";
-  return locationId;
-}
-
-Future<String> getname() async {
-  final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-  final SharedPreferences prefs = await prefs0;
-  String? fullName = prefs.getString("full_name") ?? "";
-  return fullName;
 }
 
 void logout(BuildContext context) async {
@@ -103,21 +77,17 @@ bool isPDF(File file) {
 Future<File?> compressFile(File file) async {
   // Get the file path.
   final filePath = file.path;
-
   // Get the file extension.
   final fileExtension = filePath.split('.').last;
-
   // Create a new file name with the extension "_compressed".
   final compressedFileName =
       filePath.replaceAll(fileExtension, '_compressed.$fileExtension');
-
   var result = await FlutterImageCompress.compressAndGetFile(
     file.path,
     compressedFileName,
     quality: 60,
     // rotate: 180,
   );
-
   return fileFromXFile(result ?? XFile(""));
 }
 
@@ -129,3 +99,24 @@ File fileFromXFile(XFile xfile) {
   final file = File(filePath);
   return file;
 }
+
+// Files files = Files();
+//
+// // Function to open file picker and select PDF file
+// Future<void> selectPdf(String fileType, ImageSource source) async {
+//   try {
+//     final result = await ImagePicker().pickImage(source: source);
+//     if (result != null) {
+//       // print("SIZE BEFORE: ${result.files.single.size}");
+//       setBusy(true);
+//       File? compressedFile = await compressFile(fileFromXFile(result));
+//       // print("SIZE BEFORE: ${compressedFile?.lengthSync()}");
+//       files.setFile(fileType, compressedFile);
+//       setBusy(false);
+//       notifyListeners();
+//     }
+//   } catch (e) {
+//     Fluttertoast.showToast(
+//         msg: 'Error while picking an image or document: $e');
+//   }
+// }

@@ -25,9 +25,10 @@ class AddQuotationModel extends BaseViewModel {
   bool isloading = false;
   List<String> ordetype = ["Sales", "Maintenance", "Shopping Cart"];
   TextEditingController customercontroller = TextEditingController();
+  TextEditingController customernamecontroller = TextEditingController();
   TextEditingController searchcustomercontroller = TextEditingController();
   TextEditingController validtilldatecontroller = TextEditingController();
-  TextEditingController itemController = TextEditingController();
+
   //TextEditingController quotationtodatecontroller = TextEditingController();
   late String QuotationId;
 
@@ -44,8 +45,9 @@ class AddQuotationModel extends BaseViewModel {
     if (QuotationId != "") {
       isEdit = true;
       quotationdata = await AddQuotationServices().getquotation(quotationid) ?? AddQuotation();
-      customercontroller.text = quotationdata.customerName ?? "";
+      customercontroller.text = quotationdata.partyName ?? "";
       validtilldatecontroller.text = quotationdata.validTill ?? "";
+      customernamecontroller.text=quotationdata.customerName ?? "";
     //  quotationtodatecontroller.text = quotationdata.quotationTo ??"";
       selectedItems.addAll(quotationdata.items?.toList() ?? []);
 
@@ -116,7 +118,7 @@ class AddQuotationModel extends BaseViewModel {
   }
   void setquotationto(String? quotationTo) async {
     quotationdata.quotationTo = quotationTo;
-    quotationdata.customerName="";
+    quotationdata.partyName="";
     if(quotationTo!.isNotEmpty){
     searchcustomer= await AddQuotationServices().getcustomer(quotationTo);}
     setCustomerLabel(quotationTo);

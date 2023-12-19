@@ -63,8 +63,9 @@ dependencies:
   dropdown_search: ^5.0.6
   intl: ^0.18.1
   dropdown_button2: ^2.3.9
-  syncfusion_flutter_calendar: ^22.2.12
   table_calendar: ^3.0.1
+  collection: ^1.15.0
+
 
 
 dev_dependencies:

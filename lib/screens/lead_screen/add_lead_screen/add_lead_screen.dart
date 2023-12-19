@@ -24,7 +24,7 @@ class _AddLeadScreenState extends State<AddLeadScreen> {
       onViewModelReady: (model) => model.initialise(context,widget.leadid),
       builder: (context, model, child)=>Scaffold(
        
-      appBar:AppBar(title:  Text(model.isEdit ?model.leaddata.name.toString() :'Create Lead',style: TextStyle(fontSize: 18),),backgroundColor: Colors.transparent,
+      appBar:AppBar(title:  Text(model.isEdit ?model.leaddata.name.toString() :'Create Lead',style: TextStyle(fontSize: 18),),
 leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),actions: [
   IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
 ],),
@@ -76,11 +76,7 @@ leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, R
    Expanded(child:   CustomDropdownButton2(labelText: 'State',value:model.leaddata.state..toString,items:model.state, hintText: 'select state', onChanged: model.setstate,searchController: model.statecontroller,),
    )
                 ],),
-                 SizedBox(height: 15,),
-                 
-            Visibility(visible: !model.isEdit,child: CustomSmallTextFormField(linelength: 5,prefixIcon:Icons.note_add,controller: model.noteController,labelText:'+ Add Note' ,hintText: 'Enter your Note',onChanged: model.setNote)),
-                
-                       
+
                           SizedBox(height: 25,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -211,7 +211,12 @@ class ListQuotationScreen extends StatelessWidget {
                         },
                         itemCount: model.filterquotationlist.length),
                   )
-                      : Container()
+                      : Center(
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                  )
                 ],
               ),
             ),

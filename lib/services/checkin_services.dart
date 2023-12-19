@@ -31,7 +31,7 @@ class CheckinServices {
         String name = response.data['data']['name'].toString();
         Fluttertoast.showToast(msg: "location Added Successfully");
         preferences.setString('locationid', name);
-        Logger().i(await getlocationid());
+
         return true;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO add location!");

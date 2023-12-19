@@ -121,21 +121,7 @@ showSearchBox: true,showSelectedItems: true,searchFieldProps: TextFieldProps(
         hintStyle: const TextStyle(
           color: Colors.grey, // Customize hint text color
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(18.0),
-        // ),
-        // focusedBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(18.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.blue, // Customize focused border color
-        //   ),
-        // ),
-        // enabledBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(18.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.grey, // Customize enabled border color
-        //   ),
-        // ),
+        border: InputBorder.none
       ),
               ),
               onChanged: onChanged,

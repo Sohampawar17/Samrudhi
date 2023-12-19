@@ -1,10 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../model/attendance_model.dart';
 import '../../services/attendence_services.dart';
 
+
 class  AttendenceViewModel extends BaseViewModel{
+  Map<DateTime, List<AttendanceList>> events = {};
+  CalendarFormat calendarFormat = CalendarFormat.week;
 
   final List<int> _availableYears = [2022,2023,2024,2025,2026,2027];
   int? _selectedYear;
@@ -21,6 +25,7 @@ class  AttendenceViewModel extends BaseViewModel{
     setBusy(true);
     _attendancelist=await fetchHolidaysForCurrentYear();
     attendeancedetails=await fetchattendancedetails();
+
     notifyListeners();
     setBusy(false);
   }
@@ -39,7 +44,42 @@ class  AttendenceViewModel extends BaseViewModel{
     return holidays;
   }
 
-  void updateSelectedYear(int? year) {
+  AttendanceList? getAttendanceForDate(DateTime date) {
+    try {
+      final attendance = attendancelist.firstWhere(
+            (attendance) => isSameDay(DateTime.parse(attendance.attendanceDate ?? ""), date),
+      );
+
+      return attendance;
+    } catch (e) {
+      // Handle the case when no element is found
+      return null;
+    }
+  }
+
+  void calenderformat(format){
+    calendarFormat=format;
+    notifyListeners();
+  }
+
+  // A utility function to check if two dates are on the same day
+  bool isSameDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+  }
+  // Map<DateTime, List<AttendanceList>> getEventsForDay() {
+  //
+  //   for (AttendanceList attendence in attendancelist) {
+  //     DateTime eventDate = DateTime.parse(attendence.attendanceDate ?? "");
+  //       events.add(
+  //           Event(eventDate)); // Pass the eventDate to the Event constructor
+  //
+  //   }
+  //   return events;
+  // }
+
+
+
+void updateSelectedYear(int? year) {
     // Update the selected year and fetch holidays for the selected year
     _selectedYear = year;
     fetchHolidaysForSelectedYear();

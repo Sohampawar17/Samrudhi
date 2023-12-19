@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Text(
-                                "${model.dashboard.empName.toString().toUpperCase()}",overflow: TextOverflow.ellipsis,
+                                "${model.dashboard.empName.toString().toUpperCase()},",overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w500,
@@ -91,7 +91,6 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-
                          Expanded(
                           flex: 1,
                            child: CircleAvatar(
@@ -148,10 +147,9 @@ class _HomePageState extends State<HomePage> {
                               child: GridView(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:3 , mainAxisSpacing: 20, crossAxisSpacing: 20 ),children: [
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(context, Routes.listOrderScreen);
+                                    Navigator.pushNamed(context, Routes.leadListScreen);
                                   },
                                   child: Container(
-
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: Colors.white,
@@ -160,43 +158,14 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
                                           spreadRadius: 5,
                                           blurRadius: 7,
-                                          offset: const Offset(0, 3), // Customize the shadow offset
+                                          offset:  Offset(0, 3), // Customize the shadow offset
                                         ),
                                       ],
                                     ),
                                     child:  Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                          Image.asset('assets/images/cargo.png',scale: 10,),
-
-                                        AutoSizeText("Sales Orders", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600,),),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, Routes.leadListScreen);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset:  Offset(0, 3), // Customize the shadow offset
-                                      ),
-                                    ],
-                                  ),
-                                    child:  Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                         Image.asset('assets/images/recruitment.png',scale: 10,),
+                                        Image.asset('assets/images/recruitment.png',scale: 10,),
                                         AutoSizeText("Lead",style: TextStyle(color: Colors.black87, fontWeight:  FontWeight.w600),)
                                       ],),
                                   ),
@@ -226,6 +195,37 @@ class _HomePageState extends State<HomePage> {
                                       ],),
                                   ),
                                 ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, Routes.listOrderScreen);
+                                  },
+                                  child: Container(
+
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: const Offset(0, 3), // Customize the shadow offset
+                                        ),
+                                      ],
+                                    ),
+                                    child:  Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                          Image.asset('assets/images/cargo.png',scale: 10,),
+
+                                        AutoSizeText("Sales Orders", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600,),),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+
                                 InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(context, Routes.holidayScreen);
@@ -329,7 +329,630 @@ class _HomePageState extends State<HomePage> {
                               ],
                               ),
 
-                            )      ],
+                            ),    Container(
+    width: 360,
+    height: 640,
+    clipBehavior: Clip.antiAlias,
+    decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
+    child: Stack(
+    children: [
+    Positioned(
+    left: 13,
+    top: 89,
+    child: Container(
+    width: 335,
+    height: 168,
+    decoration: ShapeDecoration(
+    color: Color(0xFFF5F5F5),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 133,
+    top: 218,
+    child: Text(
+    'Absent',
+    style: TextStyle(
+    color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    Positioned(
+    left: 52,
+    top: 218,
+    child: SizedBox(
+    width: 45,
+    child: Text(
+    'Present',
+    style: TextStyle(
+    color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 111,
+    top: 165,
+    child: Text(
+    '1 Days  ',
+    style: TextStyle(
+    color: Color(0xFFD21C1C),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    Positioned(
+    left: 33,
+    top: 104,
+    child: Container(
+    width: 117,
+    height: 30,
+    decoration: ShapeDecoration(
+    color: Color(0xFFD9D9D9),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 56.06,
+    top: 110,
+    child: SizedBox(
+    width: 61,
+    height: 17,
+    child: Text(
+    'December',
+    style: TextStyle(
+    color: Color(0xFF1E75F6),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w700,
+    height: 0,
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 33,
+    top: 165,
+    child: Text(
+    '29 Days  ',
+    style: TextStyle(
+    color: Color(0xFF06AA03),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    Positioned(
+    left: 91,
+    top: 163,
+    child: Transform(
+    transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(1.57),
+    child: Container(
+    width: 18,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    side: BorderSide(
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignCenter,
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 91,
+    top: 163,
+    child: Transform(
+    transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(1.57),
+    child: Container(
+    width: 18,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    side: BorderSide(
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignCenter,
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 91,
+    top: 163,
+    child: Transform(
+    transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(1.57),
+    child: Container(
+    width: 18,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    side: BorderSide(
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignCenter,
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 91,
+    top: 163,
+    child: Transform(
+    transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(1.57),
+    child: Container(
+    width: 18,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    side: BorderSide(
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignCenter,
+    color: Color(0xFF7B7070),
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 166,
+    top: 163,
+    child: Transform(
+    transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(1.57),
+    child: Container(
+    width: 18,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    side: BorderSide(
+    width: 1,
+    strokeAlign: BorderSide.strokeAlignCenter,
+    color: Color(0xFF7B7070),
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 186,
+    top: 166,
+    child: Text(
+    '0 Days  ',
+    style: TextStyle(
+    color: Color(0xFFD29F1C),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    Positioned(
+    left: 274,
+    top: 168,
+    child: Text.rich(
+    TextSpan(
+    children: [
+    TextSpan(
+    text: '30 ',
+    style: TextStyle(
+    color: Color(0xFF6109D2),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    TextSpan(
+    text: 'Days',
+    style: TextStyle(
+    color: Color(0xFF620AD2),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    TextSpan(
+    text: '  ',
+    style: TextStyle(
+    color: Color(0xFF6109D2),
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    Positioned(
+    left: 33,
+    top: 221,
+    child: Container(
+    width: 12,
+    height: 12,
+    decoration: ShapeDecoration(
+    color: Color(0xFF479B05),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 36,
+    top: 224,
+    child: Container(
+    width: 6,
+    height: 6,
+    decoration: ShapeDecoration(
+    color: Color(0xFFD9D9D9),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 111,
+    top: 221,
+    child: Container(
+    width: 12,
+    height: 12,
+    decoration: ShapeDecoration(
+    color: Color(0xFFD81010),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 114,
+    top: 224,
+    child: Container(
+    width: 6,
+    height: 6,
+    decoration: ShapeDecoration(
+    color: Color(0xFFD9D9D9),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 186,
+    top: 221,
+    child: Container(
+    width: 12,
+    height: 12,
+    decoration: ShapeDecoration(
+    color: Color(0xFFEEAE09),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 189,
+    top: 224,
+    child: Container(
+    width: 6,
+    height: 6,
+    decoration: ShapeDecoration(
+    color: Color(0xFFD9D9D9),
+    shape: OvalBorder(),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 208,
+    top: 218,
+    child: Text(
+    'Day off',
+    style: TextStyle(
+    color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w400,
+    height: 0,
+    ),
+    ),
+    ),
+    Positioned(
+    left: 22,
+    top: 57,
+    child: SizedBox(
+    width: 123,
+    height: 15,
+    child: Text(
+    'Attendance Details ',
+    style: TextStyle(
+    color: Color(0xFF0A46A0),
+    fontSize: 13,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w700,
+    height: 0,
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 12,
+    top: 320,
+    child: Container(
+    width: 336,
+    height: 199,
+    child: Stack(
+    children: [
+    Positioned(
+    left: 0,
+    top: 0,
+    child: Container(
+    width: 944,
+    height: 199,
+    child: Stack(
+    children: [
+    Positioned(
+    left: 485,
+    top: 0,
+    child: Container(
+    width: 336,
+    height: 198,
+    decoration: ShapeDecoration(
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    ),
+    ),
+    ),
+    ),
+    Positioned(
+    left: 0,
+    top: 23,
+    child: Container(
+    width: 401,
+    height: 176,
+    child: Stack(
+    children: [
+    Positioned(
+    left: 0,
+    top: 0,
+    child: Container(
+    width: 129,
+    height: 176,
+    child: Stack(
+    children: [
+    Positioned(
+    left: 0,
+    top: 0,
+    child: Container(
+    width: 129,
+    height: 176,
+    decoration: ShapeDecoration(
+    color: Color(0xFF81A67B),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(25),
+    ),
+    shadows: [
+    BoxShadow(
+    color: Color(0x3F000000),
+    blurRadius: 4,
+    offset: Offset(0, 4),
+    spreadRadius: 0,
+    )
+    ],
+    ),
+    ),
+    ),
+    Positioned(
+    left: 28,
+    top: 136,
+    child: Text(
+    'Casual Leave',
+    style: TextStyle(
+    color: Colors.white,
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.w700,
+    height: 0,
+    ),
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    Positioned(
+    left: 136,
+    top: 0,
+    child: Container(
+    width: 129,
+    height: 176,
+    decoration: ShapeDecoration(
+    color: Color(0xFF81A67B),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(25),
+    ),
+    shadows: [
+    BoxShadow(
+    color: Color(0x3F000000),
+    blurRadius: 4,
+    offset: Offset(0, 4),
+    spreadRadius: 0,
+    )
+    ],
+    ),
+    ),
+    ),
+    Positioned(
+    left: 272,
+    top: 0,
+    child: Container(
+    width: 129,
+    height: 176,
+    decoration: ShapeDecoration(
+    color: Color(0xFF81A67B),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(25),
+    ),
+    shadows: [
+    BoxShadow(
+    color: Color(0x3F000000),
+    blurRadius: 4,
+    offset: Offset(0, 4),
+    spreadRadius: 0,
+    )
+    ],
+    ),
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    Positioned(
+    left: 408,
+    top: 23,
+    child: Container(
+    width: 401,
+    height: 176,
+    child: Row(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+    Container(
+    width: 129,
+    height: 176,
+    decoration:  ShapeDecoration(
+    color: Color(0xFF81A67B), shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25),
+      ),
+      shadows: [
+      BoxShadow(
+        color: Color(0x3F000000),
+        blurRadius: 4,
+        offset: Offset(0, 4),
+        spreadRadius: 0,
+      )
+    ],
+    ),
+    ),
+      const SizedBox(width: 7),
+      Container(
+        width: 129,
+        height: 176,
+        decoration: ShapeDecoration(
+          color: Color(0xFF81A67B),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          shadows: [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 4,
+              offset: Offset(0, 4),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+      ),
+      const SizedBox(width: 7),
+      Container(
+        width: 129,
+        height: 176,
+        decoration: ShapeDecoration(
+          color: Color(0xFF81A67B),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          shadows: [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 4,
+              offset: Offset(0, 4),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+      ),
+      ],
+    ),
+    ),
+    ),
+      Positioned(
+        left: 815,
+        top: 23,
+        child: Container(
+          width: 129,
+          height: 176,
+          decoration: ShapeDecoration(
+            color: Color(0xFF81A67B),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            shadows: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(0, 4),
+                spreadRadius: 0,
+              )
+            ],
+          ),
+        ),
+      ),
+    ],
+    ),
+    ),
+    ),
+      Positioned(
+        left: 17,
+        top: 49,
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: ShapeDecoration(
+            color: Color(0xFFBD1212),
+            shape: OvalBorder(),
+          ),
+        ),
+      ),
+    ],
+    ),
+    ),
+    ),
+      Positioned(
+        left: 22,
+        top: 305,
+        child: Text(
+          'Leave Balance',
+          style: TextStyle(
+            color: Color(0xFF0B47A0),
+            fontSize: 12,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+            height: 0,
+          ),
+        ),
+      ),
+    ],
+    ),
+                          ),],
                       ),
 
 

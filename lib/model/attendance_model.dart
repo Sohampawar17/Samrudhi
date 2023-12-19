@@ -56,15 +56,21 @@ class AttendanceDetails {
 
 class AttendanceList {
   String? attendanceDate;
+  String? status;
   double? workingHours;
-  double? inTime;
-  double? outTime;
+  String? inTime;
+  String? outTime;
 
   AttendanceList(
-      {this.attendanceDate, this.workingHours, this.inTime, this.outTime});
+      {this.attendanceDate,
+        this.status,
+        this.workingHours,
+        this.inTime,
+        this.outTime});
 
   AttendanceList.fromJson(Map<String, dynamic> json) {
     attendanceDate = json['attendance_date'];
+    status = json['status'];
     workingHours = json['working_hours'];
     inTime = json['in_time'];
     outTime = json['out_time'];
@@ -73,6 +79,7 @@ class AttendanceList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['attendance_date'] = this.attendanceDate;
+    data['status'] = this.status;
     data['working_hours'] = this.workingHours;
     data['in_time'] = this.inTime;
     data['out_time'] = this.outTime;
