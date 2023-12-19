@@ -1,9 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
-import '../../../constants.dart';
 import '../../../router.router.dart';
 import 'list_expense_viewmodel.dart';
 
@@ -21,86 +19,81 @@ class ExpenseScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('My Expenses'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
-            // bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
-            //   padding: EdgeInsets.all(8),
-            //   color: Colors.white,
-            //   child: Row(
-            //     children: [
-            //       Expanded(
-            //         child: DropdownButtonFormField<String>(
-            //           value: model.selectedMonth, // The currently selected month
-            //           onChanged: (String? month) {
-            //             // Update the selected month when the user changes the dropdown value
-            //             model.updateSelectedmonth(month);
-            //           },
-            //           decoration: InputDecoration(
-            //             constraints: BoxConstraints(maxHeight: 60),
-            //             labelText: 'Month',
-            //             hintText: 'Select month',
-            //             prefixIcon: Icon(Icons.calendar_month),
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //             focusedBorder: OutlineInputBorder(
-            //               borderSide: BorderSide(color: Colors.blue, width: 2.0),
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //             enabledBorder: OutlineInputBorder(
-            //               borderSide: BorderSide(color: Colors.grey, width: 1.0),
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //           ),
-            //           items: List.generate(12, (index) {
-            //             // Generate a list of 12 months using a DateFormat
-            //             DateTime monthDate = DateTime(2022, index + 1, 1);
-            //             String monthName = DateFormat.MMMM().format(monthDate);
-            //
-            //             return DropdownMenuItem<String>(
-            //               value: monthName,
-            //               child: Text(monthName),
-            //             );
-            //           }),
-            //         ),
-            //       ),
-            //       SizedBox(width: 10,),
-            //       Expanded(
-            //         child: DropdownButtonFormField<int>(
-            //           value: model.selectedYear, // The currently selected year
-            //           onChanged: (int? year) {
-            //             // Update the selected year when the user changes the dropdown value
-            //             model.updateSelectedYear(year);
-            //           },
-            //           decoration: InputDecoration(
-            //             constraints: BoxConstraints(maxHeight: 60),
-            //             labelText: 'Year',
-            //             hintText: 'Select year',
-            //             prefixIcon: Icon(Icons.calendar_month),
-            //
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //             focusedBorder: OutlineInputBorder(
-            //               borderSide: BorderSide(color: Colors.blue, width: 2.0),
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //             enabledBorder: OutlineInputBorder(
-            //               borderSide: BorderSide(color: Colors.grey, width: 1.0),
-            //               borderRadius: BorderRadius.circular(30.0),
-            //             ),
-            //
-            //           ),
-            //           items: model.availableYears.map((int year) {
-            //             return DropdownMenuItem<int>(
-            //               value: year,
-            //               child: Text(year.toString()),
-            //             );
-            //           }).toList(),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // ),
+            bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
+              padding: EdgeInsets.all(8),
+              color: Colors.white,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
+                      value: model.selectedMonth, // The currently selected month
+                      onChanged: (int? month) {
+                        // Update the selected month when the user changes the dropdown value
+                        model.updateSelectedmonth(month!);
+                      },
+                      decoration: InputDecoration(
+                        constraints: const BoxConstraints(maxHeight: 60),
+                        labelText: 'Month',
+                        hintText: 'Select month',
+
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      items: List.generate(12, (index) {
+                        // Generate a list of 12 months (1-based index)
+                        return DropdownMenuItem<int>(
+                          value: index + 1, // Months are 1-based
+                          child: Text(model.getMonthName(index + 1)), // Replace with your method to get month name
+                        );
+                      }),
+                    ),
+
+                  ),
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
+                      value: model.selectedYear, // The currently selected year
+                      onChanged: (int? year) {
+                        // Update the selected year when the user changes the dropdown value
+                        model.updateSelectedYear(year);
+                      },
+                      decoration: InputDecoration(
+                        constraints: BoxConstraints(maxHeight: 60),
+                        labelText: 'Year',
+                        hintText: 'Select year',
+                        prefixIcon: Icon(Icons.calendar_month),
+
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+
+                      ),
+                      items: model.availableYears.map((int year) {
+                        return DropdownMenuItem<int>(
+                          value: year,
+                          child: Text(year.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ),
           ),
           body: fullScreenLoader(
             child: Padding(
@@ -126,7 +119,7 @@ class ExpenseScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       _buildContainer("${model.expenselist[index].expenseType.toString()} Expense"),
-                                      _buildContainer(model.expenselist[index].status.toString()),
+                                      _buildContainer(model.expenselist[index].approvalStatus.toString()),
                                     ],
                                   ),
                                   SizedBox(height: 10),

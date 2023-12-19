@@ -9,9 +9,12 @@ import '../constants.dart';
 import '../model/expenselist_model.dart';
 
 class ExpenseServices{
-  Future<List<Expenselist>> fetchexpense() async {
+  Future<List<Expenselist>> fetchexpense(int month,int year) async {
     baseurl =  await geturl();
-
+    var data = {
+      'year': '${year}',
+      'month': '${month}'
+    };
     try {
       var dio = Dio();
       var response = await dio.request(
@@ -20,12 +23,12 @@ class ExpenseServices{
             method: 'GET',
             headers: {'Authorization': await getTocken()},
           ),
-
+data: data
       );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<Expenselist> caneList = List.from(jsonData["data"]["December 2023"])
+        List<Expenselist> caneList = List.from(jsonData["data"])
             .map<Expenselist>((data) => Expenselist.fromJson(data))
             .toList();
         return caneList;

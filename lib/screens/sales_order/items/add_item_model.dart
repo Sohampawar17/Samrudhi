@@ -15,17 +15,20 @@ class ItemListModel extends BaseViewModel {
   bool isSelected(Items item) {
     return isSelecteditems.contains(item);
   }
+bool selected=false;
   List<Items> filteredItems = [];
 
   void initialise(
       BuildContext context, String warehouse, List<Items> itemlist) async {
     setBusy(true);
-    Logger().i(itemlist.length);
-    // isSelecteditems = itemlist;
-  // isSelecteditems.clear(); // Clear the list before adding items
     selecteditems = await AddOrderServices().fetchitems(warehouse);
    filteredItems=selectedItems;
-   
+
+ // isSelecteditems.addAll(itemlist);
+ for (var i in itemlist){
+  isSelecteditems.add(i);
+ }
+    Logger().i(isSelecteditems.length);
     notifyListeners();
     setBusy(false);
   }
@@ -40,13 +43,11 @@ class ItemListModel extends BaseViewModel {
   }
 
   void toggleSelection(Items item) {
-    if (isSelected(item)) {
+    if (selected) {
       isSelecteditems.remove(item);
     } else {
       isSelecteditems.add(item);
     }
-
-    print(isSelecteditems);
     notifyListeners();
   }
 
@@ -58,7 +59,7 @@ class ItemListModel extends BaseViewModel {
   }
 
   double getQuantity(Items item) {
-    return item.qty ?? 0.0;
+    return item.qty ?? 1.0;
   }
 
   void removeitem(int index) {

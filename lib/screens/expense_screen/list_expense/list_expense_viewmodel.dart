@@ -11,6 +11,7 @@ List<Expenselist> _expenselist=[];
   final List<int> _availableYears = [2022,2023,2024,2025,2026,2027];
   int? _selectedYear;
   int? _selectedmonth;
+String? monthname;
 
   List<Expenselist> get expenselist => _expenselist;
   List<int> get availableYears => _availableYears;
@@ -27,7 +28,7 @@ List<Expenselist> _expenselist=[];
   Future<List<Expenselist>> fetchHolidaysForCurrentYear() async {
     _selectedYear = DateTime.now().year.toInt();
     _selectedmonth=DateTime.now().month;
-    List<Expenselist> holidays = await ExpenseServices().fetchexpense();
+    List<Expenselist> holidays = await ExpenseServices().fetchexpense(_selectedmonth!,_selectedYear!);
     return holidays;
   }
 
@@ -38,16 +39,17 @@ List<Expenselist> _expenselist=[];
     notifyListeners();
   }
 
-  void updateSelectedmonth(int? month) {
+  void updateSelectedmonth(int month) {
     // Update the selected year and fetch holidays for the selected year
     _selectedmonth = month;
+     monthname= getMonthName(month);
     fetchHolidaysForSelectedYear();
     notifyListeners();
   }
 
   Future<void> fetchHolidaysForSelectedYear() async {
     if (_selectedYear != null && _selectedmonth != null) {
-      _expenselist = await await ExpenseServices().fetchexpense();
+      _expenselist =  await ExpenseServices().fetchexpense(_selectedmonth!,_selectedYear!);
       notifyListeners();
     }
   }

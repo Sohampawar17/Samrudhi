@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/model/order_details_model.dart';
@@ -120,18 +121,32 @@ class AddOrderViewModel extends BaseViewModel {
 
 
 
-  void setSelectedItems(List<Items> SelectedItems) async {
-    selectedItems = SelectedItems;
+  void setSelectedItems(List<Items> selectedItems) async {
     for (var item in selectedItems) {
-      item.warehouse = orderdata.setWarehouse;
-      item.deliveryDate = orderdata.deliveryDate;
-      item.amount = (item.qty ?? 0.0) * (item.rate ?? 0.0);
+      // Check if the item is already present in the list
+      var existingItem = this.selectedItems.firstWhereOrNull(
+            (selectedItem) => selectedItem.itemCode == item.itemCode,
+      );
+
+      if (existingItem != null) {
+        // Update quantity and amount for existing item
+        existingItem.qty = (existingItem.qty ?? 0) + (item.qty ?? 0);
+        existingItem.amount = (existingItem.qty ?? 1.0) * (existingItem.rate ?? 0.0);
+      } else {
+        // If the item is not present, add it to the list
+        item.warehouse = orderdata.setWarehouse;
+        item.deliveryDate = orderdata.deliveryDate;
+        item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
+        this.selectedItems.add(item);
+      }
     }
-    orderdata.items = selectedItems;
+
+    orderdata.items = this.selectedItems;
     Logger().i(orderdata.toJson());
     orderdetails(await AddOrderServices().orderdetails(orderdata));
     notifyListeners();
   }
+
 
   void orderdetails(List<OrderDetailsModel> orderdetail) {
     orderdata.totalTaxesAndCharges =
@@ -156,7 +171,7 @@ class AddOrderViewModel extends BaseViewModel {
   }
 
   double getQuantity(Items item) {
-    return item.qty ?? 0;
+    return item.qty ?? 1;
   }
 
   void additem(int index) async {
@@ -171,8 +186,9 @@ class AddOrderViewModel extends BaseViewModel {
 
   void deleteitem(int index) async {
    selectedItems.removeAt(index);
-    notifyListeners();
    orderdetails(await AddOrderServices().orderdetails(orderdata));
+    notifyListeners();
+
    Logger().i(selectedItems.length);
   }
 

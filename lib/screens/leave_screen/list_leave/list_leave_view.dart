@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
-import '../../../constants.dart';
 import '../../../router.router.dart';
 import 'list_leave_viewmodel.dart';
 
@@ -38,15 +37,15 @@ class ListLeaveScreen extends StatelessWidget {
                         hintText: 'Select month',
                         prefixIcon: Icon(Icons.calendar_month),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
                       items: List.generate(12, (index) {
@@ -73,15 +72,15 @@ class ListLeaveScreen extends StatelessWidget {
                         prefixIcon: Icon(Icons.calendar_month),
 
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
 
                       ),
@@ -108,14 +107,21 @@ class ListLeaveScreen extends StatelessWidget {
                   Text("Upcoming Leaves (${model.leavelist.length})", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   model.leavelist.isNotEmpty
-                      ? Expanded(
+                      ?
+                  Expanded(
                     child: ListView.separated(
                       itemBuilder: (builder, index) {
-                        return _buildLeaveItem(
-                          model.leavelist[index].leaveType.toString().toUpperCase(),
-                          model.leavelist[index].status.toString(),
-                          "${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}",
-                          model.leavelist[index].description ?? "",
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                          ),
+                          child: _buildLeaveItem(
+                            model.leavelist[index].leaveType.toString().toUpperCase(),
+                            model.leavelist[index].status.toString(),
+                            "${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}",
+                            model.leavelist[index].description ?? "",
+                          ),
                         );
                       },
                       separatorBuilder: (context, builder) {
@@ -126,22 +132,24 @@ class ListLeaveScreen extends StatelessWidget {
                       },
                       itemCount: model.leavelist.length,
                     ),
-                  )
-                      : _buildEmptyContainer('No upcoming leave found for this year and month'),
-
+                  ): _buildEmptyContainer('No upcoming leave found for this year and month'),
                   SizedBox(height: 20),
-
-                  Text("Taken Leaves(${model.takenlist.length})", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
+                  Text("Taken Leaves (${model.takenlist.length})", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   model.takenlist.isNotEmpty
                       ? Expanded(
                     child: ListView.separated(
                       itemBuilder: (builder, index) {
-                        return _buildLeaveItem(
-                          model.takenlist[index].leaveType.toString().toUpperCase(),
-                          model.takenlist[index].status.toString(),
-                          "${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}",
-                          model.takenlist[index].description ?? "",
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                          ),
+                          child: _buildLeaveItem(
+                            model.takenlist[index].leaveType.toString().toUpperCase(),
+                            model.takenlist[index].status.toString(),
+                            "${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}",
+                            model.takenlist[index].description ?? "",
+                          ),
                         );
                       },
                       separatorBuilder: (context, builder) {
