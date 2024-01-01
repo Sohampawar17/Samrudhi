@@ -129,6 +129,8 @@ class AddOrderViewModel extends BaseViewModel {
       );
 
       if (existingItem != null) {
+        Logger().i(existingItem.qty);
+        Logger().i(item.qty);
         // Update quantity and amount for existing item
         existingItem.qty = (existingItem.qty ?? 0) + (item.qty ?? 0);
         existingItem.amount = (existingItem.qty ?? 1.0) * (existingItem.rate ?? 0.0);
@@ -186,6 +188,7 @@ class AddOrderViewModel extends BaseViewModel {
 
   void deleteitem(int index) async {
    selectedItems.removeAt(index);
+   orderdata.items = selectedItems;
    orderdetails(await AddOrderServices().orderdetails(orderdata));
     notifyListeners();
 

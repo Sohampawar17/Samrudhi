@@ -22,10 +22,18 @@ class QuotationItemListModel extends BaseViewModel {
       BuildContext context,  List<Items> itemlist) async {
     setBusy(true);
     Logger().i(itemlist.length);
-    isSelecteditems = itemlist;
-    isSelecteditems.clear(); // Clear the list before adding items
+// Clear the list before adding items
     selecteditems = await AddQuotationServices().fetchitems();
     filteredItems=selectedItems;
+    for (var selectedItem in itemlist) {
+      var originalItem =
+      filteredItems.firstWhere((item) => item.itemCode == selectedItem.itemCode);
+      originalItem.qty = selectedItem.qty;
+      isSelected(originalItem);
+    }
+    isSelecteditems
+        .addAll(itemlist.toList());
+    Logger().i(isSelecteditems.length);
     notifyListeners();
     setBusy(false);
   }
@@ -36,18 +44,19 @@ class QuotationItemListModel extends BaseViewModel {
     } else {
       isSelecteditems.add(item);
     }
-
     print(isSelecteditems);
+    for (var i in isSelecteditems){
+      Logger().i(i.qty);
+    }
     notifyListeners();
   }
 
   void additem(int index) {
     quantity++;
     selecteditems[index].qty =
-        quantity.toDouble() as double?; // or just quantity.toDouble()
+        quantity.toDouble(); // or just quantity.toDouble()
     notifyListeners();
   }
-
 
   void searchItems(String query) {
     filteredItems = selecteditems
@@ -57,15 +66,15 @@ class QuotationItemListModel extends BaseViewModel {
     notifyListeners();
   }
 
-  num getQuantity(Items item) {
-    return item.qty ?? 0.0;
+  double getQuantity(Items item) {
+    return item.qty ?? 1.0;
   }
 
   void removeitem(int index) {
     if (quantity > 0) {
       quantity--;
       selecteditems[index].qty =
-          quantity.toDouble() as double?; // or just quantity.toDouble()
+          quantity.toDouble(); // or just quantity.toDouble()
       notifyListeners();
     }
   }

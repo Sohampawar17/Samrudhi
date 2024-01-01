@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
+import '../../../widgets/view_docs_from_internet.dart';
 import 'list_expense_viewmodel.dart';
 
 
@@ -131,27 +132,25 @@ class ExpenseScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               child: ExpansionTile(
-              tilePadding: EdgeInsets.all(16),
+              tilePadding: EdgeInsets.all(8),
               title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Card(
+                  color: Colors.blue,
                   shape:
                   RoundedRectangleBorder(
                     borderRadius:
                     BorderRadius.circular(
                         20.0),
-                    side: BorderSide(
-                        color: Colors.blue,
-                        width:
-                        2), // Set border color and width
+                     // Set border color and width
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: AutoSizeText("${model.expenselist[index].expenseType.toString()} Expense",  textAlign:
                     TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black87,
+                        color: Colors.white,
                         fontWeight:
                         FontWeight.w500,
                       ),),
@@ -198,16 +197,13 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
 
                 children: [
                   _buildSubtitle("posting Date :- ${model.expenselist[index].expenseDate ?? ""}"),
-                  Card(
+                  Card(color: model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
                     shape:
                     RoundedRectangleBorder(
                       borderRadius:
                       BorderRadius.circular(
-                          8.0),
-                      side: BorderSide(
-                          color: model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
-                          width:
-                          1), // Set border color and width
+                          15.0),
+                      // Set border color and width
                     ),
                     // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
                     child: Padding(
@@ -215,7 +211,7 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
                       child: AutoSizeText(model.expenselist[index].approvalStatus ?? "",  textAlign:
                       TextAlign.center,
                         style: TextStyle(
-                          color: model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
+                          color: Colors.white,
                           fontWeight:
                           FontWeight.bold,
                         ),),
@@ -225,7 +221,22 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
               ),
               SizedBox(height: 10),
               _buildSubtitle("Description :- ${model.expenselist[index].expenseDescription ?? ""}"),
-              ],
+if (model.expenselist[index].attachments?.isNotEmpty == true)
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ViewImageInternet(
+                        url: model.expenselist[index].attachments![0].fileUrl ?? "",
+                      ),
+                    ),
+                  );
+                },
+                child: Text("Image: ${model.expenselist[index].attachments![0].fileUrl?.split("/").last ?? ""}"),
+              )
+
+                    ],
               ),
               ),
               ],

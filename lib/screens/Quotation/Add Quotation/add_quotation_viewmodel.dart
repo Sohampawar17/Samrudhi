@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -170,13 +171,25 @@ class AddQuotationModel extends BaseViewModel {
 
 
 
-  void setSelectedItems(List<Items> SelectedItems) async {
-    selectedItems = SelectedItems;
+  void setSelectedItems(List<Items> selectedItems) async {
     for (var item in selectedItems) {
-    //  item.validTill = quotationdata.validTill;
-      item.amount = ((item.qty ?? 0.0) * (item.rate ?? 0.0));
+      // Check if the item is already present in the list
+      var existingItem = this.selectedItems.firstWhereOrNull(
+            (selectedItem) => selectedItem.itemCode == item.itemCode,
+      );
+
+      if (existingItem != null) {
+        // Update quantity and amount for existing item
+        existingItem.qty = (existingItem.qty ?? 0) + (item.qty ?? 0);
+        existingItem.amount = (existingItem.qty ?? 1.0) * (existingItem.rate ?? 0.0);
+      } else {
+        // If the item is not present, add it to the list
+
+        item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
+        this.selectedItems.add(item);
+      }
     }
-    quotationdata.items = selectedItems;
+    quotationdata.items = this.selectedItems;
     Logger().i(quotationdata.toJson());
     quotationdetails(await AddQuotationServices().quotationdetails(quotationdata));
     notifyListeners();
@@ -205,7 +218,7 @@ class AddQuotationModel extends BaseViewModel {
   }
 
   num getQuantity(Items item) {
-    return item.qty ?? 0;
+    return item.qty ?? 1;
   }
 
   void additem(int index) async {
@@ -242,10 +255,10 @@ class AddQuotationModel extends BaseViewModel {
 
   void deleteitem(int index) async {
     selectedItems.removeAt(index);
-    notifyListeners();
+    quotationdata.items=selectedItems;
     quotationdetails(await AddQuotationServices().quotationdetails(quotationdata));
     Logger().i(selectedItems.length);
-
+    notifyListeners();
     // Trigger the callback when an item is removed
     triggerItemRemovalCallback(selectedItems[index]);
   }

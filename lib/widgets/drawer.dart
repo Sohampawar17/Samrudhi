@@ -35,7 +35,27 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               currentAccountPicture: CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.white, // Set background color for the avatar
-                backgroundImage: NetworkImage(image),
+               child: Image.network(
+                 image,
+                 height: 40,
+                 loadingBuilder: (BuildContext context, Widget child,
+                     ImageChunkEvent? loadingProgress) {
+                   if (loadingProgress == null) {
+                     // Image is done loading
+                     return child;
+                   } else {
+                     // Image is still loading
+                     return const Center(
+                         child: CircularProgressIndicator(color: Colors.blueAccent));
+                   }
+                 },
+                 errorBuilder:
+                     (BuildContext context, Object error, StackTrace? stackTrace) {
+                   // Handle the error by displaying a broken image icon
+                   return  Center(
+                       child: Image.asset('assets/images/profile.png',scale: 5,));
+                 },
+               ),
               ),
               decoration: const BoxDecoration(
                 image: DecorationImage(

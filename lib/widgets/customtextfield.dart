@@ -25,7 +25,7 @@ class CustomSmallTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
+
   maxLines: linelength,
       controller: controller,
       onChanged: onChanged,
@@ -34,6 +34,7 @@ class CustomSmallTextFormField extends StatelessWidget {
         LengthLimitingTextInputFormatter(length),
       ],
       keyboardType: keyboardtype,
+
       style: TextStyle(fontSize: 14.0, color: Colors.black), // Adjust font size and color
       decoration: InputDecoration(
        suffixIcon: suffixicon,

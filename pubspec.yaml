@@ -65,6 +65,8 @@ dependencies:
   dropdown_button2: ^2.3.9
   table_calendar: ^3.0.1
   collection: ^1.15.0
+  get_it: ^7.6.6
+
 
 
 

@@ -1,19 +1,24 @@
-import 'dart:convert';
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import '../../../constants.dart';
 import '../../../model/expense_model.dart';
 import '../../../router.router.dart';
 import '../../../services/add_expense_services.dart';
+
 
 class AddExpenseViewModel extends BaseViewModel{
   TextEditingController datecontroller=TextEditingController();
   TextEditingController descriptoncontroller=TextEditingController();
   TextEditingController amountcontroller=TextEditingController();
   DateTime? selecteddeliveryDate;
-
+  bool delete=false;
   ExpenseData expensedata =ExpenseData();
   final formKey = GlobalKey<FormState>();
   List<String> expensetype=[""];
@@ -43,18 +48,32 @@ List<Attachments> attachment=[];
     setBusy(false);
   }
 
-  void setimage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> selectPdf(ImageSource source) async {
+    try {
+      final result = await ImagePicker().pickImage(source: source);
+      if (result != null) {
+        setBusy(true);
+        File? compressedFile = await compressFile(fileFromXFile(result));
+        Logger().i(result.path);
 
-    if (pickedFile != null) {
-      List<int> imageBytes = await pickedFile.readAsBytes();
-      String base64Image = base64Encode(imageBytes);
-attachment.add(Attachments(name: base64Image));
-      // Now you can use the base64Image as needed, such as sending it in your API request.
-      print("Base64 Image: $base64Image");
+        Attachments? attachments = await AddExpenseServices().uploadDocs(compressedFile);
+
+        if (attachments != null) {
+          Logger().i(attachments.name);
+          Logger().i(attachments.fileUrl);
+          attachment.add(attachments);
+        }
+
+        setBusy(false);
+        notifyListeners();
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error while picking an image or document: $e',
+      );
     }
   }
+
 
   Future<void> selectdeliveryDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -76,6 +95,18 @@ attachment.add(Attachments(name: base64Image));
     datecontroller.text=expenseDate;
     expensedata.expenseDate =datecontroller.text;
     notifyListeners();
+  }
+  void deleteitem(int index,String? name) async {
+    attachment.removeAt(index);
+    if(name != null){ delete= await AddExpenseServices().deletedoc(name);}
+
+    notifyListeners();
+  }
+
+  String getFileName(String path) {
+    List<String> pathSegments = path.split('/');
+    String lastSegment = pathSegments.last;
+    return lastSegment;
   }
 
   void setdescription(String expenseDescription){

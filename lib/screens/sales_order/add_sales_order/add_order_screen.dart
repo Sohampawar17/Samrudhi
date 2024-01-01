@@ -144,6 +144,9 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         ) as List<Items>?;
                         if (SelectedItems != null) {
                           Logger().i(SelectedItems.length);
+                          for (var i in SelectedItems){
+                            Logger().i(i.qty);
+                          }
                           // Update the model or perform any actions with the selected items
                           model.setSelectedItems(SelectedItems);
                         }

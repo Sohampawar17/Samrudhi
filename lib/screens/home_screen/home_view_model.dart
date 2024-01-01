@@ -12,6 +12,12 @@ class Homeviewmodel extends BaseViewModel {
   String? full_name;
   String? role_profile;
   List<LocationTable> location = [];
+  final List<AttendanceData> attendanceData = [
+    AttendanceData(type: "Total Days", data: [5, 30]),
+    AttendanceData(type: "Presents", data: [0, 5]),
+    AttendanceData(type: "Absents", data: [0, 5]),
+    AttendanceData(type: "Days Off", data: [0, 5]),
+  ];
 bool res=false;
 bool loading=false;
     String? greeting;
@@ -49,4 +55,11 @@ if(res){
 }
 
 
+}
+
+class AttendanceData {
+  final String type;
+  final List<int> data;
+
+  AttendanceData({required this.type, required this.data});
 }

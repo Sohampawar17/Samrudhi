@@ -6,9 +6,14 @@ import '../../widgets/customtextfield.dart';
 import '../../widgets/text_button.dart';
 import 'change_password_model.dart';
 
-class ChangePasswordScreen extends StatelessWidget {
+class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
 
+  @override
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+}
+
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     // Choose the color scheme based on the current theme
@@ -37,6 +42,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+                    SizedBox(height: 10,),
                     CustomSmallTextFormField(prefixIcon:Icons.lock_outlined,controller: model.currentpasswordcontroller,labelText:'Current Password' ,hintText: 'Enter the password',onChanged: model.setcurrentpassword,validator: model.validatcurrentpass,),
                     SizedBox(height: 10,),
                     CustomSmallTextFormField(prefixIcon:Icons.lock_outlined,controller: model.newpasswordcontroller,labelText:'New Password' ,hintText: 'Enter the password',onChanged: model.setnewpassword,validator: model.validatnewpass,),

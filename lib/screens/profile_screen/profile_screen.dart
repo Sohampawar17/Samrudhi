@@ -2,6 +2,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/profile_screen/profile_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/full_screen_loader.dart';
@@ -55,11 +56,38 @@ class ProfileScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 35,
-                          backgroundImage: NetworkImage(
-                            model.employeedetail.employeeImage ?? "",
-                          ), // Replace with your image asset
+                        leading: Stack(
+                          children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                            radius: 35,
+                           child: Image.network(
+                             model.employeedetail.employeeImage ?? "",
+                             height: 40,
+                             loadingBuilder: (BuildContext context, Widget child,
+                                 ImageChunkEvent? loadingProgress) {
+                               if (loadingProgress == null) {
+                                 // Image is done loading
+                                 return child;
+                               } else {
+                                 // Image is still loading
+                                 return const Center(
+                                     child: CircularProgressIndicator(color: Colors.blueAccent));
+                               }
+                             },
+                             errorBuilder:
+                                 (BuildContext context, Object error, StackTrace? stackTrace) {
+                               // Handle the error by displaying a broken image icon
+                               return  Center(
+                                   child: Image.asset('assets/images/profile.png',scale: 5,));
+                             },
+                           ),// Replace with your image asset
+                          ),
+                          Positioned(top: 20,left: 30,
+                              child:  IconButton.filled(color: Colors.white,
+                                  onPressed: (){
+                                    model.selectPdf(ImageSource.gallery);
+                                  }, icon: const Icon(Icons.add_a_photo,color: Colors.black,size: 25,)),)],
                         ),
                         title: Text(
                           (model.employeedetail.employeeName ?? "N/A").toUpperCase(),

@@ -17,8 +17,8 @@ class ListLeaveScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('My Leaves'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
-            bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
-              padding: EdgeInsets.all(8),
+            bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
+              padding: const EdgeInsets.all(8),
               color: Colors.white,
               child: Row(
                 children: [
@@ -30,19 +30,19 @@ class ListLeaveScreen extends StatelessWidget {
                         model.updateSelectedmonth(month);
                       },
                       decoration: InputDecoration(
-                        constraints: BoxConstraints(maxHeight: 60),
+                        constraints: const BoxConstraints(maxHeight: 60),
                         labelText: 'Month',
                         hintText: 'Select month',
-                        prefixIcon: Icon(Icons.calendar_month),
+                        prefixIcon: const Icon(Icons.calendar_month),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
@@ -64,20 +64,20 @@ class ListLeaveScreen extends StatelessWidget {
                         model.updateSelectedYear(year);
                       },
                       decoration: InputDecoration(
-                        constraints: BoxConstraints(maxHeight: 60),
+                        constraints: const BoxConstraints(maxHeight: 60),
                         labelText: 'Year',
                         hintText: 'Select year',
-                        prefixIcon: Icon(Icons.calendar_month),
+                        prefixIcon: const Icon(Icons.calendar_month),
 
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
 
@@ -102,14 +102,14 @@ class ListLeaveScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Upcoming Leaves (${model.leavelist.length})", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
+                  Text("Upcoming Leaves (${model.leavelist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
                   model.leavelist.isNotEmpty
                       ? Expanded(
                     child: ListView.separated(
                       itemBuilder: (builder, index) {
                         return Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white,
@@ -120,39 +120,33 @@ class ListLeaveScreen extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Card(
+                                  Card( color: Colors.blue,
                                     shape:
                                     RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(
-                                          8.0),
-                                      side: BorderSide(
-                                          color: Colors.blue,
-                                          width:
-                                          2), // Set border color and width
+                                          20.0),
+                                     // Set border color and width
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: AutoSizeText(model.leavelist[index].leaveType.toString().toUpperCase(), textAlign:
+                                      child: AutoSizeText(model.leavelist[index].leaveType.toString(), textAlign:
                                       TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black87,
+                                        style: const TextStyle(
+                                          color: Colors.white,
                                           fontWeight:
-                                          FontWeight.w500,
+                                          FontWeight.w700,
                                         ),),
                                     ),
                                   ),
 
-                                  Card(
+                                  Card( color: model.getColorForStatus(model.leavelist[index].status.toString()),
                                     shape:
                                     RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(
-                                          8.0),
-                                      side: BorderSide(
-                                          color: model.getColorForStatus(model.leavelist[index].status.toString()),
-                                          width:
-                                          1), // Set border color and width
+                                          20.0),
+                                      // Set border color and width
                                     ),
                                     // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
                                     child: Padding(
@@ -160,7 +154,7 @@ class ListLeaveScreen extends StatelessWidget {
                                       child: AutoSizeText(model.leavelist[index].status ?? "",  textAlign:
                                       TextAlign.center,
                                         style: TextStyle(
-                                          color: model.getColorForStatus(model.leavelist[index].status.toString()),
+                                          color: Colors.white,
                                           fontWeight:
                                           FontWeight.bold,
                                         ),),
@@ -168,11 +162,11 @@ class ListLeaveScreen extends StatelessWidget {
                                   )
                                 ],
                               ),
-                              SizedBox(height: 10),
-                              Text( "${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: TextStyle(fontSize: 15)),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
+                              Text( "Leave from ${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                              const SizedBox(height: 10),
                               if(model.leavelist[index].description != "")
-                                Text("Description:- ${model.leavelist[index].description.toString()}", style: TextStyle(fontSize: 15)),
+                                Text("Description:- ${model.leavelist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
                             ],
                           ),
                         );
@@ -186,15 +180,15 @@ class ListLeaveScreen extends StatelessWidget {
                       itemCount: model.leavelist.length,
                     ),
                   ): _buildEmptyContainer('No upcoming leave found for this year and month'),
-                  SizedBox(height: 20),
-                  Text("Taken Leaves (${model.takenlist.length})", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 20),
+                  Text("Taken Leaves (${model.takenlist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
                   model.takenlist.isNotEmpty
                       ? Expanded(
                     child: ListView.separated(
                       itemBuilder: (builder, index) {
                         return Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white,
@@ -206,38 +200,34 @@ class ListLeaveScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Card(
+                                    color: Colors.blue,
                                     shape:
                                     RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(
-                                          8.0),
-                                      side: BorderSide(
-                                          color: Colors.blue,
-                                          width:
-                                          2), // Set border color and width
+                                          20.0),
+                                      // Set border color and width
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: AutoSizeText(model.takenlist[index].leaveType.toString().toUpperCase(), textAlign:
                                       TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.black87,
+                                        style: const TextStyle(
+color: Colors.white,
                                           fontWeight:
-                                          FontWeight.w500,
+                                          FontWeight.w700,
                                         ),),
                                     ),
                                   ),
 
                                   Card(
+                                    color: model.getColorForStatus(model.takenlist[index].status.toString()),
                                     shape:
                                     RoundedRectangleBorder(
                                       borderRadius:
                                       BorderRadius.circular(
-                                          8.0),
-                                      side: BorderSide(
-                                          color: model.getColorForStatus(model.takenlist[index].status.toString()),
-                                          width:
-                                          1), // Set border color and width
+                                          20.0),
+                                      // Set border color and width
                                     ),
                                     // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
                                     child: Padding(
@@ -245,19 +235,18 @@ class ListLeaveScreen extends StatelessWidget {
                                       child: AutoSizeText(model.takenlist[index].status ?? "",  textAlign:
                                       TextAlign.center,
                                         style: TextStyle(
-                                          color: model.getColorForStatus(model.takenlist[index].status.toString()),
-                                          fontWeight:
-                                          FontWeight.bold,
+                                          color: Colors.white,
+                                          fontWeight:FontWeight.bold,
                                         ),),
                                     ),
                                   )
                                 ],
                               ),
-                              SizedBox(height: 10),
-                              Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: TextStyle(fontSize: 15)),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
+                              Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                              const SizedBox(height: 10),
                               if(model.takenlist[index].description != null)
-                              Text("Description:- ${model.takenlist[index].description.toString()}", style: TextStyle(fontSize: 15)),
+                              Text("Description:- ${model.takenlist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
                             ],
                           ),
                         );
@@ -281,7 +270,7 @@ class ListLeaveScreen extends StatelessWidget {
             context: context,
           ),
 floatingActionButton: FloatingActionButton(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen),
-child: Icon(Icons.add),),
+child: const Icon(Icons.add),),
         ));
   }
 

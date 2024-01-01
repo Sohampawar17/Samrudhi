@@ -34,6 +34,7 @@ class QuotationItemScreen extends StatelessWidget {
               child: Column(
                 children: [
                   CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,),
+                  SizedBox(height: 15),
                   ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -41,35 +42,18 @@ class QuotationItemScreen extends StatelessWidget {
                     itemCount: model.filteredItems.length,
                     itemBuilder: (context, index) {
                       final selectedItem = model.filteredItems[index];
-                      return ListTile(
+                      return CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-
-                        contentPadding: const EdgeInsets.all(12.0),
-                        tileColor: model.isSelected(selectedItem) ? Colors.blue.shade200 : Colors.white10, // Adjust the color as needed
-                        onTap: () {
-                          // Handle ListTile tap
+                        tileColor: model.isSelected(selectedItem) ? Colors.blue.withOpacity(0.5) : Colors.white10,
+                        value: model.isSelected(selectedItem),
+                        onChanged: (bool? value) {
                           if (model.filteredItems.contains(selectedItem)) {
                             model.toggleSelection(selectedItem);
                           }
                         },
-                        leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            buildImage(selectedItem.image),
-                            const SizedBox(
-                              height: 2,
-                            ),
-                            AutoSizeText(
-                              'Rate: ${selectedItem.rate?.toString() ?? "0.0"}',
-                              style: const TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
                         title: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,26 +68,35 @@ class QuotationItemScreen extends StatelessWidget {
                             const SizedBox(height: 4), // Adjust the height as needed
                             Row(
                               children: [
-                                const AutoSizeText('Quantity:'),
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle),
-                                  onPressed: () {
-                                    if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 0.0) {
-                                      model.removeitem(index);
-                                    }
-                                  },
-                                ),
-                                AutoSizeText(
-                                  model.getQuantity(selectedItem).toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                Expanded(flex: 3,child: const AutoSizeText('Quantity:')),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.remove_circle),
+                                    onPressed: () {
+                                      if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 0.0) {
+                                        model.removeitem(index);
+                                      }
+                                    },
                                   ),
                                 ),
-                                IconButton(
-                                  icon: const Icon(Icons.add_circle),
-                                  onPressed: () {
-                                    model.additem(index);
-                                  },
+                                Expanded(
+                                  flex: 1,
+                                  child: AutoSizeText(
+                                    model.getQuantity(selectedItem).toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.add_circle),
+                                    onPressed: () {
+                                      model.additem(index);
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -116,17 +109,6 @@ class QuotationItemScreen extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),
-
-                        trailing: GestureDetector(
-                          onTap: () {
-                            // Handle chip tap
-                            model.toggleSelection(selectedItem);
-                          },
-                          child: Icon(
-                            Icons.check_circle_rounded,
-                            color: model.isSelected(selectedItem) ? Colors.green : Colors.grey,
-                          ),
                         ),
                       );
                     }, separatorBuilder: (BuildContext context, int index) { return const Divider(thickness: 1,); },

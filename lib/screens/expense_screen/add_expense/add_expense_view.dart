@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:geolocation/constants.dart';
 import 'package:geolocation/widgets/drop_down.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:geolocation/widgets/text_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/customtextfield.dart';
+import '../../../widgets/view_docs_from_internet.dart';
 import 'add_expense_viewmodel.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -78,8 +81,57 @@ CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense typ
                       CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Expense Description', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
                       SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.amountcontroller, labelText: 'Amount', hintText: 'Enter the amount',validator: model.validateamount,onChanged: model.setamount,keyboardtype: TextInputType.number,),
+                      SizedBox(height: 10,),
+                      CtextButton(onPressed: () { model.selectPdf(ImageSource.gallery); }, text: 'Upload Documents',),
+//                       ElevatedButton.icon(
+//                         onPressed: () {
+// model.selectPdf(ImageSource.gallery);
+//                         },
+//                         icon: Icon(Icons.upload),
+//                         label: Text('Upload Document'),
+//                       ),
+                      SizedBox(height: 10,),
+                  model.attachment.isNotEmpty
+                      ? SizedBox(height: getHeight(context)/5,
+                        child: ListView.separated(
+                        itemBuilder: (builder, index) {
+                  return  GestureDetector(
+                    onTap: () => ViewImageInternet(url: model.attachment[index].fileUrl ?? ""),
+                    child: Container(
+                      height: 50,
+                      padding: EdgeInsets.only(left: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.black54, width: 2),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            model.attachment[index].fileName ?? "",
+                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(width: 8),
+                          IconButton(
+                            icon: Icon(Icons.cancel, color: Colors.redAccent),
+                            onPressed: () {
+                              model.deleteitem(index, model.attachment[index].name);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                        },separatorBuilder: (context, builder) {
+            return const Divider(
+            thickness: 0.5,
+            );
+            },
+              itemCount: model.attachment.length,),
+                      ):Container(),
                       SizedBox(height: 25,),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel'),

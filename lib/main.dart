@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocation/router.locator.dart';
 import 'package:geolocation/screens/splash_screen/splash_screen.dart';
 import 'package:geolocation/themes/color_schemes.g.dart';
 import 'package:geolocation/themes/custom_color.g.dart';
@@ -11,6 +12,7 @@ import 'router.router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

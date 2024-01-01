@@ -1,14 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocation/model/add_lead_model.dart';
 import 'package:geolocation/model/notes_list.dart';
 import 'package:geolocation/services/update_lead_services.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../services/add_lead_services.dart';
+import '../../../services/call_services.dart';
 
 class UpdateLeadModel extends BaseViewModel{
-
+  final CallsAndMessagesService service = CallsAndMessagesService();
 String? note;
 TextEditingController controller=TextEditingController();
 List<String> status=["Lead",
@@ -33,6 +35,23 @@ List<NotesList> notes=[];
  notifyListeners();
     }
     setBusy(false);
+  }
+
+  whatsapp(String contact) async {
+    //var contact = "+917888187242";
+    var androidUrl = "whatsapp://send?phone=$contact&text=Hi, ${leaddata.company} here";
+    var iosUrl =
+        "https://wa.me/$contact?text=${Uri.parse('Hi, I need some help')}";
+
+    try {
+      if (Platform.isIOS) {
+        await launchUrl(Uri.parse(iosUrl));
+      } else {
+        await launchUrl(Uri.parse(androidUrl));
+      }
+    } on Exception {
+      Text('WhatsApp is not installed.');
+    }
   }
 
 void deletenote(String? lead,int? index)async{

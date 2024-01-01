@@ -19,6 +19,7 @@ class _ViewImageInternet extends State<ViewImageInternet> {
   void initState() {
     super.initState();
     _imageResponse = http.get(
+
       Uri.parse('$baseurl/${widget.url}'),
     );
   }

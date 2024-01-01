@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocation/model/add_order_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../services/add_order_services.dart';
 
 class ItemListModel extends BaseViewModel {
@@ -16,7 +15,6 @@ class ItemListModel extends BaseViewModel {
     return isSelecteditems.contains(item);
   }
 
-
 bool selected=false;
   List<Items> filteredItems = [];
 
@@ -25,6 +23,13 @@ bool selected=false;
     setBusy(true);
     selecteditems = await AddOrderServices().fetchitems(warehouse);
    filteredItems=selectedItems;
+    for (var selectedItem in itemList) {
+      var originalItem =
+      filteredItems.firstWhere((item) => item.itemCode == selectedItem.itemCode);
+      originalItem.qty = selectedItem.qty;
+      isSelected(originalItem);
+    }
+
     isSelecteditems
         .addAll(itemList.toList());
     Logger().i(isSelecteditems.length);
@@ -47,7 +52,9 @@ bool selected=false;
     } else {
       isSelecteditems.add(item);
     }
-
+    for (var i in isSelecteditems){
+      Logger().i(i.qty);
+    }
     print(isSelecteditems);
     notifyListeners();
   }

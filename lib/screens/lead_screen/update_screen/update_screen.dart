@@ -1,6 +1,5 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/lead_screen/update_screen/update_viewmodel.dart';
@@ -102,6 +101,57 @@ body: fullScreenLoader(
                     buildItemColumn(labelText:'Organisation Name',additionalText: '${model.leaddata.companyName}'),
                     const SizedBox(height: 10,),
                     buildItemColumn(labelText:'Industry type',additionalText: '${model.leaddata.industry}'),
+                        const Divider(thickness: 1),
+                         Row(
+                           children: [
+                             Expanded(
+                               child: ElevatedButton(
+                                   onPressed: () {
+                                     model.whatsapp(model.leaddata.mobileNo ??"");
+                                   },
+                                   child: CircleAvatar(
+                                     child: Image.network(
+                                         'https://cdn-icons-png.flaticon.com/512/4494/4494494.png'),
+                                   )),
+                             ),
+                             const SizedBox(
+                               width: 30,
+                             ),
+                             Expanded(
+                               child: ElevatedButton(
+
+                                   onPressed: () {
+                                     model.service.call(model.leaddata.mobileNo ??"");
+                                   },
+                                   child: Image.network(
+                                       'https://cdn-icons-png.flaticon.com/512/724/724664.png')),
+                             ),
+                             const SizedBox(
+                               width: 30,
+                             ),
+                             Expanded(
+                               child: ElevatedButton(
+
+                                   onPressed: () {
+                                     model.service.sendSms(model.leaddata.mobileNo ?? "");
+                                   },
+                                   child: Image.network(
+                                       'https://cdn-icons-png.flaticon.com/512/234/234129.png')),
+                             ),
+                             const SizedBox(
+                               width: 30,
+                             ),
+                             Expanded(
+                               child: ElevatedButton(
+
+                                   onPressed: () {
+                                     model.service.sendEmail(model.leaddata.emailId ??"");
+                                   },
+                                   child: Image.network(
+                                       'https://cdn-icons-png.flaticon.com/512/2913/2913990.png')),
+                             ),
+                           ],
+                         ),
                      const Divider(thickness: 1),
                      Center(child: const Text('----------------------------  Notes  -----------------------------',style: TextStyle(fontWeight: FontWeight.bold),)),
                      CustomSmallTextFormField(controller: model.controller, hintText: 'Add your notes here', labelText: 'Add Notes',suffixicon: IconButton.outlined(style: ButtonStyle(
@@ -120,9 +170,28 @@ body: fullScreenLoader(
                                  return  ListTile(
   leading:   CircleAvatar(
     foregroundColor: Colors.blue,
-    foregroundImage:  CachedNetworkImageProvider(
-                  '${noteData.image}',
-                ),
+    child: Image.network(
+      noteData.image ?? "",
+      height: 40,
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          // Image is done loading
+          return child;
+        } else {
+          // Image is still loading
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.blueAccent));
+        }
+      },
+      errorBuilder:
+          (BuildContext context, Object error, StackTrace? stackTrace) {
+        // Handle the error by displaying a broken image icon
+        return  Center(
+            child: Image.asset('assets/images/profile.png',scale: 5,));
+      },
+    ),
+
   ),
   title: Column(
     crossAxisAlignment: CrossAxisAlignment.start,

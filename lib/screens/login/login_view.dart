@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'login_model.dart';
 
 class LoginViewScreen extends StatefulWidget {
@@ -197,43 +196,43 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account?",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          InkWell(
-                            onTap: () async {
-                              const url =
-                                  'https://mobilecrm.erpdata.in/user-registration/new';
-                              if (await canLaunchUrlString(url)) {
-                                await launchUrlString(url);
-                              } else {
-                                throw 'Could not launch $url';
-                              }
-                            },
-                            child: const Text(
-                              'Register',
-                              style: TextStyle(
-                                color: Color(0xFF007BFF),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // const SizedBox(height: 30),
+                    // Align(
+                    //   alignment: Alignment.bottomCenter,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       const Text(
+                    //         "Don't have an account?",
+                    //         style: TextStyle(
+                    //           color: Colors.white,
+                    //           fontWeight: FontWeight.w600,
+                    //           fontSize: 16,
+                    //         ),
+                    //       ),
+                    //       const SizedBox(width: 10),
+                    //       InkWell(
+                    //         onTap: () async {
+                    //           const url =
+                    //               'https://mobilecrm.erpdata.in/user-registration/new';
+                    //           if (await canLaunchUrlString(url)) {
+                    //             await launchUrlString(url);
+                    //           } else {
+                    //             throw 'Could not launch $url';
+                    //           }
+                    //         },
+                    //         child: const Text(
+                    //           'Register',
+                    //           style: TextStyle(
+                    //             color: Color(0xFF007BFF),
+                    //             fontWeight: FontWeight.w600,
+                    //             fontSize: 16,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

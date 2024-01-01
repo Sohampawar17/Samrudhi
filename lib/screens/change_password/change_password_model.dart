@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geolocation/services/profle_services.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../model/chane_password.dart';
 import '../../router.router.dart';
 
@@ -10,6 +9,8 @@ class ChangePasswordModel extends BaseViewModel{
   TextEditingController newpasswordcontroller=TextEditingController();
   ChangePassword change=ChangePassword();
   bool res=false;
+  bool currentpasssword=false;
+  bool newpassword=false;
   initialise(BuildContext context){
 
   }
@@ -49,5 +50,14 @@ class ChangePasswordModel extends BaseViewModel{
       return 'required!';
     }
     return null;
+  }
+
+
+  @override
+  void dispose() {
+    currentpasswordcontroller.dispose();
+    newpasswordcontroller.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 }
