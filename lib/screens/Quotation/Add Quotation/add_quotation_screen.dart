@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../model/addquotation_model.dart';
@@ -75,9 +74,9 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                   const SizedBox(
                     height: 15,
                   ),
-
+if(model.isEdit==true)
                   CustomSmallTextFormField(prefixIcon: Icons.person_pin,controller: model.customernamecontroller,labelText:'Party Name' ,hintText: 'Enter the Party'),
-
+                  if(model.isEdit==true)
                   const SizedBox(
                     height: 15,
                   ),
@@ -263,8 +262,18 @@ class _AddQuotationViewState extends State<AddQuotationView> {
 
                   TextFormField(
                     readOnly: true,
-                    initialValue: '${model.selectedItems.length} items selected',
+                    key: Key(model.displayString),
+                    initialValue: model.displayString,
                     onTap: () async {
+                      if(model.quotationdata.customerName == null){
+                        const snackBar= SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text('Please select the customer',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          duration: Duration(seconds: 3),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        return;
+                      }
                       final SelectedItems = await Navigator.pushNamed(
                         context,
                         Routes.quotationItemScreen,
@@ -272,11 +281,7 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                       ) as List<Items>?;
 
                       if (SelectedItems != null) {
-                        Logger().i(SelectedItems.length);
-                        for (var i in SelectedItems){
-                          Logger().i(i.qty);
-                        }
-
+                      model.selectedItems.clear();
                         // Update the model or perform any actions with the selected items
                         model.setSelectedItems(SelectedItems);
 

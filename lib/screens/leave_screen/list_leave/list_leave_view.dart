@@ -210,10 +210,10 @@ class ListLeaveScreen extends StatelessWidget {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: AutoSizeText(model.takenlist[index].leaveType.toString().toUpperCase(), textAlign:
+                                      child: AutoSizeText(model.takenlist[index].leaveType.toString(), textAlign:
                                       TextAlign.center,
                                         style: const TextStyle(
-color: Colors.white,
+                                          color: Colors.white,
                                           fontWeight:
                                           FontWeight.w700,
                                         ),),

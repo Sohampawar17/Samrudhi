@@ -50,9 +50,9 @@ body: fullScreenLoader(
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-                                          spreadRadius: 5,
+                                          // spreadRadius: 5,
                                           blurRadius: 7,
-                                          offset: const Offset(0, 3), // Customize the shadow offset
+                                          // offset: const Offset(0, 3), // Customize the shadow offset
                                         ),
                                       ],
                                     ),
@@ -104,11 +104,8 @@ body: fullScreenLoader(
                                                           RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius.circular(
-                                                                8.0),
-                                                        side: BorderSide(
-                                                            color: Colors.transparent,
-                                                            width:
-                                                                1), // Set border color and width
+                                                                20.0),
+                                                        // Set border color and width
                                                       ),
                                                      
                                                       // Make the inside of the card hollow

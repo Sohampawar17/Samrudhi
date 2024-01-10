@@ -27,11 +27,10 @@ bool selected=false;
       var originalItem =
       filteredItems.firstWhere((item) => item.itemCode == selectedItem.itemCode);
       originalItem.qty = selectedItem.qty;
-      isSelected(originalItem);
+      toggleSelection(originalItem);
     }
 
-    isSelecteditems
-        .addAll(itemList.toList());
+
     Logger().i(isSelecteditems.length);
     notifyListeners();
     setBusy(false);
@@ -52,30 +51,25 @@ bool selected=false;
     } else {
       isSelecteditems.add(item);
     }
-    for (var i in isSelecteditems){
-      Logger().i(i.qty);
-    }
-    print(isSelecteditems);
+
+
     notifyListeners();
   }
 
   void additem(int index) {
-    quantity++;
-    selecteditems[index].qty =
-        quantity.toDouble(); // or just quantity.toDouble()
+    selecteditems[index].qty = (selecteditems[index].qty ?? 0) + 1;
     notifyListeners();
   }
 
-  double getQuantity(Items item) {
-    return item.qty ?? 1.0;
-  }
-
   void removeitem(int index) {
-    if (quantity > 0) {
-      quantity--;
-      selecteditems[index].qty =
-          quantity.toDouble(); // or just quantity.toDouble()
+    if (selecteditems[index].qty != null && selecteditems[index].qty! > 0) {
+      selecteditems[index].qty = (selecteditems[index].qty!) - 1;
       notifyListeners();
     }
+  }
+
+
+  double getQuantity(Items item) {
+    return item.qty ?? 1.0;
   }
 }

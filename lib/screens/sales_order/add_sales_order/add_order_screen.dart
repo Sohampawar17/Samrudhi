@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocation/screens/sales_order/list_sales_order/list_sales_order_screen.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import '../../../constants.dart';
@@ -124,12 +123,13 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                   ),
                   TextFormField(
                     readOnly: true,
-                  initialValue: '${model.orderdata.items?.length ?? 0} items are selected',
+                  key:Key(model.displayString),
+                  initialValue: model.displayString,
                     onTap: () async {
-                      if(model.orderdata.customer == null){
+                      if(model.orderdata.customer == null && model.orderdata.setWarehouse == null){
                         const snackBar= SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text('Please select the customer',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          content: Text('Please select the customer and warehouse',style: TextStyle(color: Colors.white,fontSize: 18),),
                           duration: Duration(seconds: 3),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -143,10 +143,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                               items: model.selectedItems),
                         ) as List<Items>?;
                         if (SelectedItems != null) {
-                          Logger().i(SelectedItems.length);
-                          for (var i in SelectedItems){
-                            Logger().i(i.qty);
-                          }
+                          model.selectedItems.clear();
                           // Update the model or perform any actions with the selected items
                           model.setSelectedItems(SelectedItems);
                         }
@@ -418,4 +415,5 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
       ],
     );
   }
+
 }

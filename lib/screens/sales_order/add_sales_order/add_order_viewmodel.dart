@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/model/order_details_model.dart';
@@ -17,7 +16,7 @@ class AddOrderViewModel extends BaseViewModel {
   List<String> warehouse = [""];
   List<Items> selectedItems = [];
   List<OrderDetailsModel> orderetails = [];
-
+String displayString='';
   // int quantity= 0;
   bool res = false;
   bool isEdit = false;
@@ -44,6 +43,7 @@ class AddOrderViewModel extends BaseViewModel {
       customercontroller.text = orderdata.customer ?? "";
       deliverydatecontroller.text = orderdata.deliveryDate ?? "";
       selectedItems.addAll(orderdata.items?.toList() ?? []);
+      updateTextFieldValue();
     }
     orderdata.orderType = "Sales";
     notifyListeners();
@@ -82,6 +82,13 @@ class AddOrderViewModel extends BaseViewModel {
   }
 
   ///dates functions///
+  void updateTextFieldValue() {
+    final selectedItemsValue = selectedItems.isEmpty
+        ?'Items are not selected'
+        : '${selectedItems.length} items are selected';
+    displayString = selectedItemsValue;
+    notifyListeners();
+  }
 
   Future<void> selectdeliveryDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -121,29 +128,15 @@ class AddOrderViewModel extends BaseViewModel {
 
 
 
-  void setSelectedItems(List<Items> selectedItems) async {
+  void setSelectedItems(List<Items> SelectedItems) async {
+    selectedItems = SelectedItems;
     for (var item in selectedItems) {
-      // Check if the item is already present in the list
-      var existingItem = this.selectedItems.firstWhereOrNull(
-            (selectedItem) => selectedItem.itemCode == item.itemCode,
-      );
-
-      if (existingItem != null) {
-        Logger().i(existingItem.qty);
-        Logger().i(item.qty);
-        // Update quantity and amount for existing item
-        existingItem.qty = (existingItem.qty ?? 0) + (item.qty ?? 0);
-        existingItem.amount = (existingItem.qty ?? 1.0) * (existingItem.rate ?? 0.0);
-      } else {
-        // If the item is not present, add it to the list
-        item.warehouse = orderdata.setWarehouse;
-        item.deliveryDate = orderdata.deliveryDate;
-        item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
-        this.selectedItems.add(item);
-      }
+      item.warehouse = orderdata.setWarehouse;
+      item.deliveryDate = orderdata.deliveryDate;
+      item.amount = (item.qty ?? 0.0) * (item.rate ?? 0.0);
     }
-
-    orderdata.items = this.selectedItems;
+    orderdata.items = selectedItems;
+    updateTextFieldValue();
     Logger().i(orderdata.toJson());
     orderdetails(await AddOrderServices().orderdetails(orderdata));
     notifyListeners();
@@ -190,8 +183,8 @@ class AddOrderViewModel extends BaseViewModel {
    selectedItems.removeAt(index);
    orderdata.items = selectedItems;
    orderdetails(await AddOrderServices().orderdetails(orderdata));
+   updateTextFieldValue();
     notifyListeners();
-
    Logger().i(selectedItems.length);
   }
 

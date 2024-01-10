@@ -1,4 +1,4 @@
-import 'package:collection/collection.dart';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -36,6 +36,8 @@ class AddQuotationModel extends BaseViewModel {
   String customerLabel = 'Customer';
   AddQuotation quotationdata = AddQuotation();
 
+  String displayString='';
+
   initialise(BuildContext context, String quotationid) async {
     setBusy(true);
     // searchcustomer = await AddQuotationServices().fetchcustomer();
@@ -51,6 +53,7 @@ class AddQuotationModel extends BaseViewModel {
       customernamecontroller.text=quotationdata.customerName ?? "";
     //  quotationtodatecontroller.text = quotationdata.quotationTo ??"";
       selectedItems.addAll(quotationdata.items?.toList() ?? []);
+      updateTextFieldValue();
 
     }
     quotationdata.orderType = "Sales";
@@ -146,6 +149,14 @@ class AddQuotationModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void updateTextFieldValue() {
+    final selectedItemsValue = selectedItems.isEmpty
+        ?'items are  not selected'
+        : '${selectedItems.length} items are selected';
+    displayString = selectedItemsValue;
+    notifyListeners();
+  }
+
 
 
   //
@@ -171,25 +182,15 @@ class AddQuotationModel extends BaseViewModel {
 
 
 
-  void setSelectedItems(List<Items> selectedItems) async {
+  void setSelectedItems(List<Items> SelectedItems) async {
+
+    selectedItems = SelectedItems;
     for (var item in selectedItems) {
-      // Check if the item is already present in the list
-      var existingItem = this.selectedItems.firstWhereOrNull(
-            (selectedItem) => selectedItem.itemCode == item.itemCode,
-      );
 
-      if (existingItem != null) {
-        // Update quantity and amount for existing item
-        existingItem.qty = (existingItem.qty ?? 0) + (item.qty ?? 0);
-        existingItem.amount = (existingItem.qty ?? 1.0) * (existingItem.rate ?? 0.0);
-      } else {
-        // If the item is not present, add it to the list
-
-        item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
-        this.selectedItems.add(item);
-      }
+      item.amount = (item.qty ?? 0.0) * (item.rate ?? 0.0);
     }
-    quotationdata.items = this.selectedItems;
+    quotationdata.items = selectedItems;
+    updateTextFieldValue();
     Logger().i(quotationdata.toJson());
     quotationdetails(await AddQuotationServices().quotationdetails(quotationdata));
     notifyListeners();
@@ -238,29 +239,16 @@ class AddQuotationModel extends BaseViewModel {
   //   Logger().i(selectedItems.length);
   // }
 
-  Function(Items removedItem)? onItemRemovedCallback;
-
-  // Method to listen for item removal
-  void listenForItemRemoval(Function(Items removedItem) callback) {
-    onItemRemovedCallback = callback;
-  }
-
-
-  // Method to trigger item removal callback
-  void triggerItemRemovalCallback(Items removedItem) {
-    if (onItemRemovedCallback != null) {
-      onItemRemovedCallback!(removedItem);
-    }
-  }
 
   void deleteitem(int index) async {
     selectedItems.removeAt(index);
     quotationdata.items=selectedItems;
     quotationdetails(await AddQuotationServices().quotationdetails(quotationdata));
     Logger().i(selectedItems.length);
+    updateTextFieldValue();
     notifyListeners();
     // Trigger the callback when an item is removed
-    triggerItemRemovalCallback(selectedItems[index]);
+
   }
 
 

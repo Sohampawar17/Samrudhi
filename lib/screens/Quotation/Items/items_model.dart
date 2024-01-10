@@ -18,22 +18,19 @@ class QuotationItemListModel extends BaseViewModel {
     return isSelecteditems.contains(item);
   }
 
-  void initialise(
-      BuildContext context,  List<Items> itemlist) async {
+  void initialise(BuildContext context, List<Items> itemlist) async {
     setBusy(true);
     Logger().i(itemlist.length);
-// Clear the list before adding items
     selecteditems = await AddQuotationServices().fetchitems();
-    filteredItems=selectedItems;
+    filteredItems = selectedItems;
     for (var selectedItem in itemlist) {
       var originalItem =
       filteredItems.firstWhere((item) => item.itemCode == selectedItem.itemCode);
       originalItem.qty = selectedItem.qty;
-      isSelected(originalItem);
+      toggleSelection(originalItem);
     }
-    isSelecteditems
-        .addAll(itemlist.toList());
     Logger().i(isSelecteditems.length);
+
     notifyListeners();
     setBusy(false);
   }
@@ -44,38 +41,31 @@ class QuotationItemListModel extends BaseViewModel {
     } else {
       isSelecteditems.add(item);
     }
-    print(isSelecteditems);
-    for (var i in isSelecteditems){
-      Logger().i(i.qty);
-    }
+    // Remove unnecessary print statement
+    notifyListeners();
+  }
+  void additem(int index) {
+    selecteditems[index].qty = (selecteditems[index].qty ?? 0) + 1;
     notifyListeners();
   }
 
-  void additem(int index) {
-    quantity++;
-    selecteditems[index].qty =
-        quantity.toDouble(); // or just quantity.toDouble()
-    notifyListeners();
+  void removeitem(int index) {
+    if (selecteditems[index].qty != null && selecteditems[index].qty! > 0) {
+      selecteditems[index].qty = (selecteditems[index].qty!) - 1;
+      notifyListeners();
+    }
   }
+
 
   void searchItems(String query) {
+    final lowerCaseQuery = query.toLowerCase();
     filteredItems = selecteditems
-        .where((item) =>
-        item.itemName.toString().toLowerCase().contains(query.toLowerCase()))
+        .where((item) => item.itemName.toString().toLowerCase().contains(lowerCaseQuery))
         .toList();
     notifyListeners();
   }
 
   double getQuantity(Items item) {
     return item.qty ?? 1.0;
-  }
-
-  void removeitem(int index) {
-    if (quantity > 0) {
-      quantity--;
-      selecteditems[index].qty =
-          quantity.toDouble(); // or just quantity.toDouble()
-      notifyListeners();
-    }
   }
 }

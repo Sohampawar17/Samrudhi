@@ -43,9 +43,9 @@ class ListQuotationScreen extends StatelessWidget {
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-                                          spreadRadius: 5,
-                                          blurRadius: 7,
-                                          offset: const Offset(0, 3), // Customize the shadow offset
+                                          // spreadRadius: 5,
+                                           blurRadius: 7,
+                                          // offset: const Offset(0, 3), // Customize the shadow offset
                                         ),
                                       ],
                                     ),
@@ -95,11 +95,8 @@ class ListQuotationScreen extends StatelessWidget {
                                           RoundedRectangleBorder(
                                             borderRadius:
                                             BorderRadius.circular(
-                                                8.0),
-                                            side: BorderSide(
-                                                color: Colors.black26,
-                                                width:
-                                                1), // Set border color and width
+                                                20.0),
+                                            // Set border color and width
                                           ),
                                           color: model
                                               .getColorForStatus(model
