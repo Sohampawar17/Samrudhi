@@ -77,6 +77,22 @@ class  AttendenceViewModel extends BaseViewModel{
   //   return events;
   // }
 
+  Color getColorForStatus(String status) {
+    switch (status) {
+      case 'Present':
+        return Colors.green; // Set the color for Draft status
+      case 'On Leave':
+        return Colors.amber; // Set the color for On Hold status
+      case 'Absent':
+        return Colors.redAccent; // Set the color for To Deliver and Bill status
+      case 'Half Day':
+        return Colors.indigo; // Set the color for To Bill status
+       // Set the color for Closed status
+      default:
+        return Colors.white; // Set a default color for unknown status
+    }
+  }
+
 
 
 void updateSelectedYear(int? year) {

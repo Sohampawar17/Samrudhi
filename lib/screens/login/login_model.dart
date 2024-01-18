@@ -25,7 +25,7 @@ class LoginViewModel extends BaseViewModel {
     baseurl=urlController.text;
     String username = usernameController.text;
     String password = passwordController.text;
-    bool res = await loginservices().login(baseurl,username, password);
+    bool res = await LoginServices().login(baseurl,username, password);
     isloading = false;
     notifyListeners();
     if (res) {

@@ -274,8 +274,8 @@ if (model.expenselist[index].attachments?.isNotEmpty == true)
             loader: model.isBusy,
             context: context,
           ),
-floatingActionButton: FloatingActionButton(onPressed: ()=>Navigator.pushNamed(context, Routes.addExpenseScreen),
-child: Icon(Icons.add),),
+floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addExpenseScreen),
+label: Text('Create Expense'),),
         ));
   }
 

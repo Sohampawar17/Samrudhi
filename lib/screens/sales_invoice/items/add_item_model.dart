@@ -1,27 +1,29 @@
 import 'package:flutter/cupertino.dart';
-import 'package:geolocation/model/add_order_model.dart';
+
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import '../../../services/add_order_services.dart';
+
+import '../../../model/add_invoice_model.dart';
+import '../../../services/add_invoice_services.dart';
 
 class ItemListModel extends BaseViewModel {
-  List<Items> selecteditems = [];
-  List<Items> isSelecteditems = [];
+  List<InvoiceItems> selecteditems = [];
+  List<InvoiceItems> isSelecteditems = [];
   double quantity = 0.0;
   final TextEditingController searchController = TextEditingController();
-  List<Items> get selectedItems => selecteditems;
+  List<InvoiceItems> get selectedItems => selecteditems;
 
-  bool isSelected(Items item) {
+  bool isSelected(InvoiceItems item) {
     return isSelecteditems.contains(item);
   }
 
 bool selected=false;
-  List<Items> filteredItems = [];
+  List<InvoiceItems> filteredItems = [];
 
   void initialise(
-      BuildContext context, String warehouse, List<Items> itemList) async {
+      BuildContext context, List<InvoiceItems> itemList,String warehouse) async {
     setBusy(true);
-    selecteditems = await AddOrderServices().fetchitems(warehouse);
+ selecteditems = await AddInvoiceServices().fetchitems(warehouse);
    filteredItems=selectedItems;
     for (var selectedItem in itemList) {
       var originalItem =
@@ -45,13 +47,12 @@ bool selected=false;
     notifyListeners();
   }
 
-  void toggleSelection(Items item) {
+  void toggleSelection(InvoiceItems item) {
     if (isSelected(item)) {
       isSelecteditems.remove(item);
     } else {
       isSelecteditems.add(item);
     }
-
     notifyListeners();
   }
 
@@ -61,14 +62,13 @@ bool selected=false;
   }
 
   void removeitem(int index) {
-    if (selecteditems[index].qty != null && selecteditems[index].qty! >= 0) {
+    if (selecteditems[index].qty != null && selecteditems[index].qty! > 0) {
       selecteditems[index].qty = (selecteditems[index].qty!) - 1;
       notifyListeners();
     }
   }
 
-
-  double getQuantity(Items item) {
+  double getQuantity(InvoiceItems item) {
     return item.qty ?? 1.0;
   }
 }

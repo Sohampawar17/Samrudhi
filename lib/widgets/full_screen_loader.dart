@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../constants.dart';
 
 Widget fullScreenLoader(
@@ -14,11 +13,20 @@ Widget fullScreenLoader(
           ? Container(
               height: getHeight(context),
               width: getWidth(context),
-              color: Colors.black.withOpacity(0.8),
-              child: Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: Colors.blueAccent,
-                  size: 75,
+              color: Colors.white.withOpacity(0.9),
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('LOADING..',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,fontStyle: FontStyle.normal)),
+                    SizedBox(height: 20,),
+                  SpinKitFadingCircle(
+                    color: Colors.blueAccent,
+                    size: 50.0,
+                  ),
+                    SizedBox(height: 20,),
+                    Text('PLEASE WAIT',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,fontStyle: FontStyle.normal)),
+                  ],
                 ),
               ),
             )

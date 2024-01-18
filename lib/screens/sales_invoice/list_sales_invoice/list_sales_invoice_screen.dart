@@ -5,20 +5,20 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
-import 'list_salesorder_viewmodel.dart';
+import 'list_sales_invoice_viewmodel.dart';
 
-class ListOrderScreen extends StatelessWidget {
-  const ListOrderScreen({super.key});
+class ListInvoiceScreen extends StatelessWidget {
+  const ListInvoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ListOrderModel>.reactive(
-        viewModelBuilder: () => ListOrderModel(),
+    return ViewModelBuilder<ListInvoiceModel>.reactive(
+        viewModelBuilder: () => ListInvoiceModel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child) => Scaffold(
           backgroundColor: Colors.grey.shade300,
               appBar: AppBar(
-                title: Text('Sales Order'),actions: [
+                title: Text('Sales Invoice'),actions: [
             IconButton(
               icon: Icon(Icons.filter_list),
               onPressed: () {
@@ -37,7 +37,7 @@ class ListOrderScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      model.filterorderlist.isNotEmpty
+                      model.filterInvoiceList.isNotEmpty
                           ? Expanded(
                               child: RefreshIndicator(
                                 onRefresh: ()=>model.refresh(),
@@ -59,7 +59,8 @@ class ListOrderScreen extends StatelessWidget {
                                   ),
                                         child: MaterialButton(
                                           onPressed: () => model.onRowClick(
-                                              context, model.filterorderlist[index]),
+                                              context, model.filterInvoiceList[index]),
+
                                           child: Padding(
                                             padding: const EdgeInsets.all(15.0),
                                             child: Column(
@@ -79,7 +80,7 @@ class ListOrderScreen extends StatelessWidget {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          model.filterorderlist[index]
+                                                          model.filterInvoiceList[index]
                                                                   .name ??
                                                               "",
                                                           style: TextStyle(
@@ -89,8 +90,8 @@ class ListOrderScreen extends StatelessWidget {
                                                           ),
                                                         ),
                                                         Text(
-                                                          model.filterorderlist[index]
-                                                                  .transactionDate ??
+                                                          model.filterInvoiceList[index]
+                                                                  .dueDate ??
                                                               "",
                                                           style: TextStyle(
                                                             color: Colors.grey,
@@ -108,7 +109,7 @@ class ListOrderScreen extends StatelessWidget {
                                                       ),
                                                       color: model
                                                           .getColorForStatus(model
-                                                                  .filterorderlist[
+                                                                  .filterInvoiceList[
                                                                       index]
                                                                   .status ??
                                                               ""),
@@ -118,7 +119,7 @@ class ListOrderScreen extends StatelessWidget {
                                                             const EdgeInsets.all(
                                                                 10.0),
                                                         child: AutoSizeText(
-                                                          model.filterorderlist[index]
+                                                          model.filterInvoiceList[index]
                                                                   .status ??
                                                               "",
                                                           textAlign:
@@ -147,7 +148,7 @@ class ListOrderScreen extends StatelessWidget {
                                                         Container(
                                                           width: 150, // Adjust the width as needed
                                                           child: Text(
-                                                            model.filterorderlist[index].customerName ?? "",
+                                                            model.filterInvoiceList[index].customerName ?? "",
                                                             style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
                                                             overflow: TextOverflow.ellipsis,
                                                             maxLines: 2,
@@ -163,7 +164,7 @@ class ListOrderScreen extends StatelessWidget {
                                                           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
                                                         ),
                                                         Text(
-                                                          model.filterorderlist[index].totalQty?.toString() ?? "0.0",
+                                                          model.filterInvoiceList[index].totalQty?.toString() ?? "0.0",
                                                           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
                                                         ),
                                                       ],
@@ -176,7 +177,7 @@ class ListOrderScreen extends StatelessWidget {
                                                           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
                                                         ),
                                                         Text(
-                                                          '${model.filterorderlist[index].grandTotal?.toString() ?? "0.0"}',
+                                                          model.filterInvoiceList[index].grandTotal?.toString() ?? "0.0",
                                                           style: TextStyle(
                                                             fontWeight: FontWeight.w500,
                                                             color: Colors.green,
@@ -198,7 +199,7 @@ class ListOrderScreen extends StatelessWidget {
                                         height: 10,
                                       );
                                     },
-                                    itemCount: model.filterorderlist.length),
+                                    itemCount: model.filterInvoiceList.length),
                               ),
                             )
                           : Center(
@@ -215,15 +216,15 @@ class ListOrderScreen extends StatelessWidget {
               ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, Routes.addOrderScreen,
-                      arguments: AddOrderScreenArguments(orderid: ""));
+                  Navigator.pushReplacementNamed(context, Routes.addInvoiceScreen,
+                      arguments: AddInvoiceScreenArguments(invoiceid: ""));
                 },
-                label: Text('Create Order'),
+                label: Text('Create Invoice'),
               ),
             ));
   }
 
-  void _showBottomSheet(BuildContext context, ListOrderModel model) {
+  void _showBottomSheet(BuildContext context, ListInvoiceModel model) {
 
     SchedulerBinding.instance.addPostFrameCallback(
             (_) {

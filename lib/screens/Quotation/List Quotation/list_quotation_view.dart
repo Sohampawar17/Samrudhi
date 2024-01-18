@@ -16,6 +16,7 @@ class ListQuotationScreen extends StatelessWidget {
         viewModelBuilder: () => ListQuotationModel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child) => Scaffold(
+          backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
             title: Text('Quotation'),
             actions: [
@@ -49,9 +50,10 @@ class ListQuotationScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                            child: GestureDetector(
-                               onTap: () => model.onRowClick(
+                            child: MaterialButton(
+                              onPressed: () => model.onRowClick(
                                    context, model.filterquotationlist[index]),
+
                               child: Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: Column(
@@ -220,12 +222,12 @@ class ListQuotationScreen extends StatelessWidget {
             loader: model.isBusy,
             context: context,
           ),
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               Navigator.pushReplacementNamed(context, Routes.addQuotationView, arguments: AddQuotationViewArguments(quotationid: "")
                  );
             },
-            child: Icon(Icons.add),
+          label: Text('Create Quote'),
           ),
         ));
   }

@@ -149,7 +149,7 @@ class AddQuotationServices {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(msg: "Order Updated successfully");
+        Fluttertoast.showToast(msg: "Quotation Submitted successfully");
         return true;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO update Order!");
@@ -166,29 +166,28 @@ class AddQuotationServices {
     return false;
   }
 
-  Future<bool> addOrder(AddQuotation quotationdetails) async {
-    baseurl =  await geturl();
-    var data = json.encode(
-      quotationdetails,
-    );
-    Logger().i(quotationdetails.toString());
+  Future<String> addOrder(AddQuotation quotationdetails) async {
     try {
+      baseurl = await geturl();
+      var data = json.encode(quotationdetails);
+      Logger().i(quotationdetails);
+
       var dio = Dio();
-      var response = await dio.request(
+      var response = await dio.post(
         '$baseurl/api/method/mobile.mobile_env.quotation.create_order',
         options: Options(
-          method: 'POST',
           headers: {'Authorization': await getTocken()},
         ),
         data: data,
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(msg: "Quotation created successfully");
-        return true;
+        Fluttertoast.showToast(msg: response.data['message'].toString());
+        Logger().i(response.data);
+        return response.data["data"].toString();
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO Order!");
-        return false;
+        return "";
       }
     } on DioException catch (e) {
       Fluttertoast.showToast(
@@ -197,9 +196,10 @@ class AddQuotationServices {
         textColor: Color(0xFFFFFFFF),
       );
       Logger().e(e.response?.data['message'].toString());
+      return "";
     }
-    return false;
   }
+
 
   Future<List<Items>> fetchitems() async {
     baseurl =  await geturl();

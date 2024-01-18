@@ -1,77 +1,79 @@
+
 import 'package:flutter/material.dart';
+
 import 'package:geolocation/model/order_details_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import '../../../model/add_order_model.dart';
+import '../../../model/add_invoice_model.dart';
 import '../../../router.router.dart';
-import '../../../services/add_order_services.dart';
+import '../../../services/add_invoice_services.dart';
 import 'package:intl/intl.dart';
 
-class AddOrderViewModel extends BaseViewModel {
+class AddInvoiceViewModel extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
   DateTime? selectedtransactionDate;
   DateTime? selecteddeliveryDate;
   List<String> searchcutomer = [""];
   List<String> warehouse = [""];
-  List<Items> selectedItems = [];
+  List<InvoiceItems> selectedItems = [];
   List<OrderDetailsModel> orderetails = [];
-String displayString='';
+  String displayString='';
   // int quantity= 0;
-  String name="";
   bool res = false;
   bool isEdit = false;
   bool isloading = false;
-  bool isSame = false;
-  List<String> ordetype = ["Sales", "Maintenance", "Shopping Cart"];
+  bool isSame=false;
+  bool updateStock=false;
+  String name="";
   TextEditingController customercontroller = TextEditingController();
   TextEditingController searchcustomercontroller = TextEditingController();
   TextEditingController deliverydatecontroller = TextEditingController();
   late String orderId;
 
-  AddOrderModel orderdata = AddOrderModel();
+  AddInvoiceModel invoiceData = AddInvoiceModel();
 
   initialise(BuildContext context, String orderid) async {
     setBusy(true);
-    searchcutomer = await AddOrderServices().fetchcustomer();
-    warehouse = await AddOrderServices().fetchwarehouse();
+    searchcutomer = await AddInvoiceServices().fetchcustomer();
+    warehouse = await AddInvoiceServices().fetchwarehouse();
     orderId = orderid;
     //setting aleardy available data
     if (orderId != "") {
-      orderdata.items?.clear();
-      // selectedItems.clear();
+      invoiceData.items?.clear();
       isEdit = true;
-      orderdata = await AddOrderServices().getOrder(orderid) ?? AddOrderModel();
-      isSame=true;
-      customercontroller.text = orderdata.customer ?? "";
-      deliverydatecontroller.text = orderdata.deliveryDate ?? "";
-      selectedItems.addAll(orderdata.items?.toList() ?? []);
+      invoiceData = await AddInvoiceServices().getOrder(orderid) ?? AddInvoiceModel();
+      if(invoiceData==invoiceData){
+        isSame=true;
+      }
+      updateStock=invoiceData.updateStock ==1 ?true :false;
+      customercontroller.text = invoiceData.customer ?? "";
+      deliverydatecontroller.text = invoiceData.dueDate ?? "";
+      selectedItems.addAll(invoiceData.items?.toList() ?? []);
       updateTextFieldValue();
+      Logger().i(invoiceData.toJson());
     }
-    orderdata.orderType = "Sales";
-    setBusy(false);
-    notifyListeners();
 
+    notifyListeners();
+    setBusy(false);
   }
 
-
   void onSavePressed(BuildContext context) async {
+
     setBusy(true);
-
     if (formKey.currentState!.validate()) {
-      orderdata.items = selectedItems;
-
+      invoiceData.items = selectedItems;
       if (isEdit) {
         handleEdit(context);
       } else {
         handleNonEdit(context);
       }
     }
-
     setBusy(false);
   }
 
   void handleEdit(BuildContext context) async {
-    name = await AddOrderServices().addOrder(orderdata);
+    name = await AddInvoiceServices().addOrder(invoiceData);
+
     if (name.isNotEmpty) {
       isSame = true;
 
@@ -79,36 +81,35 @@ String displayString='';
   }
 
   void handleNonEdit(BuildContext context) async {
-    name = await AddOrderServices().addOrder(orderdata);
+    name = await AddInvoiceServices().addOrder(invoiceData);
+
     if (name.isNotEmpty) {
-
       initialise(context, name);
-
     }
   }
+
 
 
   void onSubmitPressed(BuildContext context) async {
     setBusy(true);
     if (formKey.currentState!.validate()) {
-      orderdata.items = selectedItems;
-      orderdata.docstatus=1;
+      invoiceData.items = selectedItems;
+      invoiceData.docstatus=1;
       bool res=false;
-      Logger().i(orderdata.toJson());
+      Logger().i(invoiceData.toJson());
 
-      res = await AddOrderServices().updateOrder(orderdata);
+      res = await AddInvoiceServices().updateOrder(invoiceData);
       if (res) {
         if (context.mounted) {
           setBusy(false);
           setBusy(false);
-          Navigator.pushReplacementNamed(context, Routes.listOrderScreen);
+          Navigator.pushReplacementNamed(context, Routes.listInvoiceScreen);
         }
       }
 
     }
     setBusy(false);
   }
-
 
   ///dates functions///
   void updateTextFieldValue() {
@@ -129,9 +130,8 @@ String displayString='';
 
     if (picked != null && picked != selecteddeliveryDate) {
       selecteddeliveryDate = picked;
-
       deliverydatecontroller.text = DateFormat('yyyy-MM-dd').format(picked);
-      orderdata.deliveryDate = deliverydatecontroller.text;
+      invoiceData.dueDate = deliverydatecontroller.text;
     }
   }
 
@@ -139,55 +139,54 @@ String displayString='';
 
   void ondeliveryDobChanged(String value) {
     isSame=false;
-    orderdata.deliveryDate = value;
+    invoiceData.dueDate = value;
   }
 
   void setcustomer(String? customer) {
     isSame=false;
-    orderdata.customer = customer;
+    invoiceData.customer = customer;
     notifyListeners();
   }
 
-  void setordertype(String? ordertype) {
+  void setStock(bool? customer) {
     isSame=false;
-    orderdata.orderType = ordertype;
+    updateStock=customer ??false;
+    invoiceData.updateStock = updateStock ?1:0;
     notifyListeners();
   }
 
   void setwarehouse(String? setWarehouse) {
     isSame=false;
-    orderdata.setWarehouse = setWarehouse;
+    invoiceData.setWarehouse = setWarehouse;
     notifyListeners();
   }
 
-
-
-  void setSelectedItems(List<Items> SelectedItems) async {
+  void setSelectedItems(List<InvoiceItems> SelectedItems) async {
     isSame=false;
     selectedItems = SelectedItems;
     for (var item in selectedItems) {
-      item.warehouse = orderdata.setWarehouse;
-      item.deliveryDate = orderdata.deliveryDate;
+      Logger().i(item.qty);
       item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
     }
-    orderdata.items = selectedItems;
+    invoiceData.items = selectedItems;
     updateTextFieldValue();
-    Logger().i(orderdata.toJson());
-    orderdetails(await AddOrderServices().orderdetails(orderdata));
+    Logger().i(invoiceData.toJson());
+    orderdetails(await AddInvoiceServices().orderdetails(invoiceData));
     notifyListeners();
   }
 
 
   void orderdetails(List<OrderDetailsModel> orderdetail) {
     isSame=false;
-    orderdata.totalTaxesAndCharges =
-        orderdetail.isNotEmpty ? orderdetail[0].totalTaxesAndCharges : 0.0;
-    orderdata.grandTotal =
-        orderdetail.isNotEmpty ? orderdetail[0].grandTotal : 0.0;
-    orderdata.discountAmount =
-        orderdetail.isNotEmpty ? orderdetail[0].discountAmount : 0.0;
-    orderdata.total = orderdetail.isNotEmpty ? orderdetail[0].netTotal : 0.0;
-    orderdata.netTotal = orderdetail.isNotEmpty ? orderdetail[0].netTotal : 0.0;
+    Logger().i('edited');
+    invoiceData.totalTaxesAndCharges =
+    orderdetail.isNotEmpty ? orderdetail[0].totalTaxesAndCharges : 0.0;
+    invoiceData.grandTotal =
+    orderdetail.isNotEmpty ? orderdetail[0].grandTotal : 0.0;
+    invoiceData.discountAmount =
+    orderdetail.isNotEmpty ? orderdetail[0].discountAmount : 0.0;
+    invoiceData.total = orderdetail.isNotEmpty ? orderdetail[0].netTotal : 0.0;
+    invoiceData.netTotal = orderdetail.isNotEmpty ? orderdetail[0].netTotal : 0.0;
   }
 
   void updateItemQuantity(int index, int quantityChange) async {
@@ -197,12 +196,12 @@ String displayString='';
           (selectedItems[index].qty ?? 0.0) + quantityChange.toDouble();
       selectedItems[index].amount = (selectedItems[index].qty ?? 0.0) *
           (selectedItems[index].rate ?? 0.0);
-      orderdetails(await AddOrderServices().orderdetails(orderdata));
+      orderdetails(await AddInvoiceServices().orderdetails(invoiceData));
     }
     notifyListeners();
   }
 
-  double getQuantity(Items item) {
+  double getQuantity(InvoiceItems item) {
     return item.qty ?? 1;
   }
 
@@ -220,12 +219,12 @@ String displayString='';
 
   void deleteitem(int index) async {
     isSame=false;
-   selectedItems.removeAt(index);
-   orderdata.items = selectedItems;
-   orderdetails(await AddOrderServices().orderdetails(orderdata));
-   updateTextFieldValue();
+    selectedItems.removeAt(index);
+    invoiceData.items = selectedItems;
+    orderdetails(await AddInvoiceServices().orderdetails(invoiceData));
+    updateTextFieldValue();
     notifyListeners();
-   Logger().i(selectedItems.length);
+    Logger().i(selectedItems.length);
   }
 
 

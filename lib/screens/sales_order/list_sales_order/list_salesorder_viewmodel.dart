@@ -55,20 +55,19 @@ Future<void> refresh() async {
         return Colors.grey[400] ??
             Colors.grey; // Set the color for Draft status
       case 'On Hold':
-        return Colors.amber; // Set the color for On Hold status
+        return Colors.orangeAccent; // Set the color for On Hold status
       case 'To Deliver and Bill':
-        return Colors.redAccent; // Set the color for To Deliver and Bill status
+        return Colors.orange; // Set the color for To Deliver and Bill status
       case 'To Bill':
-        return Colors.indigo; // Set the color for To Bill status
+        return Colors.orange; // Set the color for To Bill status
       case 'To Deliver':
-        return Colors.teal; // Set the color for To Deliver status
+        return Colors.orange; // Set the color for To Deliver status
       case 'Completed':
         return Colors.green; // Set the color for Completed status
       case 'Cancelled':
         return Colors.red; // Set the color for Cancelled status
       case 'Closed':
-        return Colors.grey[800] ??
-            Colors.grey; // Set the color for Closed status
+        return Colors.green; // Set the color for Closed status
       default:
         return Colors.grey; // Set a default color for unknown status
     }

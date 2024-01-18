@@ -74,7 +74,7 @@ class QuotationItemScreen extends StatelessWidget {
                                   child: IconButton(
                                     icon: const Icon(Icons.remove_circle),
                                     onPressed: () {
-                                      if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 0.0) {
+                                      if (selectedItem.qty != null && (selectedItem.qty ?? 0.0) > 1.0) {
                                         model.removeitem(index);
                                       }
                                     },
@@ -101,12 +101,24 @@ class QuotationItemScreen extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 4), // Adjust the height as needed
-                            AutoSizeText(
-                              'Actual Quantity: ${selectedItem.actualQty}',
-                              style: const TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.grey,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AutoSizeText(
+                                  'Actual Quantity: ${selectedItem.actualQty}',
+                                  style:  TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color:selectedItem.actualQty!=0 ? Colors.green : Colors.redAccent,
+                                  ),
+                                ),
+                                AutoSizeText(
+                                  'Rate: ${selectedItem.rate}',
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

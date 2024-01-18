@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocation/model/attendance_dashboard_model.dart';
 import 'package:geolocation/model/dashboard.dart';
+import 'package:geolocation/model/leave_model.dart';
 import 'package:geolocation/services/home_services.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../model/gelocation_model.dart';
+import '../../router.router.dart';
 
 
 class Homeviewmodel extends BaseViewModel {
@@ -22,7 +26,8 @@ bool res=false;
 bool loading=false;
     String? greeting;
 Dashboard dashboard=Dashboard();
-
+AttendanceDashboard  attendancedashboard=AttendanceDashboard();
+List<LeaveData> leavelist=[];
   initialise(BuildContext context) async {
     setBusy(true);
     final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
@@ -31,6 +36,8 @@ Dashboard dashboard=Dashboard();
     full_name = prefs.getString("full_name") ?? "";
     role_profile = prefs.getString("role_profile") ?? "";
 dashboard=await HomeServices().dashboard() ?? Dashboard();
+attendancedashboard=await HomeServices().attendanceDashboard() ?? AttendanceDashboard();
+leavelist=await HomeServices().fetchleavedata();
 final now = DateTime.now();
     final timeOfDay = now.hour;
     if (timeOfDay < 12) {
@@ -39,6 +46,17 @@ final now = DateTime.now();
       greeting = "Good Afternoon,";
     } else {
       greeting = "Good Evening,";
+    }
+
+    if (dashboard.company == null) {
+      final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
+      final SharedPreferences prefs = await prefs0;
+      prefs.clear();
+      if (context.mounted) {
+        setBusy(false);
+        Navigator.popAndPushNamed(context, Routes.loginViewScreen);
+        Logger().i('logged out success');
+      }
     }
     setBusy(false);
   }

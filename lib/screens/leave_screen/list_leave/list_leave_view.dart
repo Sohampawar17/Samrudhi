@@ -269,8 +269,8 @@ class ListLeaveScreen extends StatelessWidget {
     loader: model.isBusy,
             context: context,
           ),
-floatingActionButton: FloatingActionButton(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen),
-child: const Icon(Icons.add),),
+floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen),
+label: Text('Create Leave'),),
         ));
   }
 

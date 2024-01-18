@@ -29,21 +29,21 @@ Future<void> refresh() async {
 Color getColorForStatus(String status) {
   switch (status) {
     case 'Lead':
-      return Colors.blueGrey[300] ?? Colors.grey; // Light Blue Grey for Lead
+      return Colors.blueGrey; // Light Blue Grey for Lead
     case 'Open':
-      return Colors.amber; // Amber for Open
+      return Colors.deepOrangeAccent; // Amber for Open
     case 'Replied':
-      return Colors.deepOrangeAccent; // Deep Orange Accent for Replied
+      return Colors.amberAccent; // Deep Orange Accent for Replied
     case 'Opportunity':
       return Colors.indigo; // Indigo for Opportunity
     case 'Quotation':
-      return Colors.green; // Teal for Quotation
+      return Colors.lightGreen; // Teal for Quotation
     case 'Lost Quotation':
       return Colors.redAccent; // Green for Lost Quotation
     case 'Interested':
       return Colors.lightGreen.shade200; // Light Green for Interested
     case 'Converted':
-      return Colors.lightGreen[800] ?? Colors.lightGreen; // Dark Grey for Converted
+      return Colors.green; // Dark Grey for Converted
     case 'Do Not Contact':
       return Colors.red; // Red for Do Not Contact
     default:

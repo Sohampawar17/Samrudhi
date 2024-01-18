@@ -23,6 +23,7 @@ class AddQuotationModel extends BaseViewModel {
   // int quantity= 0;
   bool res = false;
   bool isEdit = false;
+  bool isSame = false;
   bool isloading = false;
   List<String> ordetype = ["Sales", "Maintenance", "Shopping Cart"];
   TextEditingController customercontroller = TextEditingController();
@@ -32,7 +33,7 @@ class AddQuotationModel extends BaseViewModel {
 
   //TextEditingController quotationtodatecontroller = TextEditingController();
   late String QuotationId;
-
+String name="";
   String customerLabel = 'Customer';
   AddQuotation quotationdata = AddQuotation();
 
@@ -46,8 +47,13 @@ class AddQuotationModel extends BaseViewModel {
 
     //setting aleardy available data
     if (QuotationId != "") {
+      quotationdata.items?.clear();
       isEdit = true;
       quotationdata = await AddQuotationServices().getquotation(quotationid) ?? AddQuotation();
+      if(quotationdata==quotationdata){
+        isSame=true;
+        notifyListeners();
+      }
       customercontroller.text = quotationdata.partyName ?? "";
       validtilldatecontroller.text = quotationdata.validTill ?? "";
       customernamecontroller.text=quotationdata.customerName ?? "";
@@ -61,33 +67,61 @@ class AddQuotationModel extends BaseViewModel {
     setBusy(false);
   }
 
+
   void onSavePressed(BuildContext context) async {
-   
-    isloading = true;
+    setBusy(true);
+
     if (formKey.currentState!.validate()) {
       quotationdata.items = selectedItems;
-      bool res = false;
-      Logger().i(quotationdata.toJson());
-      if(isEdit == true){
-        res = await AddQuotationServices().addOrder(quotationdata);
-        if (res) {
-          if (context.mounted) {
-            isloading = false;
-            isloading = false;
-            Navigator.pushReplacementNamed(context, Routes.listQuotationScreen);
-          }
-        }
-      }else{
-        res = await AddQuotationServices().addOrder(quotationdata);
-        if (res) {
-          if (context.mounted) {
-            isloading = false;
-            isloading = false;
-            Navigator.pushReplacementNamed(context, Routes.listQuotationScreen);
-          }
-        }}
+
+      if (isEdit) {
+        handleEdit(context);
+      } else {
+        handleNonEdit(context);
+      }
     }
-    isloading = false;
+
+    setBusy(false);
+  }
+
+  void handleEdit(BuildContext context) async {
+    name = await AddQuotationServices().addOrder(quotationdata);
+    if (name.isNotEmpty) {
+      isSame = true;
+
+    }
+  }
+
+  void handleNonEdit(BuildContext context) async {
+    name = await AddQuotationServices().addOrder(quotationdata);
+    if (name.isNotEmpty) {
+
+      initialise(context, name);
+
+    }
+  }
+
+
+  void onSubmitPressed(BuildContext context) async {
+    setBusy(true);
+    if (formKey.currentState!.validate()) {
+      quotationdata.items = selectedItems;
+
+      quotationdata.docstatus=1;
+      bool res=false;
+      Logger().i(quotationdata.toJson());
+
+      res = await AddQuotationServices().updateOrder(quotationdata);
+      if (res) {
+        if (context.mounted) {
+          setBusy(false);
+          setBusy(false);
+          Navigator.pushReplacementNamed(context, Routes.listQuotationScreen);
+        }
+      }
+
+    }
+    setBusy(false);
   }
 
   ///dates functions///
@@ -113,6 +147,7 @@ class AddQuotationModel extends BaseViewModel {
   ///setvalues//
 
   void onvalidtillDobChanged(String value) {
+    isSame=false;
     quotationdata.validTill = value;
   }
 
@@ -123,6 +158,7 @@ class AddQuotationModel extends BaseViewModel {
   void setquotationto(String? quotationTo) async {
     quotationdata.quotationTo = quotationTo;
     quotationdata.partyName="";
+    isSame=false;
     if(quotationTo!.isNotEmpty){
     searchcustomer= await AddQuotationServices().getcustomer(quotationTo);}
     setCustomerLabel(quotationTo);
@@ -131,6 +167,7 @@ class AddQuotationModel extends BaseViewModel {
 
 
   void setordertype(String? ordertype) {
+    isSame=false;
     quotationdata.orderType = ordertype;
     notifyListeners();
   }
@@ -183,11 +220,11 @@ class AddQuotationModel extends BaseViewModel {
 
 
   void setSelectedItems(List<Items> SelectedItems) async {
-
+    isSame=false;
     selectedItems = SelectedItems;
     for (var item in selectedItems) {
 
-      item.amount = (item.qty ?? 0.0) * (item.rate ?? 0.0);
+      item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
     }
     quotationdata.items = selectedItems;
     updateTextFieldValue();
@@ -197,6 +234,7 @@ class AddQuotationModel extends BaseViewModel {
   }
 
   void quotationdetails(List<QuotationDetailsModel> quotationdetail) {
+    isSame=false;
     quotationdata.totalTaxesAndCharges =
     (quotationdetail.isNotEmpty ? quotationdetail[0].totalTaxesAndCharges : 0.0) ;
     quotationdata.grandTotal =
@@ -208,6 +246,7 @@ class AddQuotationModel extends BaseViewModel {
   }
 
   void updateItemQuantity(int index, int quantityChange) async {
+    isSame=false;
     if (selectedItems.isNotEmpty) {
       selectedItems[index].qty =
           ((selectedItems[index].qty ?? 0.0) + quantityChange.toDouble());
@@ -223,11 +262,13 @@ class AddQuotationModel extends BaseViewModel {
   }
 
   void additem(int index) async {
+    isSame=false;
     updateItemQuantity(index, 1);
     notifyListeners();
   }
 
   void removeitem(int index) async {
+    isSame=false;
     updateItemQuantity(index, -1);
     notifyListeners();
   }
@@ -241,6 +282,7 @@ class AddQuotationModel extends BaseViewModel {
 
 
   void deleteitem(int index) async {
+    isSame=false;
     selectedItems.removeAt(index);
     quotationdata.items=selectedItems;
     quotationdetails(await AddQuotationServices().quotationdetails(quotationdata));
@@ -259,10 +301,24 @@ class AddQuotationModel extends BaseViewModel {
     return null;
   }
 
+  String? validateQuotationTo(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select Customer';
+    }
+    return null;
+  }
+  String? validateValidTill(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select Valid-till';
+    }
+    return null;
+  }
+
   @override
   void dispose() {
     customercontroller.dispose();
     validtilldatecontroller.dispose();
+    customernamecontroller.dispose();
     super.dispose();
   }
 }

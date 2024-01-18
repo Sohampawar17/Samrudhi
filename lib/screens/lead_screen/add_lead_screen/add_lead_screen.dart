@@ -25,7 +25,7 @@ class _AddLeadScreenState extends State<AddLeadScreen> {
       builder: (context, model, child)=>Scaffold(
        
       appBar:AppBar(title:  Text(model.isEdit ?model.leaddata.name.toString() :'Create Lead',style: TextStyle(fontSize: 18),),
-leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),actions: [
+leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.leadListScreen), icon: const Icon(Icons.arrow_back)),actions: [
   IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
 ],),
     body: fullScreenLoader(

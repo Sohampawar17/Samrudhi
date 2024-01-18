@@ -105,50 +105,48 @@ body: fullScreenLoader(
                          Row(
                            children: [
                              Expanded(
-                               child: ElevatedButton(
-                                   onPressed: () {
+                               child: GestureDetector(
+                                   onTap: () {
                                      model.whatsapp(model.leaddata.mobileNo ??"");
                                    },
                                    child: CircleAvatar(
-                                     child: Image.network(
-                                         'https://cdn-icons-png.flaticon.com/512/4494/4494494.png'),
+                                     child: Image.asset(
+                                       'assets/images/whatsapp.png',scale: 5,),
                                    )),
                              ),
-                             const SizedBox(
-                               width: 30,
-                             ),
-                             Expanded(
-                               child: ElevatedButton(
 
-                                   onPressed: () {
+                             Expanded(
+                               child: GestureDetector(
+
+                                   onTap: () {
                                      model.service.call(model.leaddata.mobileNo ??"");
                                    },
-                                   child: Image.network(
-                                       'https://cdn-icons-png.flaticon.com/512/724/724664.png')),
+                                   child: CircleAvatar(
+                                     child: Image.asset(
+                                       'assets/images/telephone.png',scale: 5,),
+                                   )),
                              ),
-                             const SizedBox(
-                               width: 30,
-                             ),
-                             Expanded(
-                               child: ElevatedButton(
 
-                                   onPressed: () {
+                             Expanded(
+                               child: GestureDetector(
+
+                                   onTap: () {
                                      model.service.sendSms(model.leaddata.mobileNo ?? "");
                                    },
-                                   child: Image.network(
-                                       'https://cdn-icons-png.flaticon.com/512/234/234129.png')),
-                             ),
-                             const SizedBox(
-                               width: 30,
+                                   child: CircleAvatar(
+                                     child: Image.asset(
+                                       'assets/images/comments.png',scale: 5,),
+                                   )),
                              ),
                              Expanded(
-                               child: ElevatedButton(
-
-                                   onPressed: () {
+                               child: GestureDetector(
+                                   onTap: () {
                                      model.service.sendEmail(model.leaddata.emailId ??"");
                                    },
-                                   child: Image.network(
-                                       'https://cdn-icons-png.flaticon.com/512/2913/2913990.png')),
+                                   child: CircleAvatar(
+                                     child: Image.asset(
+                                       'assets/images/gmail.png',scale: 5,),
+                                   )),
                              ),
                            ],
                          ),

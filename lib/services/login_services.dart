@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class loginservices {
+class LoginServices {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<bool> login(String url,String username, String password) async {
@@ -41,9 +41,10 @@ class loginservices {
         return false;
       }
     } on DioException catch (e) {
-       Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
-      Logger().e(e);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Logger().e(e.response?.data.toString());
       return false;
     }
+
   }
 }

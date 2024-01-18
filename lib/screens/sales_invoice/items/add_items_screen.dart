@@ -4,20 +4,19 @@ import 'package:geolocation/widgets/customtextfield.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
-import '../../../model/add_order_model.dart';
+import '../../../model/add_invoice_model.dart';
 import 'add_item_model.dart';
 
-class ItemScreen extends StatelessWidget {
+class InvoiceItemScreen extends StatelessWidget {
   final String warehouse;
-  final List<Items> items;
-
-  const ItemScreen({super.key, required this.warehouse, required this.items});
+  final List<InvoiceItems> invoiceItems;
+  const InvoiceItemScreen({super.key, required this.invoiceItems, required this.warehouse});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ItemListModel>.reactive(
       viewModelBuilder: () => ItemListModel(),
-      onViewModelReady: (model) => model.initialise(context, warehouse, items),
+      onViewModelReady: (model) => model.initialise(context,invoiceItems,warehouse),
       builder: (context, model, child) => Scaffold(
           appBar: AppBar(
             title: const Text('Select Items'),

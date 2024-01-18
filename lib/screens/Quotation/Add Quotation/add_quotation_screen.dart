@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../model/addquotation_model.dart';
@@ -38,6 +37,12 @@ class _AddQuotationViewState extends State<AddQuotationView> {
             },
             icon: const Icon(Icons.arrow_back),
           ),
+          actions: [IconButton.outlined(
+            onPressed: () {
+              model.onSavePressed(context);
+            },
+            icon: const Icon(Icons.check),
+          ),],
         ),
         body: fullScreenLoader(
           loader: model.isBusy,
@@ -58,6 +63,7 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                     hintText: 'Select Quotation To',
                     labelText: 'Quotation To',
                     onChanged: model.setquotationto,
+
                   ),
                   const SizedBox(
                     height: 15,
@@ -70,6 +76,7 @@ class _AddQuotationViewState extends State<AddQuotationView> {
 
                     labelText: model.customerLabel,
                     onChanged: model.setcustomer,
+                    validator: model.validateQuotationTo,
                   ),
                   const SizedBox(
                     height: 15,
@@ -90,6 +97,7 @@ if(model.isEdit==true)
                           hintText: 'select the order type',
                           onChanged: model.setordertype,
                           labelText: 'Order Type',
+                          validator: model.validateordertype,
                         ),
                       ),
                       const SizedBox(
@@ -135,7 +143,7 @@ if(model.isEdit==true)
                               ),
                             ),
                           ),
-                         // validator: model.validatedeliveryDob,
+                         validator: model.validateValidTill,
                           onChanged: model.onvalidtillDobChanged,
                         ),
                       ),
@@ -198,8 +206,6 @@ if(model.isEdit==true)
                   //     ),
                   //   ),
                   // ),
-
-
                   //
                   // TextFormField(
                   //   controller: model.itemController,
@@ -255,20 +261,15 @@ if(model.isEdit==true)
                   //     ),
                   //   ),
                   // ),
-
-
-
-
-
                   TextFormField(
                     readOnly: true,
                     key: Key(model.displayString),
                     initialValue: model.displayString,
                     onTap: () async {
-                      if(model.quotationdata.customerName == null){
+                      if(model.quotationdata.partyName == null){
                         const snackBar= SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text('Please select the customer',style: TextStyle(color: Colors.white,fontSize: 18),),
+                          content: Text('Please select the customer name',style: TextStyle(color: Colors.white,fontSize: 18),),
                           duration: Duration(seconds: 3),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -344,13 +345,13 @@ if(model.isEdit==true)
                                       AutoSizeText(
                                         'ID:  ${selectedItem.itemCode}',
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,fontSize: 20),
                                       ),
                                       Expanded(
                                         child: AutoSizeText(
                                           '(${selectedItem.itemName})',
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.w300),
+                                              fontWeight: FontWeight.w300,fontSize: 20),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -366,13 +367,14 @@ if(model.isEdit==true)
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const AutoSizeText('Quantity:'),
+                                      const AutoSizeText('Quantity :',   style: const TextStyle(
+                                          fontWeight: FontWeight.w700,fontSize: 15),),
                                       IconButton(
                                         icon: const Icon(Icons.remove_circle),
                                         onPressed: () {
                                           // Decrease quantity when the remove button is pressed
                                           if (selectedItem.qty != null &&
-                                              (selectedItem.qty ?? 0) > 0) {
+                                              (selectedItem.qty ?? 0) > 1) {
                                             model.removeitem(index);
                                           }
                                         },
@@ -380,7 +382,8 @@ if(model.isEdit==true)
                                       Text(
                                         model
                                             .getQuantity(selectedItem)
-                                            .toString(),
+                                            .toString(),style: const TextStyle(
+                                          fontWeight: FontWeight.w700,fontSize: 15),
                                       ),
                                       IconButton(
                                         icon: const Icon(Icons.add_circle),
@@ -435,6 +438,7 @@ if(model.isEdit==true)
                         text: 'Cancel',
                         onPressed: () => Navigator.of(context).pop(),
                       ),
+                      model.isSame==false ?
                       TextButton(
                         onPressed: () => model.onSavePressed(context),
                         style: ButtonStyle(
@@ -452,22 +456,46 @@ if(model.isEdit==true)
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            model.isloading
-                                ? LoadingAnimationWidget.hexagonDots(
-                                    color: Colors.white,
-                                    size: 18,
-                                  )
-                                : Text(
+                           Text(
                                     model.isEdit
-                                        ? 'Update Order'
-                                        : 'Create Order',
+                                        ? 'Update Quotation'
+                                        : 'Create Quotation',
                                     style: const TextStyle(color: Colors.white),
                                   ),
 
 
                           ],
                         ),
+                      ):
+                      TextButton(
+                        onPressed: () => model.onSubmitPressed(context),
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12)),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).primaryColor),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          overlayColor: MaterialStateProperty.all(
+                              Theme.of(context).badgeTheme.textColor),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                          Text(
+
+                                  'Submit Quotation'
+                                  ,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+
+
+                          ],
+                        ),
                       ),
+
                     ],
                   )
                 ],
@@ -511,6 +539,7 @@ if(model.isEdit==true)
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
+
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
@@ -520,10 +549,12 @@ if(model.isEdit==true)
           const Divider(
             thickness: 2,
           ),
-          buildBillingRow('Total Tax :',
-              model.quotationdata.totalTaxesAndCharges?.toString() ?? '0.0'),
           buildBillingRow(
               'Subtotal :', model.quotationdata.netTotal?.toString() ?? '0.0'),
+          SizedBox(height: 10,),
+          buildBillingRow('Total Tax :',
+              model.quotationdata.totalTaxesAndCharges?.toString() ?? '0.0'),
+          SizedBox(height: 10,),
           buildBillingRow('Discount :',
               model.quotationdata.discountAmount?.toString() ?? '0.0'),
           const Divider(

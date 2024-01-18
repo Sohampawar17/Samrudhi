@@ -5,10 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i23;
+import 'package:flutter/material.dart' as _i26;
 import 'package:flutter/material.dart';
-import 'package:geolocation/model/add_order_model.dart' as _i24;
-import 'package:geolocation/model/addquotation_model.dart' as _i25;
+import 'package:geolocation/model/add_invoice_model.dart' as _i29;
+import 'package:geolocation/model/add_order_model.dart' as _i27;
+import 'package:geolocation/model/addquotation_model.dart' as _i28;
 import 'package:geolocation/screens/attendence_screen/attendence_view.dart'
     as _i16;
 import 'package:geolocation/screens/change_password/change_password_screen.dart'
@@ -37,6 +38,12 @@ import 'package:geolocation/screens/Quotation/Add%20Quotation/add_quotation_scre
 import 'package:geolocation/screens/Quotation/Items/items_screen.dart' as _i14;
 import 'package:geolocation/screens/Quotation/List%20Quotation/list_quotation_view.dart'
     as _i13;
+import 'package:geolocation/screens/sales_invoice/add_sales_invoice/add_invoice_screen.dart'
+    as _i23;
+import 'package:geolocation/screens/sales_invoice/items/add_items_screen.dart'
+    as _i24;
+import 'package:geolocation/screens/sales_invoice/list_sales_invoice/list_sales_invoice_screen.dart'
+    as _i25;
 import 'package:geolocation/screens/sales_order/add_sales_order/add_order_screen.dart'
     as _i7;
 import 'package:geolocation/screens/sales_order/items/add_items_screen.dart'
@@ -45,7 +52,7 @@ import 'package:geolocation/screens/sales_order/list_sales_order/list_sales_orde
     as _i6;
 import 'package:geolocation/screens/splash_screen/splash_screen.dart' as _i2;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i26;
+import 'package:stacked_services/stacked_services.dart' as _i30;
 
 class Routes {
   static const splashScreen = '/';
@@ -90,6 +97,12 @@ class Routes {
 
   static const changePasswordScreen = '/change-password-screen';
 
+  static const addInvoiceScreen = '/add-invoice-screen';
+
+  static const invoiceItemScreen = '/invoice-item-screen';
+
+  static const listInvoiceScreen = '/list-invoice-screen';
+
   static const all = <String>{
     splashScreen,
     homePage,
@@ -112,6 +125,9 @@ class Routes {
     addLeaveScreen,
     profileScreen,
     changePasswordScreen,
+    addInvoiceScreen,
+    invoiceItemScreen,
+    listInvoiceScreen,
   };
 }
 
@@ -201,42 +217,54 @@ class StackedRouter extends _i1.RouterBase {
       Routes.changePasswordScreen,
       page: _i22.ChangePasswordScreen,
     ),
+    _i1.RouteDef(
+      Routes.addInvoiceScreen,
+      page: _i23.AddInvoiceScreen,
+    ),
+    _i1.RouteDef(
+      Routes.invoiceItemScreen,
+      page: _i24.InvoiceItemScreen,
+    ),
+    _i1.RouteDef(
+      Routes.listInvoiceScreen,
+      page: _i25.ListInvoiceScreen,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashScreen(),
         settings: data,
       );
     },
     _i3.HomePage: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.HomePage(),
         settings: data,
       );
     },
     _i4.LoginViewScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.LoginViewScreen(),
         settings: data,
       );
     },
     _i5.Geolocation: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.Geolocation(),
         settings: data,
       );
     },
     _i6.ListOrderScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.ListOrderScreen(),
         settings: data,
       );
     },
     _i7.AddOrderScreen: (data) {
       final args = data.getArgs<AddOrderScreenArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.AddOrderScreen(key: args.key, orderid: args.orderid),
         settings: data,
@@ -244,21 +272,21 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i8.ItemScreen: (data) {
       final args = data.getArgs<ItemScreenArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.ItemScreen(
             key: args.key, warehouse: args.warehouse, items: args.items),
         settings: data,
       );
     },
     _i9.LeadListScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.LeadListScreen(),
         settings: data,
       );
     },
     _i10.AddLeadScreen: (data) {
       final args = data.getArgs<AddLeadScreenArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i10.AddLeadScreen(key: args.key, leadid: args.leadid),
         settings: data,
@@ -266,7 +294,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i11.UpdateLeadScreen: (data) {
       final args = data.getArgs<UpdateLeadScreenArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i11.UpdateLeadScreen(key: args.key, updateId: args.updateId),
         settings: data,
@@ -274,71 +302,95 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i12.AddQuotationView: (data) {
       final args = data.getArgs<AddQuotationViewArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i12.AddQuotationView(key: args.key, quotationid: args.quotationid),
         settings: data,
       );
     },
     _i13.ListQuotationScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i13.ListQuotationScreen(),
         settings: data,
       );
     },
     _i14.QuotationItemScreen: (data) {
       final args = data.getArgs<QuotationItemScreenArguments>(nullOk: false);
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i14.QuotationItemScreen(key: args.key, items: args.items),
         settings: data,
       );
     },
     _i15.HolidayScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.HolidayScreen(),
         settings: data,
       );
     },
     _i16.AttendanceScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i16.AttendanceScreen(),
         settings: data,
       );
     },
     _i17.ExpenseScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i17.ExpenseScreen(),
         settings: data,
       );
     },
     _i18.AddExpenseScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i18.AddExpenseScreen(),
         settings: data,
       );
     },
     _i19.ListLeaveScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i19.ListLeaveScreen(),
         settings: data,
       );
     },
     _i20.AddLeaveScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i20.AddLeaveScreen(),
         settings: data,
       );
     },
     _i21.ProfileScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i21.ProfileScreen(),
         settings: data,
       );
     },
     _i22.ChangePasswordScreen: (data) {
-      return _i23.MaterialPageRoute<dynamic>(
+      return _i26.MaterialPageRoute<dynamic>(
         builder: (context) => const _i22.ChangePasswordScreen(),
+        settings: data,
+      );
+    },
+    _i23.AddInvoiceScreen: (data) {
+      final args = data.getArgs<AddInvoiceScreenArguments>(nullOk: false);
+      return _i26.MaterialPageRoute<dynamic>(
+        builder: (context) =>
+            _i23.AddInvoiceScreen(key: args.key, invoiceid: args.invoiceid),
+        settings: data,
+      );
+    },
+    _i24.InvoiceItemScreen: (data) {
+      final args = data.getArgs<InvoiceItemScreenArguments>(nullOk: false);
+      return _i26.MaterialPageRoute<dynamic>(
+        builder: (context) => _i24.InvoiceItemScreen(
+            key: args.key,
+            invoiceItems: args.invoiceItems,
+            warehouse: args.warehouse),
+        settings: data,
+      );
+    },
+    _i25.ListInvoiceScreen: (data) {
+      return _i26.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i25.ListInvoiceScreen(),
         settings: data,
       );
     },
@@ -357,7 +409,7 @@ class AddOrderScreenArguments {
     required this.orderid,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
   final String orderid;
 
@@ -385,11 +437,11 @@ class ItemScreenArguments {
     required this.items,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
   final String warehouse;
 
-  final List<_i24.Items> items;
+  final List<_i27.Items> items;
 
   @override
   String toString() {
@@ -416,7 +468,7 @@ class AddLeadScreenArguments {
     required this.leadid,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
   final String leadid;
 
@@ -443,7 +495,7 @@ class UpdateLeadScreenArguments {
     required this.updateId,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
   final String updateId;
 
@@ -470,7 +522,7 @@ class AddQuotationViewArguments {
     required this.quotationid,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
   final String quotationid;
 
@@ -497,9 +549,9 @@ class QuotationItemScreenArguments {
     required this.items,
   });
 
-  final _i23.Key? key;
+  final _i26.Key? key;
 
-  final List<_i25.Items> items;
+  final List<_i28.Items> items;
 
   @override
   String toString() {
@@ -518,7 +570,66 @@ class QuotationItemScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i26.NavigationService {
+class AddInvoiceScreenArguments {
+  const AddInvoiceScreenArguments({
+    this.key,
+    required this.invoiceid,
+  });
+
+  final _i26.Key? key;
+
+  final String invoiceid;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "invoiceid": "$invoiceid"}';
+  }
+
+  @override
+  bool operator ==(covariant AddInvoiceScreenArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.invoiceid == invoiceid;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ invoiceid.hashCode;
+  }
+}
+
+class InvoiceItemScreenArguments {
+  const InvoiceItemScreenArguments({
+    this.key,
+    required this.invoiceItems,
+    required this.warehouse,
+  });
+
+  final _i26.Key? key;
+
+  final List<_i29.InvoiceItems> invoiceItems;
+
+  final String warehouse;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "invoiceItems": "$invoiceItems", "warehouse": "$warehouse"}';
+  }
+
+  @override
+  bool operator ==(covariant InvoiceItemScreenArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.invoiceItems == invoiceItems &&
+        other.warehouse == warehouse;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ invoiceItems.hashCode ^ warehouse.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i30.NavigationService {
   Future<dynamic> navigateToSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -590,7 +701,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToAddOrderScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String orderid,
     int? routerId,
     bool preventDuplicates = true,
@@ -607,9 +718,9 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToItemScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String warehouse,
-    required List<_i24.Items> items,
+    required List<_i27.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -640,7 +751,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToAddLeadScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String leadid,
     int? routerId,
     bool preventDuplicates = true,
@@ -657,7 +768,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToUpdateLeadScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -674,7 +785,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToAddQuotationView({
-    _i23.Key? key,
+    _i26.Key? key,
     required String quotationid,
     int? routerId,
     bool preventDuplicates = true,
@@ -706,8 +817,8 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> navigateToQuotationItemScreen({
-    _i23.Key? key,
-    required List<_i25.Items> items,
+    _i26.Key? key,
+    required List<_i28.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -834,6 +945,56 @@ extension NavigatorStateExtension on _i26.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToAddInvoiceScreen({
+    _i26.Key? key,
+    required String invoiceid,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.addInvoiceScreen,
+        arguments: AddInvoiceScreenArguments(key: key, invoiceid: invoiceid),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToInvoiceItemScreen({
+    _i26.Key? key,
+    required List<_i29.InvoiceItems> invoiceItems,
+    required String warehouse,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.invoiceItemScreen,
+        arguments: InvoiceItemScreenArguments(
+            key: key, invoiceItems: invoiceItems, warehouse: warehouse),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToListInvoiceScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.listInvoiceScreen,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -905,7 +1066,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithAddOrderScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String orderid,
     int? routerId,
     bool preventDuplicates = true,
@@ -922,9 +1083,9 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithItemScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String warehouse,
-    required List<_i24.Items> items,
+    required List<_i27.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -955,7 +1116,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithAddLeadScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String leadid,
     int? routerId,
     bool preventDuplicates = true,
@@ -972,7 +1133,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithUpdateLeadScreen({
-    _i23.Key? key,
+    _i26.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -989,7 +1150,7 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithAddQuotationView({
-    _i23.Key? key,
+    _i26.Key? key,
     required String quotationid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1021,8 +1182,8 @@ extension NavigatorStateExtension on _i26.NavigationService {
   }
 
   Future<dynamic> replaceWithQuotationItemScreen({
-    _i23.Key? key,
-    required List<_i25.Items> items,
+    _i26.Key? key,
+    required List<_i28.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1143,6 +1304,56 @@ extension NavigatorStateExtension on _i26.NavigationService {
         transition,
   ]) async {
     return replaceWith<dynamic>(Routes.changePasswordScreen,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithAddInvoiceScreen({
+    _i26.Key? key,
+    required String invoiceid,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.addInvoiceScreen,
+        arguments: AddInvoiceScreenArguments(key: key, invoiceid: invoiceid),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithInvoiceItemScreen({
+    _i26.Key? key,
+    required List<_i29.InvoiceItems> invoiceItems,
+    required String warehouse,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.invoiceItemScreen,
+        arguments: InvoiceItemScreenArguments(
+            key: key, invoiceItems: invoiceItems, warehouse: warehouse),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithListInvoiceScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.listInvoiceScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

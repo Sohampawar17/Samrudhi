@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
-import '../model/add_order_model.dart';
+import '../model/add_invoice_model.dart';
 import '../model/order_details_model.dart';
 
-class AddOrderServices {
+class AddInvoiceServices{
   Future<List<String>> fetchcustomer() async {
     baseurl =  await geturl();
     try {
@@ -27,8 +27,8 @@ class AddOrderServices {
         List<dynamic> dataList = jsonDataMap["data"];
         Logger().i(dataList);
         List<String> namesList =
-            dataList.map((item) => item["name"].toString()).toList();
-            Logger().i(namesList.length);
+        dataList.map((item) => item["name"].toString()).toList();
+        Logger().i(namesList.length);
         return namesList;
       } else {
         Fluttertoast.showToast(msg: "Unable to fetch Customer");
@@ -41,12 +41,12 @@ class AddOrderServices {
     }
   }
 
-  Future<AddOrderModel?> getOrder(String id) async {
+  Future<AddInvoiceModel?> getOrder(String id) async {
     baseurl =  await geturl();
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Sales Order/$id',
+        '$baseurl/api/resource/Sales Invoice/$id',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -54,8 +54,8 @@ class AddOrderServices {
       );
 
       if (response.statusCode == 200) {
-        Logger().i(AddOrderModel.fromJson(response.data["data"]));
-        return AddOrderModel.fromJson(response.data["data"]);
+        Logger().i(AddInvoiceModel.fromJson(response.data["data"]));
+        return AddInvoiceModel.fromJson(response.data["data"]);
       } else {
         if (kDebugMode) {
           print(response.statusMessage);
@@ -64,9 +64,118 @@ class AddOrderServices {
       }
     } on DioException catch (e) {
       Logger().i(e.response);
-      Fluttertoast.showToast(msg: "Error while fetching user");
+      Fluttertoast.showToast(msg: "Error while fetching Invoice");
     }
     return null;
+  }
+
+
+  Future<bool> updateOrder(AddInvoiceModel orderdetails) async {
+    baseurl =  await geturl();
+    Logger().i(orderdetails.toString());
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/resource/Sales Invoice/${orderdetails.name.toString()}',
+        options: Options(
+          method: 'PUT',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: orderdetails.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(msg: "Invoice Submitted successfully");
+        return true;
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO update Invoice!");
+        return false;
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 417) {
+        String errorMessage = e.response!.data["exception"].toString();
+
+
+          // Handle NegativeStockError
+          String item = errorMessage.split("<a")[1].split(">")[1].split("<")[0].trim();
+          String warehouse = errorMessage.split("<a")[2].split(">")[1].split("<")[0].trim();
+
+          Fluttertoast.showToast(
+            gravity: ToastGravity.BOTTOM,
+            msg: 'NegativeStock Error: $item needed in $warehouse.',
+            textColor: Color(0xFFFFFFFF),
+            backgroundColor: Color(0xFFBA1A1A),
+          );
+
+          Logger().e("Negative Stock Error: $item needed in $warehouse");
+
+
+        return false;
+      } else {
+        // Handle other DioException cases
+        String? errorDetails = e.response?.data['exception'].toString();
+
+        Fluttertoast.showToast(
+          gravity: ToastGravity.BOTTOM,
+          msg: 'Error: $errorDetails',
+          textColor: Color(0xFFFFFFFF),
+          backgroundColor: Color(0xFFBA1A1A),
+        );
+
+        Logger().e("DioException: $errorDetails");
+        return false;
+      }
+    }
+
+
+
+  }
+
+  Future<String> addOrder(AddInvoiceModel orderdetails) async {
+    baseurl =  await geturl();
+    var data = json.encode(
+      orderdetails,
+    );
+    Logger().i(orderdetails.toString());
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.invoice.create_invoice',
+        options: Options(
+          method: 'POST',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast( msg: response.data['message'].toString(),);
+        String name=response.data["data"].toString();
+        Logger().i(response.data);
+        return name;
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO Order!");
+        return "";
+      }
+    } on DioException catch (e) {
+      if(e.response?.statusCode==417){
+        Fluttertoast.showToast(
+          msg: "${e.response?.data['message'].toString()}",
+          backgroundColor: Color(0xFFBA1A1A),
+          textColor: Color(0xFFFFFFFF),
+        );
+        Logger().e(e.response?.data['message'].toString());
+      }else{
+        Fluttertoast.showToast(
+          msg: "${e.response?.data['message'].toString()}",
+          backgroundColor: Color(0xFFBA1A1A),
+          textColor: Color(0xFFFFFFFF),
+        );
+        Logger().e(e.response?.data['message'].toString());
+      }
+
+    }
+    return "";
   }
 
   Future<List<String>> fetchwarehouse() async {
@@ -74,7 +183,7 @@ class AddOrderServices {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.order.get_warehouselist',
+        '$baseurl/api/method/mobile.mobile_env.invoice.get_warehouselist',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -87,7 +196,7 @@ class AddOrderServices {
         List<dynamic> dataList = jsonDataMap["data"];
         Logger().i(dataList);
         List<String> namesList =
-            dataList.map((item) => item["name"].toString()).toList();
+        dataList.map((item) => item["name"].toString()).toList();
         return namesList;
       } else {
         Fluttertoast.showToast(msg: "Unable to fetch warehouse");
@@ -100,93 +209,28 @@ class AddOrderServices {
     }
   }
 
-  Future<bool> updateOrder(AddOrderModel orderdetails) async {
-    baseurl =  await geturl();
 
-    Logger().i(orderdetails.toString());
+  Future<List<InvoiceItems>> fetchitems(String? warehouse) async {
+
+    baseurl =  await geturl();
+    var data = {
+      'warehouse': warehouse ?? ''
+    };
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Sales Order/${orderdetails.name.toString()}',
-        options: Options(
-          method: 'PUT',
-          headers: {'Authorization': await getTocken()},
-        ),
-        data: orderdetails.toJson(),
-      );
-
-      if (response.statusCode == 200) {
-        Fluttertoast.showToast(msg: "Order Submitted successfully");
-        return true;
-      } else {
-        Fluttertoast.showToast(msg: "UNABLE TO update Order!");
-        return false;
-      }
-    } catch (e) {
-      // Fluttertoast.showToast(
-      //   msg: "${e}",
-      //   backgroundColor: Color(0xFFBA1A1A),
-      //   textColor: Color(0xFFFFFFFF),
-      // );
-      Logger().e(e);
-    }
-    return false;
-  }
-
-  Future<String> addOrder(AddOrderModel orderdetails) async {
-    baseurl =  await geturl();
-    var data = json.encode(
-      orderdetails,
-    );
-    Logger().i(orderdetails.toString());
-    try {
-      var dio = Dio();
-      var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.order.create_order',
-        options: Options(
-          method: 'POST',
-          headers: {'Authorization': await getTocken()},
-        ),
-        data: data,
-      );
-
-      if (response.statusCode == 200) {
-        Fluttertoast.showToast(msg: response.data['message'].toString());
-        String name=response.data["data"].toString();
-        Logger().i(response.data);
-        Logger().i(name);
-        return name;
-      } else {
-        Fluttertoast.showToast(msg: "UNABLE TO Order!");
-        return "";
-      }
-    } on DioException catch (e) {
-      Fluttertoast.showToast(
-        msg: "${e.response?.data['message'].toString()}",
-        backgroundColor: Color(0xFFBA1A1A),
-        textColor: Color(0xFFFFFFFF),
-      );
-      Logger().e(e);
-    }
-    return "";
-  }
-
-  Future<List<Items>> fetchitems(String warehouse) async {
-    baseurl =  await geturl();
-    try {
-      var dio = Dio();
-      var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.order.get_item_list?warehouse=$warehouse',
+        '$baseurl/api/method/mobile.mobile_env.invoice.get_item_list',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
         ),
+        data: data
       );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<Items> caneList = List.from(jsonData['data'])
-            .map<Items>((data) => Items.fromJson(data))
+        List<InvoiceItems> caneList = List.from(jsonData['data'])
+            .map<InvoiceItems>((data) => InvoiceItems.fromJson(data))
             .toList();
         return caneList;
       } else {
@@ -202,7 +246,7 @@ class AddOrderServices {
 
   Future<List<OrderDetailsModel>> orderdetails(
 
-      AddOrderModel orderdetails) async {
+      AddInvoiceModel orderdetails) async {
     baseurl =  await geturl();
     var data = json.encode(
       orderdetails,
@@ -211,7 +255,7 @@ class AddOrderServices {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/method/mobile.mobile_env.order.prepare_order_totals',
+        '$baseurl/api/method/mobile.mobile_env.invoice.prepare_order_totals',
         options: Options(
           method: 'POST',
           headers: {'Authorization': await getTocken()},

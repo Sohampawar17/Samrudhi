@@ -38,6 +38,7 @@ class CustomDropdownButton2 extends StatelessWidget {
   final String hintText;
   final String labelText;
   final void Function(String?)? onChanged;
+  final String? Function(String?)? validator;
   final InputDecoration? searchInputDecoration;
   final Widget? searchInnerWidget;
   final double? searchInnerWidgetHeight;
@@ -52,7 +53,7 @@ class CustomDropdownButton2 extends StatelessWidget {
     this.searchInputDecoration,
     this.searchInnerWidget,
     this.searchInnerWidgetHeight,
-    this.searchController, this.prefixIcon,required  this.labelText,
+    this.searchController, this.prefixIcon,required  this.labelText, this.validator,
   });
  
 
@@ -106,6 +107,7 @@ showSearchBox: true,showSelectedItems: true,searchFieldProps: TextFieldProps(
       ),
 )
               ),
+
               items:items,
               dropdownDecoratorProps:  DropDownDecoratorProps(
           dropdownSearchDecoration:InputDecoration(
@@ -126,6 +128,7 @@ showSearchBox: true,showSelectedItems: true,searchFieldProps: TextFieldProps(
               ),
               onChanged: onChanged,
               selectedItem:value,
+        validator: validator,
           ),
         
     );

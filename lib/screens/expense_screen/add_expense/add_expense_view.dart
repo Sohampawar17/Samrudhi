@@ -26,7 +26,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=>Scaffold(
 
-          appBar:AppBar(title:  Text('Create Expense',style: TextStyle(fontSize: 18),),
+          appBar:AppBar(title:  const Text('Create Expense',style: TextStyle(fontSize: 18),),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.expenseScreen), icon: const Icon(Icons.arrow_back)),actions: [
                IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
             ],),
@@ -75,13 +75,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         validator: model.validatedate,
                         onChanged: model.setdate,
                       ),
-SizedBox(height: 10,),
+const SizedBox(height: 10,),
 CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense type', onChanged: model.setexpensetype, labelText: 'Expense Type'),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Expense Description', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.amountcontroller, labelText: 'Amount', hintText: 'Enter the amount',validator: model.validateamount,onChanged: model.setamount,keyboardtype: TextInputType.number,),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                       CtextButton(onPressed: () { model.selectPdf(ImageSource.gallery); }, text: 'Upload Documents',),
 //                       ElevatedButton.icon(
 //                         onPressed: () {
@@ -90,48 +90,32 @@ CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense typ
 //                         icon: Icon(Icons.upload),
 //                         label: Text('Upload Document'),
 //                       ),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 10,),
                   model.attachment.isNotEmpty
                       ? SizedBox(height: getHeight(context)/5,
                         child: ListView.separated(
                         itemBuilder: (builder, index) {
-                  return  GestureDetector(
-                    onTap: () => ViewImageInternet(url: model.attachment[index].fileUrl ?? ""),
-                    child: Container(
-                      height: 50,
-                      padding: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Colors.black54, width: 2),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            model.attachment[index].fileName ?? "",
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 8),
-                          IconButton(
-                            icon: Icon(Icons.cancel, color: Colors.redAccent),
-                            onPressed: () {
-                              model.deleteitem(index, model.attachment[index].name);
-                            },
-                          ),
-                        ],
-                      ),
+                  return  InputChip(
+                    deleteIconColor: Colors.red,
+                    onPressed: (){
+                      ViewImageInternet(url: model.attachment[index].name ??"");
+                    },
+onDeleted: () {
+  model.deleteitem(index, model.attachment[index].name);
+},
+                    label: Text(
+                      model.attachment[index].fileName ?? "",
+                      style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                   );
                         },separatorBuilder: (context, builder) {
             return const Divider(
-            thickness: 0.5,
+            thickness: 1,
             );
             },
               itemCount: model.attachment.length,),
                       ):Container(),
-                      SizedBox(height: 25,),
+                      const SizedBox(height: 15,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel'),

@@ -56,8 +56,8 @@ body: fullScreenLoader(
                                         ),
                                       ],
                                     ),
-                                        child: GestureDetector(
-                                        onTap: ()=>model.onRowClick(context, model.filterleadlist[index]),
+                                        child: MaterialButton(
+                                        onPressed: ()=>model.onRowClick(context, model.filterleadlist[index]),
                                           child: Padding(
                                             padding: const EdgeInsets.all(15.0),
                                             child: Column(
@@ -204,7 +204,7 @@ body: fullScreenLoader(
                 loader: model.isBusy,
                 context: context,
               ),
-                floatingActionButton: FloatingActionButton(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),child: const Icon(Icons.add),),
+                floatingActionButton: FloatingActionButton.extended(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),label: Text('Create Lead'),),
       ));
   }
 

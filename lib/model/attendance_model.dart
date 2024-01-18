@@ -34,14 +34,24 @@ class AttendanceDetails {
   int? present;
   int? absent;
   int? late;
+  int? halfDay;
+  int? onLeave;
 
-  AttendanceDetails({this.daysInMonth, this.present, this.absent, this.late});
+  AttendanceDetails(
+      {this.daysInMonth,
+        this.present,
+        this.absent,
+        this.late,
+        this.halfDay,
+        this.onLeave});
 
   AttendanceDetails.fromJson(Map<String, dynamic> json) {
     daysInMonth = json['days_in_month'];
     present = json['present'];
     absent = json['absent'];
     late = json['late'];
+    halfDay = json['half day'];
+    onLeave = json['on leave'];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,9 +60,12 @@ class AttendanceDetails {
     data['present'] = this.present;
     data['absent'] = this.absent;
     data['late'] = this.late;
+    data['half day'] = this.halfDay;
+    data['on leave'] = this.onLeave;
     return data;
   }
 }
+
 
 class AttendanceList {
   String? attendanceDate;
