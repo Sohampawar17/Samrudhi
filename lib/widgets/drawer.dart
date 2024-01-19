@@ -32,12 +32,13 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
                 ),
               ),
               arrowColor: Colors.black87,
-              currentAccountPicture: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.white, // Set background color for the avatar
+              currentAccountPicture: ClipOval(
+                // Set background color for the avatar
                child: Image.network(
                  image,
-                 height: 40,
+                 fit: BoxFit.cover,
+                 height: 70,
+width: 70,
                  loadingBuilder: (BuildContext context, Widget child,
                      ImageChunkEvent? loadingProgress) {
                    if (loadingProgress == null) {

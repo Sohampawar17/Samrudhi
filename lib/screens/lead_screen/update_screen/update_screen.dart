@@ -166,11 +166,13 @@ body: fullScreenLoader(
                                itemBuilder: (context, index) {
                                  final noteData = model.notes[index];
                                  return  ListTile(
-  leading:   CircleAvatar(
-    foregroundColor: Colors.blue,
+  leading:   ClipOval(
+   
     child: Image.network(
       noteData.image ?? "",
       height: 40,
+     width: 40,
+fit: BoxFit.cover,
       loadingBuilder: (BuildContext context, Widget child,
           ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) {

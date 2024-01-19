@@ -24,13 +24,13 @@ class AttendanceDashboard {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['month_title'] = this.monthTitle;
-    data['till_days'] = this.tillDays;
-    data['total_days'] = this.totalDays;
-    data['day off'] = this.dayOff;
-    data['present'] = this.present;
-    data['absent'] = this.absent;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['month_title'] = monthTitle;
+    data['till_days'] = tillDays;
+    data['total_days'] = totalDays;
+    data['day off'] = dayOff;
+    data['present'] = present;
+    data['absent'] = absent;
     return data;
   }
 }

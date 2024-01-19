@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
+import 'package:geolocation/widgets/text_button.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
@@ -18,9 +19,9 @@ class ListInvoiceScreen extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
           backgroundColor: Colors.grey.shade300,
               appBar: AppBar(
-                title: Text('Sales Invoice'),actions: [
+                title: const Text('Sales Invoice'),actions: [
             IconButton(
-              icon: Icon(Icons.filter_list),
+              icon: const Icon(Icons.filter_list),
               onPressed: () {
           _showBottomSheet(context,model);
               },
@@ -30,7 +31,7 @@ class ListInvoiceScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.popAndPushNamed(context, Routes.homePage);
                     },
-                    icon: Icon(Icons.arrow_back)),
+                    icon: const Icon(Icons.arrow_back)),
               ),
               body: fullScreenLoader(
                 child: Padding(
@@ -83,7 +84,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                                           model.filterInvoiceList[index]
                                                                   .name ??
                                                               "",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -93,7 +94,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                                           model.filterInvoiceList[index]
                                                                   .dueDate ??
                                                               "",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             color: Colors.grey,
                                                           ),
                                                         ),
@@ -124,7 +125,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                                               "",
                                                           textAlign:
                                                               TextAlign.center,
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -134,14 +135,14 @@ class ListInvoiceScreen extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: 15.0),
+                                                const SizedBox(height: 15.0),
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(
+                                                        const Text(
                                                             'Customer name',
                                                             style: TextStyle(color: Colors.black87, fontWeight:  FontWeight.w300)
                                                         ),
@@ -149,7 +150,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                                           width: 150, // Adjust the width as needed
                                                           child: Text(
                                                             model.filterInvoiceList[index].customerName ?? "",
-                                                            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                                                            style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
                                                             overflow: TextOverflow.ellipsis,
                                                             maxLines: 2,
                                                           ),
@@ -159,26 +160,26 @@ class ListInvoiceScreen extends StatelessWidget {
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(
+                                                        const Text(
                                                           'Items',
                                                           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
                                                         ),
                                                         Text(
                                                           model.filterInvoiceList[index].totalQty?.toString() ?? "0.0",
-                                                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                                                          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
                                                         ),
                                                       ],
                                                     ),
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text(
+                                                        const Text(
                                                           "Amount",
                                                           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
                                                         ),
                                                         Text(
                                                           model.filterInvoiceList[index].grandTotal?.toString() ?? "0.0",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontWeight: FontWeight.w500,
                                                             color: Colors.green,
                                                           ),
@@ -195,7 +196,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                       );
                                     },
                                     separatorBuilder: (context, builder) {
-                                      return SizedBox(
+                                      return const SizedBox(
                                         height: 10,
                                       );
                                     },
@@ -204,9 +205,9 @@ class ListInvoiceScreen extends StatelessWidget {
                             )
                           : Center(
                             child: Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                        child: Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                        child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
                           )
                     ],
                   ),
@@ -217,9 +218,9 @@ class ListInvoiceScreen extends StatelessWidget {
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, Routes.addInvoiceScreen,
-                      arguments: AddInvoiceScreenArguments(invoiceid: ""));
+                      arguments: const AddInvoiceScreenArguments(invoiceid: ""));
                 },
-                label: Text('Create Invoice'),
+                label: const Text('Create Invoice'),
               ),
             ));
   }
@@ -250,7 +251,7 @@ class ListInvoiceScreen extends StatelessWidget {
                             labelText: 'Customer',
                             onChanged: model.setcustomer,
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           TextFormField(
                             readOnly: true,
                             controller: TextEditingController(text: model.date),
@@ -291,21 +292,25 @@ class ListInvoiceScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              ElevatedButton(
+                              CtextButton(
                                 onPressed: () {
                                   model.clearfilter();
                                   Navigator.pop(
                                       context); // Close the bottom sheet
                                 },
-                                child: Text('Clear Filter'),
+                                text: 'Clear Filter',
+                                buttonColor: Colors.black54,
+                               
                               ),
-                              ElevatedButton(
+                              CtextButton(
                                 onPressed: () {
                                   model.setfilter(
                                       model.custm ?? "", model.date ?? "");
                                   Navigator.pop(context);
                                 },
-                                child: Text('Apply Filter'),
+                                  text: 'Apply Filter',
+                                buttonColor: Colors.blueAccent.shade400,
+                               
                               ),
                             ],
                           ),

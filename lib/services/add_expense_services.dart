@@ -24,7 +24,7 @@ class AddExpenseServices{
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: '${response.data["message"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFF006C50),);
+        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: '${response.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFF006C50),);
 
         return true;
       } else {
@@ -32,7 +32,7 @@ class AddExpenseServices{
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString().split(":").elementAt(1).trim()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e);
     }
     return false;
@@ -127,7 +127,7 @@ class AddExpenseServices{
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString().split(":").elementAt(1).trim()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString().split(":").elementAt(1).trim()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e);
     }
     return false;

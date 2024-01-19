@@ -34,15 +34,15 @@ class LeaveData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['leave_type'] = this.leaveType;
-    data['employee'] = this.employee;
-    data['employee_name'] = this.employeeName;
-    data['leaves_allocated'] = this.leavesAllocated;
-    data['leaves_expired'] = this.leavesExpired;
-    data['opening_balance'] = this.openingBalance;
-    data['leaves_taken'] = this.leavesTaken;
-    data['closing_balance'] = this.closingBalance;
-    data['indent'] = this.indent;
+    data['leave_type'] = leaveType;
+    data['employee'] = employee;
+    data['employee_name'] = employeeName;
+    data['leaves_allocated'] = leavesAllocated;
+    data['leaves_expired'] = leavesExpired;
+    data['opening_balance'] = openingBalance;
+    data['leaves_taken'] = leavesTaken;
+    data['closing_balance'] = closingBalance;
+    data['indent'] = indent;
     return data;
   }
 }

@@ -23,7 +23,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=>Scaffold(
 
-          appBar:AppBar(title:  Text('Create Leave',style: TextStyle(fontSize: 18),),
+          appBar:AppBar(title:  const Text('Create Leave',style: TextStyle(fontSize: 18),),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.listLeaveScreen), icon: const Icon(Icons.arrow_back)),actions: [
                IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
             ],),
@@ -77,7 +77,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                               onChanged: model.setfromdate,
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          const SizedBox(width: 10,),
                           Expanded(
                             child: TextFormField(
                               readOnly: true,
@@ -118,14 +118,14 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                           ),
                         ],
                       ),
-SizedBox(height: 15,),
+const SizedBox(height: 15,),
 CustomDropdownButton2(items:model.leavetype, hintText: 'select the leave type', onChanged: model.seteleavetype, labelText: 'Leave Type'),
-                      SizedBox(height: 15,),
+                      const SizedBox(height: 15,),
 
 Row(
   mainAxisAlignment: MainAxisAlignment.spaceBetween,
   children: [
-    Text('Half day',style: TextStyle(fontSize: 15),),
+    const Text('Half day',style: TextStyle(fontSize: 15),),
                   Switch(
                   onChanged: model.toggleSwitch,
                   value: model.isSwitched,
@@ -172,13 +172,13 @@ Row(
                         ),
 
                         onChanged: model.sethalfdate,
-                      ),SizedBox(height: 15,),CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Reason', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
+                      ),const SizedBox(height: 15,),CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Reason', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
 
-                      SizedBox(height: 25,),
+                      const SizedBox(height: 25,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel'),
-                          CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Leave')
+                        children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.redAccent.shade400,),
+                          CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Leave', buttonColor: Colors.blueAccent.shade400,)
               ]
                       )
                     ],

@@ -11,8 +11,8 @@ class SearchCustomerList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['name'] = this.name;
-    data['customer_name'] = this.customerName;
+    data['name'] = name;
+    data['customer_name'] = customerName;
     return data;
   }
 }

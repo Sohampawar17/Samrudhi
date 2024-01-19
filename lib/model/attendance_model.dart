@@ -6,24 +6,24 @@ class attendancedetails {
 
   attendancedetails.fromJson(Map<String, dynamic> json) {
     attendanceDetails = json['attendance_details'] != null
-        ? new AttendanceDetails.fromJson(json['attendance_details'])
+        ? AttendanceDetails.fromJson(json['attendance_details'])
         : null;
     if (json['attendance_list'] != null) {
       attendanceList = <AttendanceList>[];
       json['attendance_list'].forEach((v) {
-        attendanceList!.add(new AttendanceList.fromJson(v));
+        attendanceList!.add(AttendanceList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.attendanceDetails != null) {
-      data['attendance_details'] = this.attendanceDetails!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (attendanceDetails != null) {
+      data['attendance_details'] = attendanceDetails!.toJson();
     }
-    if (this.attendanceList != null) {
+    if (attendanceList != null) {
       data['attendance_list'] =
-          this.attendanceList!.map((v) => v.toJson()).toList();
+          attendanceList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -55,13 +55,13 @@ class AttendanceDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['days_in_month'] = this.daysInMonth;
-    data['present'] = this.present;
-    data['absent'] = this.absent;
-    data['late'] = this.late;
-    data['half day'] = this.halfDay;
-    data['on leave'] = this.onLeave;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['days_in_month'] = daysInMonth;
+    data['present'] = present;
+    data['absent'] = absent;
+    data['late'] = late;
+    data['half day'] = halfDay;
+    data['on leave'] = onLeave;
     return data;
   }
 }
@@ -90,12 +90,12 @@ class AttendanceList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['attendance_date'] = this.attendanceDate;
-    data['status'] = this.status;
-    data['working_hours'] = this.workingHours;
-    data['in_time'] = this.inTime;
-    data['out_time'] = this.outTime;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['attendance_date'] = attendanceDate;
+    data['status'] = status;
+    data['working_hours'] = workingHours;
+    data['in_time'] = inTime;
+    data['out_time'] = outTime;
     return data;
   }
 }

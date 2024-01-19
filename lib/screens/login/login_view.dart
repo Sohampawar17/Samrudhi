@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'login_model.dart';
 
 class LoginViewScreen extends StatefulWidget {
-  const LoginViewScreen({Key? key});
+  const LoginViewScreen({super.key,});
 
   @override
   State<LoginViewScreen> createState() => _LoginViewScreenState();
@@ -251,19 +251,19 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
       //the return value will be from "Yes" or "No" options
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Exit App'),
-        content: Text('Do you want to exit an App?'),
+        title: const Text('Exit App'),
+        content: const Text('Do you want to exit an App?'),
         actions:[
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(false),
             //return false when click on "NO"
-            child:Text('No'),
+            child:const Text('No'),
           ),
 
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(true),
             //return true when click on "Yes"
-            child:Text('Yes'),
+            child:const Text('Yes'),
           ),
 
         ],

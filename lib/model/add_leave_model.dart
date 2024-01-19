@@ -33,16 +33,16 @@ class AddLeaveModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['from_date'] = this.fromDate;
-    data['to_date'] = this.toDate;
-    data['half_day'] = this.halfDay;
-    data['half_day_date'] = this.halfDayDate;
-    data['total_leave_days'] = this.totalLeaveDays;
-    data['leave_type'] = this.leaveType;
-    data['description'] = this.description;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['owner'] = owner;
+    data['from_date'] = fromDate;
+    data['to_date'] = toDate;
+    data['half_day'] = halfDay;
+    data['half_day_date'] = halfDayDate;
+    data['total_leave_days'] = totalLeaveDays;
+    data['leave_type'] = leaveType;
+    data['description'] = description;
     return data;
   }
 }

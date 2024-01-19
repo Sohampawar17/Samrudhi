@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import '../constants.dart';
 import '../model/add_order_model.dart';
 import '../model/order_details_model.dart';
+import '../model/search_order_model.dart';
 
 class AddOrderServices {
   Future<List<String>> fetchcustomer() async {
@@ -163,12 +164,41 @@ class AddOrderServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         msg: "${e.response?.data['message'].toString()}",
-        backgroundColor: Color(0xFFBA1A1A),
-        textColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
       );
       Logger().e(e);
     }
     return "";
+  }
+
+  Future<List<SearchCustomerList>> fetcustomer() async {
+    baseurl =  await geturl();
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.order.get_customer_list',
+        options: Options(
+          method: 'GET',
+          headers: {'Authorization': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<SearchCustomerList> caneList = List.from(jsonData['data'])
+            .map<SearchCustomerList>((data) => SearchCustomerList.fromJson(data))
+            .toList();
+        return caneList;
+      } else {
+        Fluttertoast.showToast(msg: "Unable to fetch items");
+        return [];
+      }
+    } catch (e) {
+      Logger().e(e);
+      Fluttertoast.showToast(msg: "$e");
+      return [];
+    }
   }
 
   Future<List<Items>> fetchitems(String warehouse) async {
@@ -233,8 +263,8 @@ class AddOrderServices {
     } on DioException catch (e) {
       Fluttertoast.showToast(
         msg: "${e.response?.data["message"].toString()} ",
-        backgroundColor: Color(0xFFBA1A1A),
-        textColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
       );
       Logger().e(e);
     }

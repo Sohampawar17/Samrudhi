@@ -54,13 +54,13 @@ class Geolocation extends StatelessWidget {
                               builder: (ctx) {
                                 return Stack(
                                   children: [
-                                    Icon(Icons.location_on, size: 50),
+                                    const Icon(Icons.location_on, size: 50),
                                     Positioned(
                                       left: 5,
                                       top: 0,
                                       right: 0,
                                       child: Container(
-                                        padding: EdgeInsets.all(4),
+                                        padding: const EdgeInsets.all(4),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
@@ -69,7 +69,7 @@ class Geolocation extends StatelessWidget {
                                         child: Text(
                                           (index + 1).toString(),
                                           // Display the marker number
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -96,7 +96,7 @@ class Geolocation extends StatelessWidget {
                       ],
                     )
                   : Container(
-                      child: Center(
+                      child: const Center(
                           child: Text('To see your location please checkin')),
                     )),
           loader: model.isBusy,
@@ -105,7 +105,7 @@ class Geolocation extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () =>
               model.getCoordinates(model.geolocationdata.locationTable ?? []),
-          child: Icon(Icons.refresh_outlined),
+          child: const Icon(Icons.refresh_outlined),
         ),
       ),
     );

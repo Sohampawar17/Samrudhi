@@ -22,13 +22,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Change Password',
             style: TextStyle(fontSize: 18, ),
           ),
           leading: IconButton.outlined(
             onPressed: () => Navigator.popAndPushNamed(context, Routes.profileScreen),
-            icon:  Icon(Icons.arrow_back, ),
+            icon:  const Icon(Icons.arrow_back, ),
           ),
         ),
         body: fullScreenLoader(
@@ -42,12 +42,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     CustomSmallTextFormField(prefixIcon:Icons.lock_outlined,controller: model.currentpasswordcontroller,labelText:'Current Password' ,hintText: 'Enter the password',onChanged: model.setcurrentpassword,validator: model.validatcurrentpass,),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     CustomSmallTextFormField(prefixIcon:Icons.lock_outlined,controller: model.newpasswordcontroller,labelText:'New Password' ,hintText: 'Enter the password',onChanged: model.setnewpassword,validator: model.validatnewpass,),
-                    SizedBox(height: 20,),
-                    CtextButton(onPressed: () => model.onSavePressed(context), text: 'Change Password'),
+                    const SizedBox(height: 20,),
+                    CtextButton(onPressed: () => model.onSavePressed(context), text: 'Change Password', buttonColor: Colors.blueAccent.shade400,),
                   ],
                 ),
               ),

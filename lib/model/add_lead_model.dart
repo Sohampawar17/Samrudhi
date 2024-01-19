@@ -119,52 +119,52 @@ class AddLeadModel {
     if (json['notes'] != null) {
       notes = <Notes>[];
       json['notes'].forEach((v) {
-        notes!.add(new Notes.fromJson(v));
+        notes!.add(Notes.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['naming_series'] = this.namingSeries;
-    data['salutation'] = this.salutation;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['lead_name'] = this.leadName;
-    data['gender'] = this.gender;
-    data['source'] = this.source;
-    data['lead_owner'] = this.leadOwner;
-    data['status'] = this.status;
-    data['type'] = this.type;
-    data['request_type'] = this.requestType;
-    data['email_id'] = this.emailId;
-    data['mobile_no'] = this.mobileNo;
-    data['whatsapp_no'] = this.whatsappNo;
-    data['phone'] = this.phone;
-    data['company_name'] = this.companyName;
-    data['no_of_employees'] = this.noOfEmployees;
-    data['annual_revenue'] = this.annualRevenue;
-    data['territory'] = this.territory;
-    data['city'] = this.city;
-    data['state'] = this.state;
-    data['country'] = this.country;
-    data['industry'] = this.industry;
-    data['qualification_status'] = this.qualificationStatus;
-    data['company'] = this.company;
-    data['language'] = this.language;
-    data['image'] = this.image;
-    data['title'] = this.title;
-    data['disabled'] = this.disabled;
-    data['unsubscribed'] = this.unsubscribed;
-    data['blog_subscriber'] = this.blogSubscriber;
-    data['doctype'] = this.doctype;
-    if (this.notes != null) {
-      data['notes'] = this.notes!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['owner'] = owner;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['naming_series'] = namingSeries;
+    data['salutation'] = salutation;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['lead_name'] = leadName;
+    data['gender'] = gender;
+    data['source'] = source;
+    data['lead_owner'] = leadOwner;
+    data['status'] = status;
+    data['type'] = type;
+    data['request_type'] = requestType;
+    data['email_id'] = emailId;
+    data['mobile_no'] = mobileNo;
+    data['whatsapp_no'] = whatsappNo;
+    data['phone'] = phone;
+    data['company_name'] = companyName;
+    data['no_of_employees'] = noOfEmployees;
+    data['annual_revenue'] = annualRevenue;
+    data['territory'] = territory;
+    data['city'] = city;
+    data['state'] = state;
+    data['country'] = country;
+    data['industry'] = industry;
+    data['qualification_status'] = qualificationStatus;
+    data['company'] = company;
+    data['language'] = language;
+    data['image'] = image;
+    data['title'] = title;
+    data['disabled'] = disabled;
+    data['unsubscribed'] = unsubscribed;
+    data['blog_subscriber'] = blogSubscriber;
+    data['doctype'] = doctype;
+    if (notes != null) {
+      data['notes'] = notes!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -211,18 +211,18 @@ class Notes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['note'] = this.note;
-    data['added_by'] = this.addedBy;
-    data['parent'] = this.parent;
-    data['parentfield'] = this.parentfield;
-    data['parenttype'] = this.parenttype;
-    data['doctype'] = this.doctype;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['owner'] = owner;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['note'] = note;
+    data['added_by'] = addedBy;
+    data['parent'] = parent;
+    data['parentfield'] = parentfield;
+    data['parenttype'] = parenttype;
+    data['doctype'] = doctype;
     return data;
   }
 }

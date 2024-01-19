@@ -189,93 +189,93 @@ class AddQuotation {
     if (json['payment_schedule'] != null) {
       paymentSchedule = <PaymentSchedule>[];
       json['payment_schedule'].forEach((v) {
-        paymentSchedule!.add(new PaymentSchedule.fromJson(v));
+        paymentSchedule!.add(PaymentSchedule.fromJson(v));
       });
     }
     if (json['items'] != null) {
       items = <Items>[];
       json['items'].forEach((v) {
-        items!.add(new Items.fromJson(v));
+        items!.add(Items.fromJson(v));
       });
     }
     if (json['taxes'] != null) {
       taxes = <Taxes>[];
       json['taxes'].forEach((v) {
-        taxes!.add(new Taxes.fromJson(v));
+        taxes!.add(Taxes.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['title'] = this.title;
-    data['naming_series'] = this.namingSeries;
-    data['quotation_to'] = this.quotationTo;
-    data['party_name'] = this.partyName;
-    data['customer_name'] = this.customerName;
-    data['is_reverse_charge'] = this.isReverseCharge;
-    data['is_export_with_gst'] = this.isExportWithGst;
-    data['transaction_date'] = this.transactionDate;
-    data['valid_till'] = this.validTill;
-    data['order_type'] = this.orderType;
-    data['company'] = this.company;
-    data['currency'] = this.currency;
-    data['conversion_rate'] = this.conversionRate;
-    data['selling_price_list'] = this.sellingPriceList;
-    data['price_list_currency'] = this.priceListCurrency;
-    data['plc_conversion_rate'] = this.plcConversionRate;
-    data['ignore_pricing_rule'] = this.ignorePricingRule;
-    data['total_qty'] = this.totalQty;
-    data['total_net_weight'] = this.totalNetWeight;
-    data['base_total'] = this.baseTotal;
-    data['base_net_total'] = this.baseNetTotal;
-    data['total'] = this.total;
-    data['net_total'] = this.netTotal;
-    data['tax_category'] = this.taxCategory;
-    data['taxes_and_charges'] = this.taxesAndCharges;
-    data['base_total_taxes_and_charges'] = this.baseTotalTaxesAndCharges;
-    data['total_taxes_and_charges'] = this.totalTaxesAndCharges;
-    data['base_grand_total'] = this.baseGrandTotal;
-    data['base_rounding_adjustment'] = this.baseRoundingAdjustment;
-    data['base_rounded_total'] = this.baseRoundedTotal;
-    data['base_in_words'] = this.baseInWords;
-    data['grand_total'] = this.grandTotal;
-    data['rounding_adjustment'] = this.roundingAdjustment;
-    data['rounded_total'] = this.roundedTotal;
-    data['in_words'] = this.inWords;
-    data['apply_discount_on'] = this.applyDiscountOn;
-    data['base_discount_amount'] = this.baseDiscountAmount;
-    data['additional_discount_percentage'] = this.additionalDiscountPercentage;
-    data['discount_amount'] = this.discountAmount;
-    data['other_charges_calculation'] = this.otherChargesCalculation;
-    data['gst_category'] = this.gstCategory;
-    data['place_of_supply'] = this.placeOfSupply;
-    data['contact_display'] = this.contactDisplay;
-    data['contact_mobile'] = this.contactMobile;
-    data['contact_email'] = this.contactEmail;
-    data['company_address'] = this.companyAddress;
-    data['company_gstin'] = this.companyGstin;
-    data['company_address_display'] = this.companyAddressDisplay;
-    data['group_same_items'] = this.groupSameItems;
-    data['language'] = this.language;
-    data['status'] = this.status;
-    data['customer_group'] = this.customerGroup;
-    data['territory'] = this.territory;
-    data['doctype'] = this.doctype;
-    if (this.paymentSchedule != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['owner'] = owner;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['title'] = title;
+    data['naming_series'] = namingSeries;
+    data['quotation_to'] = quotationTo;
+    data['party_name'] = partyName;
+    data['customer_name'] = customerName;
+    data['is_reverse_charge'] = isReverseCharge;
+    data['is_export_with_gst'] = isExportWithGst;
+    data['transaction_date'] = transactionDate;
+    data['valid_till'] = validTill;
+    data['order_type'] = orderType;
+    data['company'] = company;
+    data['currency'] = currency;
+    data['conversion_rate'] = conversionRate;
+    data['selling_price_list'] = sellingPriceList;
+    data['price_list_currency'] = priceListCurrency;
+    data['plc_conversion_rate'] = plcConversionRate;
+    data['ignore_pricing_rule'] = ignorePricingRule;
+    data['total_qty'] = totalQty;
+    data['total_net_weight'] = totalNetWeight;
+    data['base_total'] = baseTotal;
+    data['base_net_total'] = baseNetTotal;
+    data['total'] = total;
+    data['net_total'] = netTotal;
+    data['tax_category'] = taxCategory;
+    data['taxes_and_charges'] = taxesAndCharges;
+    data['base_total_taxes_and_charges'] = baseTotalTaxesAndCharges;
+    data['total_taxes_and_charges'] = totalTaxesAndCharges;
+    data['base_grand_total'] = baseGrandTotal;
+    data['base_rounding_adjustment'] = baseRoundingAdjustment;
+    data['base_rounded_total'] = baseRoundedTotal;
+    data['base_in_words'] = baseInWords;
+    data['grand_total'] = grandTotal;
+    data['rounding_adjustment'] = roundingAdjustment;
+    data['rounded_total'] = roundedTotal;
+    data['in_words'] = inWords;
+    data['apply_discount_on'] = applyDiscountOn;
+    data['base_discount_amount'] = baseDiscountAmount;
+    data['additional_discount_percentage'] = additionalDiscountPercentage;
+    data['discount_amount'] = discountAmount;
+    data['other_charges_calculation'] = otherChargesCalculation;
+    data['gst_category'] = gstCategory;
+    data['place_of_supply'] = placeOfSupply;
+    data['contact_display'] = contactDisplay;
+    data['contact_mobile'] = contactMobile;
+    data['contact_email'] = contactEmail;
+    data['company_address'] = companyAddress;
+    data['company_gstin'] = companyGstin;
+    data['company_address_display'] = companyAddressDisplay;
+    data['group_same_items'] = groupSameItems;
+    data['language'] = language;
+    data['status'] = status;
+    data['customer_group'] = customerGroup;
+    data['territory'] = territory;
+    data['doctype'] = doctype;
+    if (paymentSchedule != null) {
       data['payment_schedule'] =
-          this.paymentSchedule!.map((v) => v.toJson()).toList();
+          paymentSchedule!.map((v) => v.toJson()).toList();
     }
-    if (this.items != null) {
-      data['items'] = this.items!.map((v) => v.toJson()).toList();
+    if (items != null) {
+      data['items'] = items!.map((v) => v.toJson()).toList();
     }
-    if (this.taxes != null) {
-      data['taxes'] = this.taxes!.map((v) => v.toJson()).toList();
+    if (taxes != null) {
+      data['taxes'] = taxes!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -346,26 +346,26 @@ class PaymentSchedule {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['creation'] = this.creation;
-    data['modified'] = this.modified;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['due_date'] = this.dueDate;
-    data['invoice_portion'] = this.invoicePortion;
-    data['discount'] = this.discount;
-    data['payment_amount'] = this.paymentAmount;
-    data['outstanding'] = this.outstanding;
-    data['paid_amount'] = this.paidAmount;
-    data['discounted_amount'] = this.discountedAmount;
-    data['base_payment_amount'] = this.basePaymentAmount;
-    data['parent'] = this.parent;
-    data['parentfield'] = this.parentfield;
-    data['parenttype'] = this.parenttype;
-    data['doctype'] = this.doctype;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['owner'] = owner;
+    data['creation'] = creation;
+    data['modified'] = modified;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['due_date'] = dueDate;
+    data['invoice_portion'] = invoicePortion;
+    data['discount'] = discount;
+    data['payment_amount'] = paymentAmount;
+    data['outstanding'] = outstanding;
+    data['paid_amount'] = paidAmount;
+    data['discounted_amount'] = discountedAmount;
+    data['base_payment_amount'] = basePaymentAmount;
+    data['parent'] = parent;
+    data['parentfield'] = parentfield;
+    data['parenttype'] = parenttype;
+    data['doctype'] = doctype;
     return data;
   }
 }
@@ -547,63 +547,63 @@ class Items {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     // data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['creation'] = this.creation;
-    data['modified'] = this.modified;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['item_code'] = this.itemCode;
-    data['item_name'] = this.itemName;
-    data['description'] = this.description;
-    data['gst_hsn_code'] = this.gstHsnCode;
-    data['is_nil_exempt'] = this.isNilExempt;
-    data['is_non_gst'] = this.isNonGst;
-    data['item_group'] = this.itemGroup;
-    data['image'] = this.image;
-    data['qty'] = this.qty;
-    data['stock_uom'] = this.stockUom;
-    data['uom'] = this.uom;
-    data['conversion_factor'] = this.conversionFactor;
-    data['stock_qty'] = this.stockQty;
-    data['price_list_rate'] = this.priceListRate;
-    data['base_price_list_rate'] = this.basePriceListRate;
-    data['margin_type'] = this.marginType;
-    data['margin_rate_or_amount'] = this.marginRateOrAmount;
-    data['rate_with_margin'] = this.rateWithMargin;
-    data['discount_percentage'] = this.discountPercentage;
-    data['discount_amount'] = this.discountAmount;
-    data['base_rate_with_margin'] = this.baseRateWithMargin;
-    data['rate'] = this.rate;
-    data['net_rate'] = this.netRate;
-    data['amount'] = this.amount;
-    data['net_amount'] = this.netAmount;
-    data['item_tax_template'] = this.itemTaxTemplate;
-    data['base_rate'] = this.baseRate;
-    data['base_net_rate'] = this.baseNetRate;
-    data['base_amount'] = this.baseAmount;
-    data['base_net_amount'] = this.baseNetAmount;
-    data['pricing_rules'] = this.pricingRules;
-    data['stock_uom_rate'] = this.stockUomRate;
-    data['is_free_item'] = this.isFreeItem;
-    data['is_alternative'] = this.isAlternative;
-    data['has_alternative_item'] = this.hasAlternativeItem;
-    data['valuation_rate'] = this.valuationRate;
-    data['gross_profit'] = this.grossProfit;
-    data['weight_per_unit'] = this.weightPerUnit;
-    data['total_weight'] = this.totalWeight;
-    data['against_blanket_order'] = this.againstBlanketOrder;
-    data['blanket_order_rate'] = this.blanketOrderRate;
-    data['projected_qty'] = this.projectedQty;
-    data['actual_qty'] = this.actualQty;
-    data['item_tax_rate'] = this.itemTaxRate;
-    data['page_break'] = this.pageBreak;
-    data['parent'] = this.parent;
-    data['parentfield'] = this.parentfield;
-    data['parenttype'] = this.parenttype;
-    data['doctype'] = this.doctype;
+    data['owner'] = owner;
+    data['creation'] = creation;
+    data['modified'] = modified;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['item_code'] = itemCode;
+    data['item_name'] = itemName;
+    data['description'] = description;
+    data['gst_hsn_code'] = gstHsnCode;
+    data['is_nil_exempt'] = isNilExempt;
+    data['is_non_gst'] = isNonGst;
+    data['item_group'] = itemGroup;
+    data['image'] = image;
+    data['qty'] = qty;
+    data['stock_uom'] = stockUom;
+    data['uom'] = uom;
+    data['conversion_factor'] = conversionFactor;
+    data['stock_qty'] = stockQty;
+    data['price_list_rate'] = priceListRate;
+    data['base_price_list_rate'] = basePriceListRate;
+    data['margin_type'] = marginType;
+    data['margin_rate_or_amount'] = marginRateOrAmount;
+    data['rate_with_margin'] = rateWithMargin;
+    data['discount_percentage'] = discountPercentage;
+    data['discount_amount'] = discountAmount;
+    data['base_rate_with_margin'] = baseRateWithMargin;
+    data['rate'] = rate;
+    data['net_rate'] = netRate;
+    data['amount'] = amount;
+    data['net_amount'] = netAmount;
+    data['item_tax_template'] = itemTaxTemplate;
+    data['base_rate'] = baseRate;
+    data['base_net_rate'] = baseNetRate;
+    data['base_amount'] = baseAmount;
+    data['base_net_amount'] = baseNetAmount;
+    data['pricing_rules'] = pricingRules;
+    data['stock_uom_rate'] = stockUomRate;
+    data['is_free_item'] = isFreeItem;
+    data['is_alternative'] = isAlternative;
+    data['has_alternative_item'] = hasAlternativeItem;
+    data['valuation_rate'] = valuationRate;
+    data['gross_profit'] = grossProfit;
+    data['weight_per_unit'] = weightPerUnit;
+    data['total_weight'] = totalWeight;
+    data['against_blanket_order'] = againstBlanketOrder;
+    data['blanket_order_rate'] = blanketOrderRate;
+    data['projected_qty'] = projectedQty;
+    data['actual_qty'] = actualQty;
+    data['item_tax_rate'] = itemTaxRate;
+    data['page_break'] = pageBreak;
+    data['parent'] = parent;
+    data['parentfield'] = parentfield;
+    data['parenttype'] = parenttype;
+    data['doctype'] = doctype;
     return data;
   }
 }
@@ -695,35 +695,35 @@ class Taxes {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['owner'] = this.owner;
-    data['creation'] = this.creation;
-    data['modified'] = this.modified;
-    data['modified_by'] = this.modifiedBy;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['charge_type'] = this.chargeType;
-    data['account_head'] = this.accountHead;
-    data['description'] = this.description;
-    data['included_in_print_rate'] = this.includedInPrintRate;
-    data['included_in_paid_amount'] = this.includedInPaidAmount;
-    data['cost_center'] = this.costCenter;
-    data['rate'] = this.rate;
-    data['tax_amount'] = this.taxAmount;
-    data['total'] = this.total;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['owner'] = owner;
+    data['creation'] = creation;
+    data['modified'] = modified;
+    data['modified_by'] = modifiedBy;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['charge_type'] = chargeType;
+    data['account_head'] = accountHead;
+    data['description'] = description;
+    data['included_in_print_rate'] = includedInPrintRate;
+    data['included_in_paid_amount'] = includedInPaidAmount;
+    data['cost_center'] = costCenter;
+    data['rate'] = rate;
+    data['tax_amount'] = taxAmount;
+    data['total'] = total;
     data['tax_amount_after_discount_amount'] =
-        this.taxAmountAfterDiscountAmount;
-    data['base_tax_amount'] = this.baseTaxAmount;
-    data['base_total'] = this.baseTotal;
+        taxAmountAfterDiscountAmount;
+    data['base_tax_amount'] = baseTaxAmount;
+    data['base_total'] = baseTotal;
     data['base_tax_amount_after_discount_amount'] =
-        this.baseTaxAmountAfterDiscountAmount;
-    data['item_wise_tax_detail'] = this.itemWiseTaxDetail;
-    data['dont_recompute_tax'] = this.dontRecomputeTax;
-    data['parent'] = this.parent;
-    data['parentfield'] = this.parentfield;
-    data['parenttype'] = this.parenttype;
-    data['doctype'] = this.doctype;
+        baseTaxAmountAfterDiscountAmount;
+    data['item_wise_tax_detail'] = itemWiseTaxDetail;
+    data['dont_recompute_tax'] = dontRecomputeTax;
+    data['parent'] = parent;
+    data['parentfield'] = parentfield;
+    data['parenttype'] = parenttype;
+    data['doctype'] = doctype;
     return data;
   }
 }

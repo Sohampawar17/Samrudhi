@@ -3,6 +3,7 @@ import 'package:geolocation/model/order_details_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_order_model.dart';
+import '../../../model/search_order_model.dart';
 import '../../../router.router.dart';
 import '../../../services/add_order_services.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,7 @@ class AddOrderViewModel extends BaseViewModel {
   DateTime? selectedtransactionDate;
   DateTime? selecteddeliveryDate;
   List<String> searchcutomer = [""];
+  List<SearchCustomerList> cutomer = [];
   List<String> warehouse = [""];
   List<Items> selectedItems = [];
   List<OrderDetailsModel> orderetails = [];
@@ -34,6 +36,7 @@ String displayString='';
     setBusy(true);
     searchcutomer = await AddOrderServices().fetchcustomer();
     warehouse = await AddOrderServices().fetchwarehouse();
+    // cutomer=await AddOrderServices().fetcustomer();
     orderId = orderid;
     //setting aleardy available data
     if (orderId != "") {

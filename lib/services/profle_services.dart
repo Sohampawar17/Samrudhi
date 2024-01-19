@@ -22,6 +22,7 @@ class ProfileServices{
       );
 
       if (response.statusCode == 200) {
+        Logger().i(getTocken());
         Logger().i(response.data["data"]);
         return   EmployeeDetails.fromJson(response.data["data"]);
       } else {
@@ -90,6 +91,7 @@ class ProfileServices{
       );
 
       if (response.statusCode == 200) {
+        
         Logger().i(json.encode(response.data));
         String jsonString = json.encode(response.data);
         Map<String, dynamic> jsonResponse = json.decode(jsonString);

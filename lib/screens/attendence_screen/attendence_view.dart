@@ -298,13 +298,14 @@ class AttendanceScreen extends StatelessWidget {
                   model.attendancelist.isNotEmpty
                       ? Expanded(
                     child: ListView.separated(
+                      shrinkWrap: true,
                         itemBuilder: (builder, index) {
                           return Container(padding: EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.white,
                               ),
-                            height: 100,
+                            
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

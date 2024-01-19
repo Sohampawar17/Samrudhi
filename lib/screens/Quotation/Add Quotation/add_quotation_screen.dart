@@ -341,6 +341,7 @@ if(model.isEdit==true)
                               child: Column(
                                 children: [
                                   Row(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       AutoSizeText(
                                         'ID:  ${selectedItem.itemCode}',
@@ -362,12 +363,11 @@ if(model.isEdit==true)
                                           icon: const Icon(
                                               Icons.delete_outline_rounded))
                                     ],
-                                    mainAxisSize: MainAxisSize.min,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const AutoSizeText('Quantity :',   style: const TextStyle(
+                                      const AutoSizeText('Quantity :',   style: TextStyle(
                                           fontWeight: FontWeight.w700,fontSize: 15),),
                                       IconButton(
                                         icon: const Icon(Icons.remove_circle),
@@ -436,65 +436,21 @@ if(model.isEdit==true)
                     children: [
                       CtextButton(
                         text: 'Cancel',
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red.shade400,
                       ),
                       model.isSame==false ?
-                      TextButton(
-                        onPressed: () => model.onSavePressed(context),
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12)),
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).primaryColor),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          overlayColor: MaterialStateProperty.all(
-                              Theme.of(context).badgeTheme.textColor),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                           Text(
-                                    model.isEdit
+                        CtextButton(
+                        text:  model.isEdit
                                         ? 'Update Quotation'
                                         : 'Create Quotation',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-
-
-                          ],
-                        ),
-                      ):
-                      TextButton(
-                        onPressed: () => model.onSubmitPressed(context),
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12)),
-                          backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).primaryColor),
-                          shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          overlayColor: MaterialStateProperty.all(
-                              Theme.of(context).badgeTheme.textColor),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Text(
-
-                                  'Submit Quotation'
-                                  ,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-
-
-                          ],
-                        ),
-                      ),
+                        onPressed: () =>  model.onSavePressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
+                     :
+                      CtextButton(
+                        text:  'Submit Quotation',
+                        onPressed: () =>  model.onSubmitPressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
+                     
 
                     ],
                   )
@@ -551,10 +507,10 @@ if(model.isEdit==true)
           ),
           buildBillingRow(
               'Subtotal :', model.quotationdata.netTotal?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Total Tax :',
               model.quotationdata.totalTaxesAndCharges?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Discount :',
               model.quotationdata.discountAmount?.toString() ?? '0.0'),
           const Divider(

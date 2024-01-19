@@ -25,13 +25,13 @@ class InvoiceItemScreen extends StatelessWidget {
             loader: model.isBusy,
             context: context,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -65,7 +65,7 @@ class InvoiceItemScreen extends StatelessWidget {
                       const SizedBox(height: 4), // Adjust the height as needed
                       Row(
                         children: [
-                          Expanded(flex: 3,child: const AutoSizeText('Quantity:')),
+                          const Expanded(flex: 3,child: AutoSizeText('Quantity:')),
                           Expanded(
                             flex: 1,
                             child: IconButton(

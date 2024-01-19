@@ -29,12 +29,12 @@ class QuotationItemScreen extends StatelessWidget {
             loader: model.isBusy,
             context: context,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
                   CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -68,7 +68,7 @@ class QuotationItemScreen extends StatelessWidget {
                             const SizedBox(height: 4), // Adjust the height as needed
                             Row(
                               children: [
-                                Expanded(flex: 3,child: const AutoSizeText('Quantity:')),
+                                const Expanded(flex: 3,child: AutoSizeText('Quantity:')),
                                 Expanded(
                                   flex: 1,
                                   child: IconButton(
@@ -172,7 +172,7 @@ class QuotationItemScreen extends StatelessWidget {
 class BottomSheetWidget extends StatefulWidget {
   final QuotationItemListModel model;
 
-  const BottomSheetWidget({Key? key, required this.model}) : super(key: key);
+  const BottomSheetWidget({super.key, required this.model});
 
   @override
   _BottomSheetWidgetState createState() => _BottomSheetWidgetState();

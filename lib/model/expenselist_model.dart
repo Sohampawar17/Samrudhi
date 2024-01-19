@@ -87,41 +87,41 @@ class Expenselist {
     if (json['attachments'] != null) {
       attachments = <Attachments>[];
       json['attachments'].forEach((v) {
-        attachments!.add(new Attachments.fromJson(v));
+        attachments!.add( Attachments.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['modified_by'] = this.modifiedBy;
-    data['owner'] = this.owner;
-    data['docstatus'] = this.docstatus;
-    data['idx'] = this.idx;
-    data['naming_series'] = this.namingSeries;
-    data['employee'] = this.employee;
-    data['employee_name'] = this.employeeName;
-    data['department'] = this.department;
-    data['expense_approver'] = this.expenseApprover;
-    data['approval_status'] = this.approvalStatus;
-    data['is_paid'] = this.isPaid;
-    data['total_sanctioned_amount'] = this.totalSanctionedAmount;
-    data['total_taxes_and_charges'] = this.totalTaxesAndCharges;
-    data['total_advance_amount'] = this.totalAdvanceAmount;
-    data['grand_total'] = this.grandTotal;
-    data['total_claimed_amount'] = this.totalClaimedAmount;
-    data['total_amount_reimbursed'] = this.totalAmountReimbursed;
-    data['posting_date'] = this.postingDate;
-    data['title'] = this.title;
-    data['payable_account'] = this.payableAccount;
-    data['cost_center'] = this.costCenter;
-    data['status'] = this.status;
-    data['expense_type'] = this.expenseType;
-    data['expense_description'] = this.expenseDescription;
-    data['expense_date'] = this.expenseDate;
-    if (this.attachments != null) {
-      data['attachments'] = this.attachments!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['name'] = name;
+    data['modified_by'] = modifiedBy;
+    data['owner'] = owner;
+    data['docstatus'] = docstatus;
+    data['idx'] = idx;
+    data['naming_series'] = namingSeries;
+    data['employee'] = employee;
+    data['employee_name'] = employeeName;
+    data['department'] = department;
+    data['expense_approver'] = expenseApprover;
+    data['approval_status'] = approvalStatus;
+    data['is_paid'] = isPaid;
+    data['total_sanctioned_amount'] = totalSanctionedAmount;
+    data['total_taxes_and_charges'] = totalTaxesAndCharges;
+    data['total_advance_amount'] = totalAdvanceAmount;
+    data['grand_total'] = grandTotal;
+    data['total_claimed_amount'] = totalClaimedAmount;
+    data['total_amount_reimbursed'] = totalAmountReimbursed;
+    data['posting_date'] = postingDate;
+    data['title'] = title;
+    data['payable_account'] = payableAccount;
+    data['cost_center'] = costCenter;
+    data['status'] = status;
+    data['expense_type'] = expenseType;
+    data['expense_description'] = expenseDescription;
+    data['expense_date'] = expenseDate;
+    if (attachments != null) {
+      data['attachments'] = attachments!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -138,7 +138,7 @@ class Attachments {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['file_url'] = this.fileUrl;
+    data['file_url'] = fileUrl;
     return data;
   }
 }

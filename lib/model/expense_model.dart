@@ -20,19 +20,19 @@ class ExpenseData {
     if (json['attachments'] != null) {
       attachments = <Attachments>[];
       json['attachments'].forEach((v) {
-        attachments!.add(new Attachments.fromJson(v));
+        attachments!.add(Attachments.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['expense_type'] = this.expenseType;
-    data['expense_description'] = this.expenseDescription;
-    data['expense_date'] = this.expenseDate;
-    data['amount'] = this.amount;
-    if (this.attachments != null) {
-      data['attachments'] = this.attachments!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['expense_type'] = expenseType;
+    data['expense_description'] = expenseDescription;
+    data['expense_date'] = expenseDate;
+    data['amount'] = amount;
+    if (attachments != null) {
+      data['attachments'] = attachments!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -51,10 +51,10 @@ class Attachments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['file_name'] = this.fileName;
-    data['file_url']=this.fileUrl;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['file_name'] = fileName;
+    data['file_url']=fileUrl;
     return data;
   }
 }

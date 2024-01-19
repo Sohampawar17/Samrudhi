@@ -102,7 +102,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
               CheckboxListTile(
                 value: model.updateStock,
                 onChanged: model.setStock,
-                title: Text(
+                title: const Text(
                   'Update Stock',
                   style: TextStyle(
                     fontSize: 18,
@@ -115,7 +115,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
 
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.black38, width: 1), // Add border for styling
+                  side: const BorderSide(color: Colors.black38, width: 1), // Add border for styling
                 ),
                 activeColor: Colors.blue, // Color when the checkbox is checked
                 checkColor: Colors.white, // Color of the check icon
@@ -156,7 +156,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                         }
                     },
                      decoration: InputDecoration(
-       suffixIcon: Icon(Icons.arrow_drop_down),
+       suffixIcon: const Icon(Icons.arrow_drop_down),
         contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
         labelText: 'Items',
         hintText: 'For select items click here',
@@ -296,59 +296,23 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                    
+                          CtextButton(
+                        text: 'Cancel',
+                        onPressed: () => Navigator.pop(context,const MaterialRoute(page: ListInvoiceScreen)), buttonColor: Colors.red.shade400,
+                      ),
+                      model.isSame==false ?
                         CtextButton(
-                          text: 'Cancel',
-                          onPressed: () => Navigator.pop(context,const MaterialRoute(page: ListInvoiceScreen)),
-                        ),
-                        model.isSame == false?
-                        TextButton(
-                          onPressed: () => model.onSavePressed(context),
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            overlayColor: MaterialStateProperty.all(
-                                Theme.of(context).badgeTheme.textColor),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                             Text(
-                                     model.isEdit ?'Update Invoice' :'Create Invoice',
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
-                            ],
-                          ),
-                        ):
-                        TextButton(
-                          onPressed: () => model.onSubmitPressed(context),
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            overlayColor: MaterialStateProperty.all(
-                                Theme.of(context).badgeTheme.textColor),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                             Text(
-                                'Submit Invoice',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
+                        text:  model.isEdit
+                                        ? 'Update Invoice'
+                                        : 'Create Invoice',
+                        onPressed: () =>  model.onSavePressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
+                     :
+                      CtextButton(
+                        text:  'Submit Invoice',
+                        onPressed: () =>  model.onSubmitPressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
                       ],
                     )
                 ],
@@ -403,10 +367,10 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
           ),
           buildBillingRow(
               'Subtotal :', model.invoiceData.netTotal?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Total Tax :',
               model.invoiceData.totalTaxesAndCharges?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Discount :',
               model.invoiceData.discountAmount?.toString() ?? '0.0'),
           const Divider(

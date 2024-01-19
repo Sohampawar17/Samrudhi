@@ -46,8 +46,8 @@ class QuotationList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = name;
-    data['title'] = this.title;
-    data['quotation_to'] = this.quotationTo;
+    data['title'] = title;
+    data['quotation_to'] = quotationTo;
     data['customer_name'] = customerName;
     data['transaction_date'] = transactionDate;
     data['grand_total'] = grandTotal;

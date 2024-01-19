@@ -17,8 +17,8 @@ class HolidayScreen extends StatelessWidget {
 backgroundColor: Colors.grey.shade300,
           appBar: AppBar(title: const Text('Holiday'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
-          bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
-            padding: EdgeInsets.all(10),
+          bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
+            padding: const EdgeInsets.all(10),
             color: Colors.white,
             child: DropdownButtonFormField<int>(
               value: model.selectedYear, // The currently selected year
@@ -27,20 +27,20 @@ backgroundColor: Colors.grey.shade300,
                 model.updateSelectedYear(year);
               },
               decoration: InputDecoration(
-                constraints: BoxConstraints(maxHeight: 60),
+                constraints: const BoxConstraints(maxHeight: 60),
                 labelText: 'Year',
                 hintText: 'Select year',
-                prefixIcon: Icon(Icons.calendar_month),
+                prefixIcon: const Icon(Icons.calendar_month),
 
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                  borderSide: const BorderSide(color: Colors.blue, width: 2.0),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
 
@@ -75,19 +75,19 @@ backgroundColor: Colors.grey.shade300,
                             height: 55,
                             child:  ListTile(
                               leading: Image.asset('assets/images/beach-chair.png',scale: 20,),
-                              title: AutoSizeText(model.holidaylist[index].description ?? "",style: TextStyle(fontWeight: FontWeight.bold),),
+                              title: AutoSizeText(model.holidaylist[index].description ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  AutoSizeText(model.holidaylist[index].date ?? "",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  AutoSizeText(model.holidaylist[index].day ?? "",style: TextStyle(fontWeight: FontWeight.w300),),
+                                  AutoSizeText(model.holidaylist[index].date ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  AutoSizeText(model.holidaylist[index].day ?? "",style: const TextStyle(fontWeight: FontWeight.w300),),
                                 ],
                               ),
                             )
                           );
                         },
                         separatorBuilder: (context, builder) {
-                          return Divider(
+                          return const Divider(
                             thickness: 1,
                           );
                         },

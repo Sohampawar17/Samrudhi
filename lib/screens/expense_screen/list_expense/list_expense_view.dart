@@ -20,8 +20,8 @@ class ExpenseScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('My Expenses'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
-            bottom:  PreferredSize(preferredSize: Size(20, 75), child:Container(
-              padding: EdgeInsets.all(8),
+            bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
+              padding: const EdgeInsets.all(8),
               color: Colors.white,
               child: Row(
                 children: [
@@ -38,11 +38,11 @@ class ExpenseScreen extends StatelessWidget {
                         hintText: 'Select month',
 
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
@@ -56,7 +56,7 @@ class ExpenseScreen extends StatelessWidget {
                     ),
 
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   Expanded(
                     child: DropdownButtonFormField<int>(
                       value: model.selectedYear, // The currently selected year
@@ -65,20 +65,20 @@ class ExpenseScreen extends StatelessWidget {
                         model.updateSelectedYear(year);
                       },
                       decoration: InputDecoration(
-                        constraints: BoxConstraints(maxHeight: 60),
+                        constraints: const BoxConstraints(maxHeight: 60),
                         labelText: 'Year',
                         hintText: 'Select year',
-                        prefixIcon: Icon(Icons.calendar_month),
+                        prefixIcon: const Icon(Icons.calendar_month),
 
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                          borderSide: const BorderSide(color: Colors.blue, width: 2.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
 
@@ -108,7 +108,7 @@ class ExpenseScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white,
                     ),
-                    child: Row(
+                    child: const Row(
 
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -121,7 +121,7 @@ class ExpenseScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               model.expenselist.isNotEmpty
               ? Expanded(
               child: ListView.separated(
@@ -132,7 +132,7 @@ class ExpenseScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               child: ExpansionTile(
-              tilePadding: EdgeInsets.all(8),
+              tilePadding: const EdgeInsets.all(8),
               title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -149,7 +149,7 @@ class ExpenseScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(10.0),
                     child: AutoSizeText("${model.expenselist[index].expenseType.toString()} Expense",  textAlign:
                     TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight:
                         FontWeight.w500,
@@ -159,8 +159,8 @@ class ExpenseScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AutoSizeText("Date:- ${model.expenselist[index].postingDate?.toString() ?? ""}", style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700)),
-                    AutoSizeText("Amount:- ${model.expenselist[index].totalClaimedAmount?.toString() ?? "0.0"}", style: TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
+                    AutoSizeText("Date:- ${model.expenselist[index].postingDate?.toString() ?? ""}", style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w700)),
+                    AutoSizeText("Amount:- ${model.expenselist[index].totalClaimedAmount?.toString() ?? "0.0"}", style: const TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
                   ],
                 ),
 CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselist[index].approvalStatus ?? ""),child: Icon(model.getIconForStatus(model.expenselist[index].approvalStatus ?? ""),color: Colors.white,))
@@ -178,20 +178,20 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              AutoSizeText("Sanction Amount :-", style: TextStyle(fontSize: 15)),
-              AutoSizeText(model.expenselist[index].totalSanctionedAmount?.toString() ?? "0.0", style: TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
+              const AutoSizeText("Sanction Amount :-", style: TextStyle(fontSize: 15)),
+              AutoSizeText(model.expenselist[index].totalSanctionedAmount?.toString() ?? "0.0", style: const TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
               ],
               ),
               Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              AutoSizeText("Claimed Amount :-", style: TextStyle(fontSize: 15)),
-              AutoSizeText(model.expenselist[index].totalClaimedAmount?.toString() ?? "0.0", style: TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
+              const AutoSizeText("Claimed Amount :-", style: TextStyle(fontSize: 15)),
+              AutoSizeText(model.expenselist[index].totalClaimedAmount?.toString() ?? "0.0", style: const TextStyle(fontSize: 15, color: Colors.green,fontWeight: FontWeight.w700)),
               ],
               ),
               ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
@@ -210,7 +210,7 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
                       padding: const EdgeInsets.all(10.0),
                       child: AutoSizeText(model.expenselist[index].approvalStatus ?? "",  textAlign:
                       TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight:
                           FontWeight.bold,
@@ -219,7 +219,7 @@ CircleAvatar(radius: 15,backgroundColor:model.getColorForStatus(model.expenselis
                   )
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildSubtitle("Description :- ${model.expenselist[index].expenseDescription ?? ""}"),
 if (model.expenselist[index].attachments?.isNotEmpty == true)
               TextButton(
@@ -275,13 +275,13 @@ if (model.expenselist[index].attachments?.isNotEmpty == true)
             context: context,
           ),
 floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addExpenseScreen),
-label: Text('Create Expense'),),
+label: const Text('Create Expense'),),
         ));
   }
 
 
 
   Widget _buildSubtitle(String text) {
-    return AutoSizeText(text, style: TextStyle(fontSize: 15));
+    return AutoSizeText(text, style: const TextStyle(fontSize: 15));
   }
 }

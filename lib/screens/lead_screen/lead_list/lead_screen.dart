@@ -6,6 +6,7 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
+import '../../../widgets/text_button.dart';
 
 class LeadListScreen extends StatefulWidget {
   const LeadListScreen({super.key});
@@ -42,6 +43,8 @@ body: fullScreenLoader(
                               child: RefreshIndicator(
                                 onRefresh: ()=>model.refresh(),
                                 child: ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (builder, index) {
                                       return Container(
                                         decoration: BoxDecoration(
@@ -80,7 +83,7 @@ body: fullScreenLoader(
                                                           model.filterleadlist[index]
                                                                   .name ??
                                                               "",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 14.0,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -90,13 +93,14 @@ body: fullScreenLoader(
                                                           model.filterleadlist[index]
                                                                   .leadName?.toUpperCase() ??
                                                               "",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontWeight: FontWeight.w300
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                     Card(
+                                                      
                                                       color: model.getColorForStatus(model.filterleadlist[index]
                                                           .status ??
                                                           ""),
@@ -117,9 +121,10 @@ body: fullScreenLoader(
                                                           model.filterleadlist[index]
                                                                   .status ??
                                                               "",
+                                                              minFontSize: 8,
                                                           textAlign:
                                                               TextAlign.center,
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -129,7 +134,7 @@ body: fullScreenLoader(
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(height: 15.0),
+                                                const SizedBox(height: 15.0),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -140,14 +145,14 @@ body: fullScreenLoader(
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
+                                                        const Text(
                                                           'Company Name',
 
                                                         ),
                                                         Text(
                                                           model.filterleadlist[index]
                                                                   .companyName?.toUpperCase() ??
-                                                              "", style: TextStyle(
+                                                              "", style: const TextStyle(
                                                           fontWeight:
                                                           FontWeight.bold,
                                                         ),
@@ -159,7 +164,7 @@ body: fullScreenLoader(
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
+                                                        const Text(
                                                           'Territory',
 
                                                         ),
@@ -167,7 +172,7 @@ body: fullScreenLoader(
                                                           model.filterleadlist[index]
                                                                   .territory
                                                                   ?.toString() ??
-                                                              "", style: TextStyle(
+                                                              "", style: const TextStyle(
                                                           fontWeight:
                                                           FontWeight.bold,
                                                         ),
@@ -185,7 +190,7 @@ body: fullScreenLoader(
                                       );
                                     },
                                     separatorBuilder: (context, builder) {
-                                      return SizedBox(
+                                      return const SizedBox(
                                         height: 10,
                                       );
                                     },
@@ -194,9 +199,9 @@ body: fullScreenLoader(
                             )
                           : Center(
                         child: Container(
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                          padding: const EdgeInsets.all(16),
+                          decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                          child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
                       )
                     ],
                   ),
@@ -204,7 +209,7 @@ body: fullScreenLoader(
                 loader: model.isBusy,
                 context: context,
               ),
-                floatingActionButton: FloatingActionButton.extended(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),label: Text('Create Lead'),),
+                floatingActionButton: FloatingActionButton.extended(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),label: const Text('Create Lead'),),
       ));
   }
 
@@ -233,7 +238,7 @@ body: fullScreenLoader(
                         labelText: 'Lead Company',
                         onChanged: model.setcustomer,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       CustomDropdownButton2(
                         value: model.territory,
                         prefixIcon: Icons.person_2,
@@ -247,22 +252,27 @@ body: fullScreenLoader(
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
+                           CtextButton(
+                              onPressed: () {
                               model.clearfilter();
                               Navigator.pop(
                                   context); // Close the bottom sheet
                             },
-                            child: Text('Clear Filter'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
+                                text: 'Clear Filter',
+                                buttonColor: Colors.black54,
+                               
+                              ),
+                              CtextButton(
+                              onPressed: () {
                               model.setfilter(model.territory ?? "",
                                   model.custm ?? "");
                               Navigator.pop(context);
                             },
-                            child: Text('Apply Filter'),
-                          ),
+                                  text: 'Apply Filter',
+                                buttonColor: Colors.blueAccent.shade400,
+                               
+                              ),
+                        
                         ],
                       ),
                     ],

@@ -14,9 +14,9 @@ class ChangePassword {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_password'] = this.currentpassword;
-    data['new_password'] = this.newpassword;
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['current_password'] = currentpassword;
+    data['new_password'] = newpassword;
     return data;
   }
 }

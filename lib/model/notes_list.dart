@@ -16,12 +16,12 @@ class NotesList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['note'] = this.note;
-    data['commented'] = this.commented;
-    data['added_on'] = this.addedOn;
-    data['image'] = this.image;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['note'] = note;
+    data['commented'] = commented;
+    data['added_on'] = addedOn;
+    data['image'] = image;
     return data;
   }
 }

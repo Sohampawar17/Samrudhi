@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class CtextButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
-
+ final Color buttonColor;
   const CtextButton({
     super.key,
     required this.onPressed,
-    required this.text,
+    required this.text, required this.buttonColor,
   });
 
   @override
@@ -17,10 +17,10 @@ class CtextButton extends StatelessWidget {
       style: ButtonStyle(
         padding: MaterialStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
-        backgroundColor:
-            MaterialStateProperty.all(Theme.of(context).primaryColor),
+       backgroundColor: MaterialStateProperty.all(buttonColor),
         shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)
+            )),
         overlayColor:
             MaterialStateProperty.all(Theme.of(context).badgeTheme.textColor),
       ),
@@ -34,7 +34,7 @@ class CtextButton extends StatelessWidget {
           // const SizedBox(width: 10),
           Text(
             text,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
           ),
         ],
       ),

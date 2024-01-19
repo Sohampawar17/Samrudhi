@@ -24,13 +24,13 @@ class InvoiceList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['customer_name'] = this.customerName;
-    data['due_date'] = this.dueDate;
-    data['grand_total'] = this.grandTotal;
-    data['status'] = this.status;
-    data['total_qty'] = this.totalQty;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['customer_name'] = customerName;
+    data['due_date'] = dueDate;
+    data['grand_total'] = grandTotal;
+    data['status'] = status;
+    data['total_qty'] = totalQty;
     return data;
   }
 }

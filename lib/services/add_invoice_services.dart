@@ -103,8 +103,8 @@ class AddInvoiceServices{
           Fluttertoast.showToast(
             gravity: ToastGravity.BOTTOM,
             msg: 'NegativeStock Error: $item needed in $warehouse.',
-            textColor: Color(0xFFFFFFFF),
-            backgroundColor: Color(0xFFBA1A1A),
+            textColor: const Color(0xFFFFFFFF),
+            backgroundColor: const Color(0xFFBA1A1A),
           );
 
           Logger().e("Negative Stock Error: $item needed in $warehouse");
@@ -118,8 +118,8 @@ class AddInvoiceServices{
         Fluttertoast.showToast(
           gravity: ToastGravity.BOTTOM,
           msg: 'Error: $errorDetails',
-          textColor: Color(0xFFFFFFFF),
-          backgroundColor: Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
         );
 
         Logger().e("DioException: $errorDetails");
@@ -161,15 +161,15 @@ class AddInvoiceServices{
       if(e.response?.statusCode==417){
         Fluttertoast.showToast(
           msg: "${e.response?.data['message'].toString()}",
-          backgroundColor: Color(0xFFBA1A1A),
-          textColor: Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
         );
         Logger().e(e.response?.data['message'].toString());
       }else{
         Fluttertoast.showToast(
           msg: "${e.response?.data['message'].toString()}",
-          backgroundColor: Color(0xFFBA1A1A),
-          textColor: Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),
+          textColor: const Color(0xFFFFFFFF),
         );
         Logger().e(e.response?.data['message'].toString());
       }
@@ -277,8 +277,8 @@ class AddInvoiceServices{
     } on DioException catch (e) {
       Fluttertoast.showToast(
         msg: "${e.response?.data["message"].toString()} ",
-        backgroundColor: Color(0xFFBA1A1A),
-        textColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),
+        textColor: const Color(0xFFFFFFFF),
       );
       Logger().e(e);
     }

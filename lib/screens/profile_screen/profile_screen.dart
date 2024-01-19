@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           backgroundColor: colorScheme.primary,
         ),
-        body: fullScreenLoader(
+           body: fullScreenLoader(
           loader: model.isBusy,
           context: context,
           child: SingleChildScrollView(
@@ -41,7 +41,6 @@ class ProfileScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-
                     decoration: BoxDecoration(
                       color: colorScheme.surface,
                       borderRadius: BorderRadius.circular(30),
@@ -58,36 +57,44 @@ class ProfileScreen extends StatelessWidget {
                       child: ListTile(
                         leading: Stack(
                           children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                            radius: 35,
-                           child: Image.network(
-                             model.employeedetail.employeeImage ?? "",
-                             height: 40,
-                             loadingBuilder: (BuildContext context, Widget child,
-                                 ImageChunkEvent? loadingProgress) {
-                               if (loadingProgress == null) {
-                                 // Image is done loading
-                                 return child;
-                               } else {
-                                 // Image is still loading
-                                 return const Center(
-                                     child: CircularProgressIndicator(color: Colors.blueAccent));
-                               }
-                             },
-                             errorBuilder:
-                                 (BuildContext context, Object error, StackTrace? stackTrace) {
-                               // Handle the error by displaying a broken image icon
-                               return  Center(
-                                   child: Image.asset('assets/images/profile.png',scale: 5,));
-                             },
-                           ),// Replace with your image asset
-                          ),
-                          Positioned(top: 20,left: 30,
-                              child:  IconButton.filled(color: Colors.white,
-                                  onPressed: (){
-                                    model.selectPdf(ImageSource.gallery);
-                                  }, icon: const Icon(Icons.add_a_photo,color: Colors.black,size: 25,)),)],
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 35,
+                              child: ClipOval(
+                                child: Image.network(
+                                  model.employeedetail.employeeImage ?? "",
+                                  width: 60,
+                                  height: 70,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (BuildContext context, Widget child,
+                                      ImageChunkEvent? loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    } else {
+                                      return const Center(
+                                          child: CircularProgressIndicator(color: Colors.blueAccent));
+                                    }
+                                  },
+                                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                    return Center(
+                                      child: Image.asset('assets/images/profile.png', scale: 5),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 20,
+                              left: 30,
+                              child: IconButton.filled(
+                                color: Colors.white,
+                                onPressed: () {
+                                  model.selectPdf(ImageSource.gallery);
+                                },
+                                icon: const Icon(Icons.add_a_photo, color: Colors.black, size: 25),
+                              ),
+                            ),
+                          ],
                         ),
                         title: Text(
                           (model.employeedetail.employeeName ?? "N/A").toUpperCase(),
@@ -106,63 +113,61 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20,),
-                  Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surface,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 4,
-                          color: colorScheme.shadow,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                       const AutoSizeText('Employee ID',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14,),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.name ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Date of joining',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.dateOfJoining ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Date of Birth',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.dateOfBirth ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Gender',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.gender ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Official email address',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.companyEmail ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Personal email address',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.personalEmail ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Contact number',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.cellNumber ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
-                        const Divider(thickness: 1,),
-                        const AutoSizeText('Emergency conatct number',style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),minFontSize: 14),
-                        const SizedBox(height: 8),
-                        AutoSizeText(model.employeedetail.emergencyPhoneNumber ?? "N/A",style: const TextStyle(fontWeight: FontWeight.bold),minFontSize: 16),
+                 Container(
+  padding: const EdgeInsets.all(18),
+  decoration: BoxDecoration(
+    color: colorScheme.surface,
+    borderRadius: BorderRadius.circular(30),
+    boxShadow: [
+      BoxShadow(
+        blurRadius: 8,
+        color: colorScheme.shadow,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _buildProfileDetail("Employee ID", model.employeedetail.name ?? "N/A", Icons.person),
+      _buildProfileDetail("Date of Joining", model.employeedetail.dateOfJoining ?? "N/A", Icons.calendar_today),
+      _buildProfileDetail("Date of Birth", model.employeedetail.dateOfBirth ?? "N/A", Icons.cake),
+      _buildProfileDetail("Gender", model.employeedetail.gender ?? "N/A", Icons.people),
+      _buildProfileDetail("Official Email", model.employeedetail.companyEmail ?? "N/A", Icons.email),
+      _buildProfileDetail("Personal Email", model.employeedetail.personalEmail ?? "N/A", Icons.email_outlined),
+      _buildProfileDetail("Contact Number", model.employeedetail.cellNumber ?? "N/A", Icons.phone),
+      Row(
+        children: [
+          Icon(
+            Icons.phone_in_talk,
+            color: Colors.blueAccent,
+            size: 30,
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Emergency Contact",
+                style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+               
+               AutoSizeText(
+         textAlign: TextAlign.end,
+        model.employeedetail.emergencyPhoneNumber ?? "N/A",
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        minFontSize: 16,
+      ),
+            ],
+          ),
+        ],
+      ),
+     
+    ])
+),
 
 
-
-                        // Add more ListTile widgets for other profile details
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 20,),
             Container(
               decoration: BoxDecoration(
@@ -177,8 +182,8 @@ crossAxisAlignment: CrossAxisAlignment.start,
                 ],
               ),child: ListTile(
               onTap: () => Navigator.popAndPushNamed(context, Routes.changePasswordScreen),
-              leading: Icon(Icons.lock_outlined),
-              title: Text('Change the Password',style: TextStyle(fontWeight: FontWeight.bold),),trailing: Icon(Icons.arrow_forward_ios_outlined),
+              leading: const Icon(Icons.lock_outlined),
+              title: const Text('Change the Password',style: TextStyle(fontWeight: FontWeight.bold),),trailing: const Icon(Icons.arrow_forward_ios_outlined),
             )),
                   const SizedBox(height: 20,),
                   Container(
@@ -198,29 +203,29 @@ crossAxisAlignment: CrossAxisAlignment.start,
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Logout'),
-                            content: Text('Are you sure you want to log out?'),
+                            title: const Text('Logout'),
+                            content: const Text('Are you sure you want to log out?'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
                                   // Close the dialog
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   logout(context); // Close the dialog
                                 },
-                                child: Text('Logout'),
+                                child: const Text('Logout'),
                               ),
                             ],
                           );
                         },
                       );
                     },
-                    leading: Icon(Icons.login_outlined),
-                    title: Text('Logout',style: TextStyle(fontWeight: FontWeight.bold),),trailing: Icon(Icons.arrow_forward_ios_outlined),
+                    leading: const Icon(Icons.login_outlined),
+                    title: const Text('Logout',style: TextStyle(fontWeight: FontWeight.bold),),trailing: const Icon(Icons.arrow_forward_ios_outlined),
                   )),
                 ],
               ),
@@ -230,4 +235,43 @@ crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
   }
+
+  
+Widget _buildProfileDetail(String label, String value, IconData icon) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        
+        children: [
+          Icon(
+            icon,
+            color: Colors.blueAccent,
+            size: 30,
+          ),
+          const SizedBox(width: 18),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+               AutoSizeText(
+        value,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        textAlign: TextAlign.center,
+        minFontSize: 16,
+      ),
+            ],
+          ),
+        ],
+      ),
+     
+      const Divider(thickness: 1, color: Colors.grey),
+      const SizedBox(height: 16),
+    ],
+  );
+}
 }

@@ -39,18 +39,18 @@ class EmployeeDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['employee_name'] = this.employeeName;
-    data['designation'] = this.designation;
-    data['name'] = this.name;
-    data['date_of_joining'] = this.dateOfJoining;
-    data['date_of_birth'] = this.dateOfBirth;
-    data['gender'] = this.gender;
-    data['company_email'] = this.companyEmail;
-    data['personal_email'] = this.personalEmail;
-    data['cell_number'] = this.cellNumber;
-    data['emergency_phone_number'] = this.emergencyPhoneNumber;
-    data['employee_image'] = this.employeeImage;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['employee_name'] = employeeName;
+    data['designation'] = designation;
+    data['name'] = name;
+    data['date_of_joining'] = dateOfJoining;
+    data['date_of_birth'] = dateOfBirth;
+    data['gender'] = gender;
+    data['company_email'] = companyEmail;
+    data['personal_email'] = personalEmail;
+    data['cell_number'] = cellNumber;
+    data['emergency_phone_number'] = emergencyPhoneNumber;
+    data['employee_image'] = employeeImage;
     return data;
   }
 }

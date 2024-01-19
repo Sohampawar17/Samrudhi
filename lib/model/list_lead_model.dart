@@ -22,11 +22,11 @@ class ListLeadModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['lead_name'] = this.leadName;
-    data['status'] = this.status;
-    data['company_name'] = this.companyName;
-    data['territory'] = this.territory;
+    data['name'] = name;
+    data['lead_name'] = leadName;
+    data['status'] = status;
+    data['company_name'] = companyName;
+    data['territory'] = territory;
     return data;
   }
 }

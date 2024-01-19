@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
 import '../../../widgets/full_screen_loader.dart';
+import '../../../widgets/text_button.dart';
 import 'list_quotation_model.dart';
 
 class ListQuotationScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class ListQuotationScreen extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
           backgroundColor: Colors.grey.shade300,
           appBar: AppBar(
-            title: Text('Quotation'),
+            title: const Text('Quotation'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.filter_list),
@@ -76,7 +77,7 @@ class ListQuotationScreen extends StatelessWidget {
                                               model.filterquotationlist[index]
                                                   .name ??
                                                   "",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 14.0,
                                                 fontWeight:
                                                 FontWeight.bold,
@@ -86,7 +87,7 @@ class ListQuotationScreen extends StatelessWidget {
                                               model.filterquotationlist[index]
                                                   .transactionDate ??
                                                   "",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.grey,
                                               ),
                                             ),
@@ -117,7 +118,7 @@ class ListQuotationScreen extends StatelessWidget {
                                                   "",
                                               textAlign:
                                               TextAlign.center,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight:
                                                 FontWeight.bold,
@@ -127,7 +128,7 @@ class ListQuotationScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 15.0),
+                                    const SizedBox(height: 15.0),
                                     Row(
                                       mainAxisAlignment:
                                       MainAxisAlignment
@@ -138,7 +139,7 @@ class ListQuotationScreen extends StatelessWidget {
                                           CrossAxisAlignment
                                               .start,
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Customer name',
                                               style: TextStyle(
                                                 fontWeight:
@@ -157,7 +158,7 @@ class ListQuotationScreen extends StatelessWidget {
                                           CrossAxisAlignment
                                               .start,
                                           children: [
-                                            Text(
+                                            const Text(
                                               'Items',
                                               style: TextStyle(
                                                 fontWeight:
@@ -177,7 +178,7 @@ class ListQuotationScreen extends StatelessWidget {
                                           CrossAxisAlignment
                                               .start,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Amount",
                                               style: TextStyle(
                                                 fontWeight:
@@ -186,7 +187,7 @@ class ListQuotationScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               '${model.filterquotationlist[index].grandTotal?.toString() ?? "0.0"}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight:
                                                 FontWeight.w500,
                                                 color: Colors
@@ -204,7 +205,7 @@ class ListQuotationScreen extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, builder) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 10,
                           );
                         },
@@ -212,9 +213,9 @@ class ListQuotationScreen extends StatelessWidget {
                   )
                       : Center(
                     child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
                   )
                 ],
               ),
@@ -224,10 +225,10 @@ class ListQuotationScreen extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.addQuotationView, arguments: AddQuotationViewArguments(quotationid: "")
+              Navigator.pushReplacementNamed(context, Routes.addQuotationView, arguments: const AddQuotationViewArguments(quotationid: "")
                  );
             },
-          label: Text('Create Quote'),
+          label: const Text('Create Quote'),
           ),
         ));
   }
@@ -259,7 +260,7 @@ class ListQuotationScreen extends StatelessWidget {
                         labelText: 'Quotation To',
                         onChanged: model.setquotationto,
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       CustomDropdownButton2(
                         value: model.custm,
                         prefixIcon: Icons.person_2,
@@ -308,22 +309,27 @@ class ListQuotationScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
+                           CtextButton(
+                                  onPressed: () {
                               model.clearfilter();
                               Navigator.pop(
                                   context); // Close the bottom sheet
                             },
-                            child: Text('Clear Filter'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
+                                text: 'Clear Filter',
+                                buttonColor: Colors.black54,
+                               
+                              ),
+                              CtextButton(
+                                onPressed: () {
                               model.setfilter(model.quotationto ?? "",
                                   model.custm ?? "");
                               Navigator.pop(context);
                             },
-                            child: Text('Apply Filter'),
-                          ),
+                                  text: 'Apply Filter',
+                                buttonColor: Colors.blueAccent.shade400,
+                               
+                              ),
+                         
                         ],
                       ),
                     ],

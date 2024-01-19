@@ -19,25 +19,32 @@ setBusy(false);
 notifyListeners();
   }
 
-  Future<void> selectPdf(ImageSource source) async {
-    try {
-      final result = await ImagePicker().pickImage(source: source);
-      if (result != null) {
-        // print("SIZE BEFORE: ${result.files.single.size}");
-        setBusy(true);
-        File? compressedFile = await compressFile(fileFromXFile(result));
-        Logger().i(result);
-        // print("SIZE BEFORE: ${compressedFile?.lengthSync()}");
-        String aadharUrl = await ProfileServices().uploadDocs(compressedFile);
-      Logger().i(aadharUrl);
-res=await ProfileServices().updateProfilePicture(aadharUrl);
-        employeedetail= await ProfileServices().profile() ?? EmployeeDetails();
-        setBusy(false);
-        notifyListeners();
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: 'Error while picking an image or document: $e');
+Future<void> selectPdf(ImageSource source) async {
+  try {
+    final result = await ImagePicker().pickImage(source: source);
+
+    if (result == null) {
+      return;
     }
+
+    setBusy(true);
+
+    File? compressedFile = await compressFile(fileFromXFile(result));
+    Logger().i(result);
+
+    String aadharUrl = await ProfileServices().uploadDocs(compressedFile);
+    Logger().i(aadharUrl);
+
+    res = await ProfileServices().updateProfilePicture(aadharUrl);
+    employeedetail = await ProfileServices().profile() ?? EmployeeDetails();
+
+    setBusy(false);
+    notifyListeners();
+  } catch (e) {
+    Fluttertoast.showToast(
+      msg: 'Error while picking an image or document: $e',
+    );
   }
+}
+
 }

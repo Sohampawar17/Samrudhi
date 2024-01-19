@@ -18,11 +18,11 @@ class OrderDetailsModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['discount_amount'] = this.discountAmount;
-    data['grand_total'] = this.grandTotal;
-    data['net_total'] = this.netTotal;
-    data['total_taxes_and_charges'] = this.totalTaxesAndCharges;
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['discount_amount'] = discountAmount;
+    data['grand_total'] = grandTotal;
+    data['net_total'] = netTotal;
+    data['total_taxes_and_charges'] = totalTaxesAndCharges;
     return data;
   }
 }

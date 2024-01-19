@@ -82,7 +82,17 @@ CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense typ
                       const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.amountcontroller, labelText: 'Amount', hintText: 'Enter the amount',validator: model.validateamount,onChanged: model.setamount,keyboardtype: TextInputType.number,),
                       const SizedBox(height: 10,),
-                      CtextButton(onPressed: () { model.selectPdf(ImageSource.gallery); }, text: 'Upload Documents',),
+                      ElevatedButton.icon(onPressed:  () { model.selectPdf(ImageSource.gallery); }, icon: Icon(Icons.upload_file), label: Text("Upload Documents"),   style: ButtonStyle(
+        padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
+       backgroundColor: MaterialStateProperty.all(Colors.blue),
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)
+            )),
+        overlayColor:
+            MaterialStateProperty.all(Theme.of(context).badgeTheme.textColor),
+      ),),
+
 //                       ElevatedButton.icon(
 //                         onPressed: () {
 // model.selectPdf(ImageSource.gallery);
@@ -118,8 +128,8 @@ onDeleted: () {
                       const SizedBox(height: 15,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel'),
-                          CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Expense')
+                        children: [CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.red.shade500,),
+                          CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Expense', buttonColor: Colors.blueAccent,)
               ]
                       )
                     ],

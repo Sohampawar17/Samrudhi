@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import '../../../constants.dart';
 import '../../../model/add_order_model.dart';
+import '../../../model/search_order_model.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
 import '../../../widgets/text_button.dart';
@@ -58,6 +59,19 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomDropdownButton2(value: model.orderdata.customer,prefixIcon: Icons.person_2,items: model.searchcutomer, hintText: 'Select the customer', labelText: 'Customer', onChanged:  model.setcustomer,),
+// CustomModelDropdown<SearchCustomerList>(
+//   items: model.cutomer,
+//   hintText: 'select Customer',
+//   labelText: 'Customer',
+//   onChanged:(SearchCustomerList? value){ model.setcustomer(value?.name ?? "");},
+//   itemBuilder: (BuildContext context, SearchCustomerList? item, bool isSelected) {
+//     // Customize how each item in the dropdown looks
+//     return ListTile(
+//      title: Text(item?.customerName ?? ""),
+//      subtitle: Text(item?.name ?? ""),
+//     );
+//   },
+// ),
 
                   const SizedBox(
                     height: 15,
@@ -149,7 +163,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                         }
                     },
                      decoration: InputDecoration(
-       suffixIcon: Icon(Icons.arrow_drop_down),
+       suffixIcon: const Icon(Icons.arrow_drop_down),
         contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
         labelText: 'Items',
         hintText: 'For select items click here',
@@ -289,64 +303,23 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                    
+                          CtextButton(
+                        text: 'Cancel',
+                        onPressed: () => Navigator.pop(context,const MaterialRoute(page: ListOrderScreen)), buttonColor: Colors.red.shade400,
+                      ),
+                      model.isSame==false ?
                         CtextButton(
-                          text: 'Cancel',
-                          onPressed: () => Navigator.pop(context,const MaterialRoute(page: ListOrderScreen)),
-                        ),
-                        model.isSame==false?
-                        TextButton(
-                          onPressed: () => model.onSavePressed(context),
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            overlayColor: MaterialStateProperty.all(
-                                Theme.of(context).badgeTheme.textColor),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              model.isloading
-                                  ? LoadingAnimationWidget.hexagonDots(
-                                      color: Colors.white,
-                                      size: 18,
-                                    )
-                                  :  Text(
-                                     model.isEdit ?'Update Order' :'Create Order',
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
-                            ],
-                          ),
-                        ):
-                        TextButton(
-                          onPressed: () => model.onSubmitPressed(context),
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).primaryColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            overlayColor: MaterialStateProperty.all(
-                                Theme.of(context).badgeTheme.textColor),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Submit Order',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
+                        text:  model.isEdit
+                                        ? 'Update Order'
+                                        : 'Create Order',
+                        onPressed: () =>  model.onSavePressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
+                     :
+                      CtextButton(
+                        text:  'Submit Order',
+                        onPressed: () =>  model.onSubmitPressed(context), buttonColor: Colors.blueAccent.shade400,
+                      )
                       ],
                     )
                 ],
@@ -402,10 +375,10 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
 
           buildBillingRow(
               'Subtotal :', model.orderdata.netTotal?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Total Tax :',
               model.orderdata.totalTaxesAndCharges?.toString() ?? '0.0'),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           buildBillingRow('Discount :',
               model.orderdata.discountAmount?.toString() ?? '0.0'),
           const Divider(

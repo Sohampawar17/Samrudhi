@@ -95,39 +95,40 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                           Expanded(
-                            flex: 1,
-                             child: CircleAvatar(
-                               backgroundColor: Colors.black,
-                               radius: 40,
-                               child: CircleAvatar(
-                                 backgroundColor: Colors.white,
-                                 radius: 35,
-                                 child: Image.network(
-                                   '${model.dashboard.employeeImage}',
-                                   height: 40,
-                                   loadingBuilder: (BuildContext context, Widget child,
-                                       ImageChunkEvent? loadingProgress) {
-                                     if (loadingProgress == null) {
-                                       // Image is done loading
-                                       return child;
-                                     } else {
-                                       // Image is still loading
-                                       return const Center(
-                                           child: CircularProgressIndicator(color: Colors.blueAccent));
-                                     }
-                                   },
-                                   errorBuilder:
-                                       (BuildContext context, Object error, StackTrace? stackTrace) {
-                                     // Handle the error by displaying a broken image icon
-                                     return  Center(
-                                         child: Image.asset('assets/images/profile.png',scale: 5,));
-                                   },
-                                 ),
-                               ),
+                          Expanded(
+  flex: 1,
+  child: CircleAvatar(
+    backgroundColor: Colors.black,
+    radius: 40,
+    child: Align(
+      alignment: Alignment.center,
+      child: ClipOval(
+     
+        child: Image.network(
+           width: 70, // Set width to twice the radius for a complete circle
+      height: 70,
+      fit: BoxFit.cover,
+          '${model.dashboard.employeeImage}',
+      
+          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              // Image is done loading
+              return child;
+            } else {
+              // Image is still loading
+              return const Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+            }
+          },
+          errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+            // Handle the error by displaying a broken image icon
+            return Center(child: Image.asset('assets/images/profile.png', scale: 5));
+          },
+        ),
+      ),
+    ),
+  ),
+)
 
-                             ),
-                           )
                         ],
                       ),
                       const SizedBox(
@@ -444,7 +445,7 @@ minFontSize: 15,
                                       Text('|',textAlign: TextAlign.left,style:TextStyle(fontSize: 14,fontWeight: FontWeight.w700,color: Colors.black)),
                                       Divider(thickness: 5,color: Colors.black,indent: 10,height: 20,),
                                       Text('${model.attendancedashboard.dayOff ?? 0} Days',textAlign: TextAlign.left,style:TextStyle(fontWeight: FontWeight.w700,color: Colors.yellow[700])),
-                                      Divider(thickness: 5,color: Colors.black,indent: 40,height: 20,),
+                                      Divider(thickness: 5,color: Colors.black,indent: 15,height: 20,),
                                       Text('${model.attendancedashboard.totalDays ?? 0} Days',textAlign: TextAlign.left,style:TextStyle(fontWeight: FontWeight.w700,color: Colors.grey)),
                                     ],),
                                   ),
