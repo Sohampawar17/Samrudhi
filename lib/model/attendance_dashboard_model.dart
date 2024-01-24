@@ -33,4 +33,5 @@ class AttendanceDashboard {
     data['absent'] = absent;
     return data;
   }
+
 }

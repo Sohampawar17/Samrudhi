@@ -61,7 +61,7 @@ class CustomDropdownButton2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-     height: 55,
+     height:60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18.0),
       
@@ -123,7 +123,7 @@ showSearchBox: true,showSelectedItems: true,searchFieldProps: TextFieldProps(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.black,
+               
                 width: 1.0,
               ),
               color: isSelected ? Colors.blueAccent : Colors.transparent,
@@ -147,7 +147,7 @@ showSearchBox: true,showSelectedItems: true,searchFieldProps: TextFieldProps(
               ),
              
               const Divider(
-                height: 0.5,
+             thickness: 1,
                 color: Colors.black45,
               ),
             ],

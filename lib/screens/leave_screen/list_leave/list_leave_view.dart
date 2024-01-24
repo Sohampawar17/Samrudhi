@@ -14,7 +14,7 @@ class ListLeaveScreen extends StatelessWidget {
         viewModelBuilder: () => LeaveViewModel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=> Scaffold(
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.grey.shade100,
           appBar: AppBar(title: const Text('My Leaves'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
             bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
@@ -95,188 +95,195 @@ class ListLeaveScreen extends StatelessWidget {
             ),
             ),
           ),
-          body: fullScreenLoader(
-            child: SingleChildScrollView(
-              // controller: ScrollController(keepScrollOffset: false),
-              scrollDirection: Axis.vertical,
-              // physics: NeverScrollableScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Upcoming Leaves (${model.leavelist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    model.leavelist.isNotEmpty
-                        ? ListView.separated(
-                           controller: ScrollController(keepScrollOffset: false),
-             
-              physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (builder, index) {
-                            return Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Card( color: Colors.blue,
-                                        shape:
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              20.0),
-                                         // Set border color and width
+          body: WillPopScope(
+            onWillPop: ()  async{
+                  Navigator.popAndPushNamed(context,Routes.homePage);
+                  return true; },
+            child: fullScreenLoader(
+              child: SingleChildScrollView(
+                // controller: ScrollController(keepScrollOffset: false),
+                scrollDirection: Axis.vertical,
+                // physics: NeverScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Upcoming Leaves (${model.leavelist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      model.leavelist.isNotEmpty
+                          ? ListView.separated(
+                             controller: ScrollController(keepScrollOffset: false),
+               
+                physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (builder, index) {
+                              return Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Card( color: Colors.blue,
+                                          shape:
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                20.0),
+                                           // Set border color and width
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: AutoSizeText(model.leavelist[index].leaveType.toString(), textAlign:
+                                            TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight:
+                                                FontWeight.w700,
+                                              ),),
+                                          ),
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: AutoSizeText(model.leavelist[index].leaveType.toString(), textAlign:
-                                          TextAlign.center,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight:
-                                              FontWeight.w700,
-                                            ),),
+                          
+                                        Card( color: model.getColorForStatus(model.leavelist[index].status.toString()),
+                                          shape:
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                20.0),
+                                            // Set border color and width
+                                          ),
+                                          // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: AutoSizeText(model.leavelist[index].status ?? "",  textAlign:
+                                            TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text( "Leave from ${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                                    const SizedBox(height: 10),
+                                    if(model.leavelist[index].description != "")
+                                      Text("Description:- ${model.leavelist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, builder) {
+                              return const Divider(
+                                height: 20,
+                                thickness: 1,
+                              );
+                            },
+                            itemCount: model.leavelist.length,
+                          ): _buildEmptyContainer('No upcoming leave found for this year and month'),
+                           const SizedBox(height: 10),
+                          Divider(thickness: 2,color: Colors.black87,),
+                      const SizedBox(height: 10),
+                      Text("Taken Leaves (${model.takenlist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      model.takenlist.isNotEmpty
+                          ? ListView.separated(
+                             controller: ScrollController(keepScrollOffset: false),
+               
+                physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (builder, index) {
+                              return Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Card(
+                                          color: Colors.blue,
+                                          shape:
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                20.0),
+                                            // Set border color and width
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: AutoSizeText(model.takenlist[index].leaveType.toString(), textAlign:
+                                            TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight:
+                                                FontWeight.w700,
+                                              ),),
+                                          ),
                                         ),
-                                      ),
-                        
-                                      Card( color: model.getColorForStatus(model.leavelist[index].status.toString()),
-                                        shape:
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              20.0),
-                                          // Set border color and width
-                                        ),
-                                        // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: AutoSizeText(model.leavelist[index].status ?? "",  textAlign:
-                                          TextAlign.center,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight:
-                                              FontWeight.bold,
-                                            ),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text( "Leave from ${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
-                                  const SizedBox(height: 10),
-                                  if(model.leavelist[index].description != "")
-                                    Text("Description:- ${model.leavelist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, builder) {
-                            return const Divider(
-                              height: 20,
-                              thickness: 1,
-                            );
-                          },
-                          itemCount: model.leavelist.length,
-                        ): _buildEmptyContainer('No upcoming leave found for this year and month'),
-                    const SizedBox(height: 20),
-                    Text("Taken Leaves (${model.takenlist.length})", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    model.takenlist.isNotEmpty
-                        ? ListView.separated(
-                           controller: ScrollController(keepScrollOffset: false),
-             
-              physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (builder, index) {
-                            return Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Card(
-                                        color: Colors.blue,
-                                        shape:
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              20.0),
-                                          // Set border color and width
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: AutoSizeText(model.takenlist[index].leaveType.toString(), textAlign:
-                                          TextAlign.center,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight:
-                                              FontWeight.w700,
-                                            ),),
-                                        ),
-                                      ),
-                        
-                                      Card(
-                                        color: model.getColorForStatus(model.takenlist[index].status.toString()),
-                                        shape:
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              20.0),
-                                          // Set border color and width
-                                        ),
-                                        // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: AutoSizeText(model.takenlist[index].status ?? "",  textAlign:
-                                          TextAlign.center,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight:FontWeight.bold,
-                                            ),),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
-                                  const SizedBox(height: 10),
-                                  if(model.takenlist[index].description != null)
-                                  Text("Description:- ${model.takenlist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, builder) {
-                            return const Divider(
-                              height: 20,
-                              thickness: 1,
-                            );
-                          },
-                          itemCount: model.takenlist.length,
-                        )
-                        : _buildEmptyContainer('No taken leave found for this year and month'),
-                  ],
+                          
+                                        Card(
+                                          color: model.getColorForStatus(model.takenlist[index].status.toString()),
+                                          shape:
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                20.0),
+                                            // Set border color and width
+                                          ),
+                                          // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: AutoSizeText(model.takenlist[index].status ?? "",  textAlign:
+                                            TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight:FontWeight.bold,
+                                              ),),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                                    const SizedBox(height: 10),
+                                    if(model.takenlist[index].description != null)
+                                    Text("Description:- ${model.takenlist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, builder) {
+                              return const Divider(
+                                height: 20,
+                                thickness: 1,
+                              );
+                            },
+                            itemCount: model.takenlist.length,
+                          )
+                          : _buildEmptyContainer('No taken leave found for this year and month'),
+                    ],
+                  ),
                 ),
               ),
+            
+            
+                loader: model.isBusy,
+              context: context,
             ),
-
-
-    loader: model.isBusy,
-            context: context,
           ),
 floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen),
 label: const Text('Create Leave'),),

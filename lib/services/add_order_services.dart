@@ -123,13 +123,12 @@ class AddOrderServices {
         Fluttertoast.showToast(msg: "UNABLE TO update Order!");
         return false;
       }
-    } catch (e) {
-      // Fluttertoast.showToast(
-      //   msg: "${e}",
-      //   backgroundColor: Color(0xFFBA1A1A),
-      //   textColor: Color(0xFFFFFFFF),
-      // );
+    } on DioException catch (e) {
+       Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString().split(":").elementAt(1).trim()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e);
+
+      
+     
     }
     return false;
   }

@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/model/order_details_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -58,7 +57,14 @@ class AddInvoiceViewModel extends BaseViewModel {
   }
 
   void onSavePressed(BuildContext context) async {
-
+  if (invoiceData.docstatus == 1) {
+    Fluttertoast.showToast(
+      msg: 'You cannot edit the Submitted document',
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+    );
+    return; // Move the return statement here
+  }
     setBusy(true);
     if (formKey.currentState!.validate()) {
       invoiceData.items = selectedItems;
@@ -91,6 +97,14 @@ class AddInvoiceViewModel extends BaseViewModel {
 
 
   void onSubmitPressed(BuildContext context) async {
+      if (invoiceData.docstatus == 1) {
+    Fluttertoast.showToast(
+      msg: 'You cannot submit the Submitted document',
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+    );
+    return; // Move the return statement here
+  }
     setBusy(true);
     if (formKey.currentState!.validate()) {
       invoiceData.items = selectedItems;

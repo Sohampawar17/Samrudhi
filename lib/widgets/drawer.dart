@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../constants.dart';
 import '../router.router.dart';
 
@@ -61,8 +61,8 @@ width: 70,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    'https://babich.biz/content/images/2016/03/user-profile-bg.jpg',
+                  image: AssetImage(
+                      'assets/images/drawer_bg.jpg',
                   ),
                 ),
               ),
@@ -88,17 +88,26 @@ width: 70,
               Navigator.popAndPushNamed(context, Routes.profileScreen);
             },
           ),
+
+          const Divider(thickness: 1),
           ListTile(
-            leading: const Icon(FontAwesome.location_arrow, color: Colors.black),
+            leading: const Icon(Icons.policy, color: Colors.black),
             title: const Text(
-              'Geolocation',
+              'Privacy Policy',
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
-            onTap: () {
-              Navigator.popAndPushNamed(context, Routes.geolocation);
+
+            onTap: () async {
+              String url =
+                  'https://doc-hosting.flycricket.io/quantbiz-privacy-policy/be560405-7f35-4f4f-87bb-5a7b9acb1c69/privacy';
+              if (await canLaunchUrlString(url)) {
+                await launchUrlString(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+
             },
           ),
-          const Divider(thickness: 1),
           ListTile(
             leading: const Icon(Iconsax.logout, color: Colors.black),
             title: const Text(

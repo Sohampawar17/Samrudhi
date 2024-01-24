@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/addquotation_model.dart';
@@ -69,6 +70,14 @@ String name="";
 
 
   void onSavePressed(BuildContext context) async {
+     if (quotationdata.docstatus == 1) {
+    Fluttertoast.showToast(
+      msg: 'You cannot edit the Submitted document',
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+    );
+    return; // Move the return statement here
+  }
     setBusy(true);
 
     if (formKey.currentState!.validate()) {
@@ -103,6 +112,14 @@ setBusy(false);
 
 
   void onSubmitPressed(BuildContext context) async {
+  if (quotationdata.docstatus == 1) {
+    Fluttertoast.showToast(
+      msg: 'You cannot submit the Submitted document',
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+    );
+    return; // Move the return statement here
+  }
     setBusy(true);
     if (formKey.currentState!.validate()) {
       quotationdata.items = selectedItems;
@@ -149,9 +166,11 @@ setBusy(false);
   void onvalidtillDobChanged(String value) {
     isSame=false;
     quotationdata.validTill = value;
+    notifyListeners();
   }
 
   void setcustomer(String? customer) {
+    isSame=false;
     quotationdata.partyName = customer;
     notifyListeners();
   }

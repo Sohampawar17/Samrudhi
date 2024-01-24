@@ -33,188 +33,193 @@ class ListOrderScreen extends StatelessWidget {
                     },
                     icon: const Icon(Icons.arrow_back)),
               ),
-              body: fullScreenLoader(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      model.filterorderlist.isNotEmpty
-                          ? Expanded(
-                              child: RefreshIndicator(
-                                onRefresh: ()=>model.refresh(),
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (builder, index) {
-                                      return Container(
-                                         decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-                                        // spreadRadius: 5,
-                                        blurRadius: 7,
-                                        // offset: const Offset(0, 3), // Customize the shadow offset
-                                      ),
-                                    ],
-                                  ),
-                                        child: MaterialButton(
-                                          onPressed: () => model.onRowClick(
-                                              context, model.filterorderlist[index]),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          model.filterorderlist[index]
-                                                                  .name ??
-                                                              "",
-                                                          style: const TextStyle(
-                                                            fontSize: 14.0,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+              body: WillPopScope(
+                onWillPop: ()  async{
+                  Navigator.popAndPushNamed(context,Routes.homePage);
+                  return true; },
+                child: fullScreenLoader(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        model.filterorderlist.isNotEmpty
+                            ? Expanded(
+                                child: RefreshIndicator(
+                                  onRefresh: ()=>model.refresh(),
+                                  child: ListView.separated(
+                                    shrinkWrap: true,
+                                    physics: const AlwaysScrollableScrollPhysics(),
+                                      itemBuilder: (builder, index) {
+                                        return Container(
+                                           decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                          // spreadRadius: 5,
+                                          blurRadius: 7,
+                                          // offset: const Offset(0, 3), // Customize the shadow offset
+                                        ),
+                                      ],
+                                    ),
+                                          child: MaterialButton(
+                                            onPressed: () => model.onRowClick(
+                                                context, model.filterorderlist[index]),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(15.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            model.filterorderlist[index]
+                                                                    .name ??
+                                                                "",
+                                                            style: const TextStyle(
+                                                              fontSize: 14.0,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Text(
-                                                          model.filterorderlist[index]
-                                                                  .transactionDate ??
-                                                              "",
-                                                          style: const TextStyle(
-                                                            color: Colors.grey,
+                                                          Text(
+                                                            model.filterorderlist[index]
+                                                                    .transactionDate ??
+                                                                "",
+                                                            style: const TextStyle(
+                                                              color: Colors.grey,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Card(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                20.0),
-                                                       // Set border color and width
+                                                        ],
                                                       ),
-                                                      color: model
-                                                          .getColorForStatus(model
-                                                                  .filterorderlist[
-                                                                      index]
-                                                                  .status ??
-                                                              ""),
-                                                      // Make the inside of the card hollow
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets.all(
-                                                                10.0),
-                                                        child: AutoSizeText(
-                                                          model.filterorderlist[index]
-                                                                  .status ??
-                                                              "",
-                                                              minFontSize: 8,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                      Card(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  20.0),
+                                                         // Set border color and width
+                                                        ),
+                                                        color: model
+                                                            .getColorForStatus(model
+                                                                    .filterorderlist[
+                                                                        index]
+                                                                    .status ??
+                                                                ""),
+                                                        // Make the inside of the card hollow
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                  10.0),
+                                                          child: AutoSizeText(
+                                                            model.filterorderlist[index]
+                                                                    .status ??
+                                                                "",
+                                                                minFontSize: 8,
+                                                            textAlign:
+                                                                TextAlign.center,
+                                                            style: const TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 15.0),
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        const Text(
-                                                            'Customer name',
-                                                            style: TextStyle(color: Colors.black87, fontWeight:  FontWeight.w300)
-                                                        ),
-                                                        Container(
-                                                          width: 150, // Adjust the width as needed
-                                                          child: Text(
-                                                            model.filterorderlist[index].customerName ?? "",
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 15.0),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                              'Customer name',
+                                                              style: TextStyle(color: Colors.black87, fontWeight:  FontWeight.w300)
+                                                          ),
+                                                          Container(
+                                                            width: 150, // Adjust the width as needed
+                                                            child: Text(
+                                                              model.filterorderlist[index].customerName ?? "",
+                                                              style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                                                              overflow: TextOverflow.ellipsis,
+                                                              maxLines: 2,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                            'Items',
+                                                            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
+                                                          ),
+                                                          Text(
+                                                            model.filterorderlist[index].totalQty?.toString() ?? "0.0",
                                                             style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 2,
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        const Text(
-                                                          'Items',
-                                                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
-                                                        ),
-                                                        Text(
-                                                          model.filterorderlist[index].totalQty?.toString() ?? "0.0",
-                                                          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        const Text(
-                                                          "Amount",
-                                                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
-                                                        ),
-                                                        Text(
-                                                          model.filterorderlist[index].grandTotal?.toString() ?? "0.0",
-                                                          style: const TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            color: Colors.green,
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                            "Amount",
+                                                            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w300),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-
-                                              ],
+                                                          Text(
+                                                            model.filterorderlist[index].grandTotal?.toString() ?? "0.0",
+                                                            style: const TextStyle(
+                                                              fontWeight: FontWeight.w500,
+                                                              color: Colors.green,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, builder) {
-                                      return const SizedBox(
-                                        height: 10,
-                                      );
-                                    },
-                                    itemCount: model.filterorderlist.length),
-                              ),
+                                        );
+                                      },
+                                      separatorBuilder: (context, builder) {
+                                        return const SizedBox(
+                                          height: 10,
+                                        );
+                                      },
+                                      itemCount: model.filterorderlist.length),
+                                ),
+                              )
+                            : Center(
+                              child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                          child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
                             )
-                          : Center(
-                            child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                        child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
-                          )
-                    ],
+                      ],
+                    ),
                   ),
+                  loader: model.isBusy,
+                  context: context,
                 ),
-                loader: model.isBusy,
-                context: context,
               ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {

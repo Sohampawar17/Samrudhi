@@ -107,9 +107,8 @@ _upcomingleavelist=await  ListLeaveServices().fetchLeaves();
       DateTime postingDate = DateTime.parse(leave.postingDate ?? "");
       return postingDate.year == _selectedYear && postingDate.month == _selectedmonth;
     }).toList();
-notifyListeners();
-
   }
+  notifyListeners();
 }
 
 

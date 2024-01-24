@@ -53,7 +53,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomDropdownButton2(value: model.invoiceData.customer,prefixIcon: Icons.person_2,items: model.searchcutomer, hintText: 'Select the customer', labelText: 'Customer', onChanged:  model.setcustomer,),
 
@@ -97,7 +97,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                     onChanged: model.ondeliveryDobChanged,
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
               CheckboxListTile(
                 value: model.updateStock,
@@ -110,18 +110,15 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                     color: Colors.black54, // Customize the text color
                   ),
                 ),
-                controlAffinity: ListTileControlAffinity.leading,
+                controlAffinity: ListTileControlAffinity.trailing,
                  // Customize the background color
 
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.black38, width: 1), // Add border for styling
-                ),
+                
                 activeColor: Colors.blue, // Color when the checkbox is checked
                 checkColor: Colors.white, // Color of the check icon
               ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
               CustomDropdownButton2(prefixIcon:Icons.warehouse_outlined,items: model.warehouse, hintText: 'select the warehouse', onChanged: model.setwarehouse, labelText: 'Set Warehouse',value: model.invoiceData.setWarehouse,),
 
@@ -186,54 +183,144 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
         ),
       ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                   const SizedBox(
+                    height: 5,
+                  ),
+                  Text('Item List',style: TextStyle(fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                   const SizedBox(
+                    height: 10,
                   ),
                   if (model.selectedItems.isNotEmpty)
-                    ListView.separated(
+                   ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       // Prevent scrolling
                       shrinkWrap: true,
                       itemCount: model.selectedItems.length,
                       itemBuilder: (context, index) {
                         final selectedItem = model.selectedItems[index];
-                        return Row(
-                          children: [
-                            Expanded(flex: 1,child: buildImage(selectedItem.image),),
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AutoSizeText(
-                                        'ID:  ${selectedItem.itemCode}',
+
+                        return Dismissible(
+                          key: Key(selectedItem.itemCode.toString()), // Use a unique key for each item
+                          background: Container(
+                            color: Colors.red.shade400,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Icon(
+                              Icons.delete_forever_outlined,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            alignment: Alignment.centerLeft,
+                          ),
+                          confirmDismiss: (direction) async {
+                            if (direction == DismissDirection.startToEnd) {
+                              bool dismiss = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: const Text("Are you sure you want to delete the item"),
+                                    title: const Text("Delete Item ?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, false); // Dismiss without deletion
+                                        },
+                                        child: const Text("No"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context, true); // Confirm deletion
+                                        },
+                                        child: const Text("Yes"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return dismiss;
+                            }
+                          },
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) {
+                            model.deleteitem(index); // Delete the item from the model
+                          },
+                          child: Container(
+            padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                            // spreadRadius: 5,
+                                            blurRadius: 7,
+                                            // offset: const Offset(0, 3), // Customize the shadow offset
+                                          ),
+                                        ],
+                                      ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    '$baseurl${selectedItem.image}',
+                    fit: BoxFit.cover,
+                    width: 80.0,
+                    height: 80.0,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return Image.asset('assets/images/image.png',scale: 8,);
+                    },
+                  ),
+                ),
+                SizedBox(width: 10),
+                // Product Details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                       'ID: ${selectedItem.itemCode}(${selectedItem.itemName})',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 5),
+                       AutoSizeText(
+                                        'Rate: ${selectedItem.rate.toString()}',
                                         style: const TextStyle(
+                                            color: Colors.green,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Expanded(
-                                        child: AutoSizeText(
-                                          '(${selectedItem.itemName})',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w300),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
+                                      AutoSizeText(
+                                        'Amount: ${selectedItem.amount?.toString() ?? ""}',
+                                        style: const TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      IconButton(
-                                          onPressed: () {
-                                           model.deleteitem(index);
-                                          },
-                                          icon: const Icon(
-                                              Icons.delete_outline_rounded))
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const AutoSizeText('Quantity:'),
-                                      IconButton(
-                                        icon: const Icon(Icons.remove_circle),
+                    ],
+                  ),
+                ),
+                // Quantity and Buttons
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Quantity"),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                                        icon:  Icon(Icons.remove_circle,color: Colors.blueAccent.shade400,),
                                         onPressed: () {
                                           // Decrease quantity when the remove button is pressed
                                           if (selectedItem.qty != null &&
@@ -248,43 +335,27 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                                             .toString(),
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.add_circle),
+                                        icon:  Icon(Icons.add_circle,color: Colors.blueAccent.shade400,),
                                         onPressed: () {
                                           model.additem(index);
                                         },
                                       ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      AutoSizeText(
-                                        'Rate: ${selectedItem.rate.toString()}',
-                                        style: const TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      AutoSizeText(
-                                        'Amount: ${selectedItem.amount?.toString() ?? ""}',
-                                        style: const TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider(
-                          thickness: 1,
-                        );
-                      },
+                      ],
                     ),
+                    // IconButton(
+                    //   icon: Icon(Icons.delete, size: 20.0),
+                    //   onPressed: () {
+                    //     // Handle delete button action
+                    //   },
+                    // ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }, separatorBuilder: (BuildContext context, int index) { return SizedBox(height: 10,); },
+    ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -310,9 +381,35 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                       )
                      :
                       CtextButton(
-                        text:  'Submit Invoice',
-                        onPressed: () =>  model.onSubmitPressed(context), buttonColor: Colors.blueAccent.shade400,
+                        text: 'Submit Invoice',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Confirm"),
+                                content: Text("Permanently Submit invoice?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false); // Return false when cancel is pressed
+                                    },
+                                    child: Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      model.onSubmitPressed(context); // Return true when confirm is pressed
+                                    },
+                                    child: Text("Confirm"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        buttonColor: Colors.blueAccent.shade400,
                       )
+
                       ],
                     )
                 ],

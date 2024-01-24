@@ -14,7 +14,7 @@ class HolidayScreen extends StatelessWidget {
         viewModelBuilder: () => Holidayviewmodel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=> Scaffold(
-backgroundColor: Colors.grey.shade300,
+backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('Holiday'),
             leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
           bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(

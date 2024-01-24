@@ -39,7 +39,7 @@ body: fullScreenLoader(
                        Row(
                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(flex: 3,child: AutoSizeText(model.leaddata.name ?? ""),),
+                          Expanded(flex: 4,child: AutoSizeText(model.leaddata.name ?? ""),),
                           Expanded(
                             flex: 2,
                             child: DropdownButtonHideUnderline(
@@ -150,76 +150,149 @@ body: fullScreenLoader(
                              ),
                            ],
                          ),
-                     const Divider(thickness: 1),
-                     Center(child: const Text('----------------------------  Notes  -----------------------------',style: TextStyle(fontWeight: FontWeight.bold),)),
-                     CustomSmallTextFormField(controller: model.controller, hintText: 'Add your notes here', labelText: 'Add Notes',suffixicon: IconButton.outlined(style: ButtonStyle(
-
+                       const Divider(thickness: 1),
+                     const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                         Divider(thickness: 1,color: Colors.black,height: 2,),
+                        Text('Notes',style: TextStyle(fontWeight: FontWeight.bold),),
+                          Divider(thickness: 1,color: Colors.black,height: 2,),
+                      ],
                      ),
+                      const Divider(thickness: 1),
+                    //  Center(child: const Text('----------------------------  Notes  -----------------------------',style: TextStyle(fontWeight: FontWeight.bold),)),
+                     CustomSmallTextFormField(controller: model.controller, hintText: 'Add your notes here', labelText: 'Add Notes',suffixicon: IconButton.filled(color: Colors.blue,style: const ButtonStyle(),
           onPressed: () {model.addnote(widget.updateId,model.controller.text);
             }, // Implement edit functionality
-          icon: const Icon(Icons.send_rounded,color: Colors.blueAccent,),
+          icon: const Icon(Icons.send_rounded,color: Colors.white,),
         ), ),
-                     ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                               itemCount: model.notes.length,
-                               itemBuilder: (context, index) {
-                                 final noteData = model.notes[index];
-                                 return  ListTile(
-  leading:   ClipOval(
-   
-    child: Image.network(
-      noteData.image ?? "",
-      height: 40,
-     width: 40,
-fit: BoxFit.cover,
-      loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent? loadingProgress) {
-        if (loadingProgress == null) {
-          // Image is done loading
-          return child;
-        } else {
-          // Image is still loading
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.blueAccent));
-        }
-      },
-      errorBuilder:
-          (BuildContext context, Object error, StackTrace? stackTrace) {
-        // Handle the error by displaying a broken image icon
-        return  Center(
-            child: Image.asset('assets/images/profile.png',scale: 5,));
-      },
-    ),
-
-  ),
-  title: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(noteData.commented ?? '',style: const TextStyle(fontSize: 12),),
-    ],
-  ),
-  subtitle: Text(noteData.note ?? "",style: const TextStyle(fontSize: 15),),
-  trailing: Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Expanded(child:  Text(noteData.addedOn ?? "")),
-      Expanded(
-        child: IconButton(
-          onPressed: () {model.deletenote(widget.updateId,noteData.name);
-           }, // Implement edit functionality
-          icon: const Icon(Icons.delete),
-        ), 
-      ),
-    ],
-  ),
-
-  dense: true,
-  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-);
-
-                               },
-                             ),
+        ListView.builder(
+          shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                           itemCount: model.notes.length,
+                           itemBuilder: (context, index) {
+                             final noteData = model.notes[index];
+            return Dismissible(
+                background: Container(
+              color: Colors.red.shade400,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Icon(
+                Icons.delete_forever_outlined,
+                color: Colors.white,size: 40,
+              ),
+              alignment: Alignment.centerLeft,
+            ),
+              confirmDismiss: (direction) async {
+              if (direction == DismissDirection.startToEnd) {
+                bool dismiss = false;
+                await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: const Text("Are you sure you want to delete the note"),
+                        title: const Text("Delete Note?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                dismiss = false;
+                                Navigator.pop(context);
+                              },
+                              child: const Text("No")),
+                               TextButton(
+                              onPressed: () {
+                                dismiss = true;
+                               model.deletenote(widget.updateId,noteData.name);
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Yes")),
+                        ],
+                      );
+                    });
+                return dismiss;
+              } 
+            },
+        //  onDismissed: (direction) {
+            
+        //           model.deleteitem(index);
+        //           // Shows the information on Snackbar
+               
+        //         },
+          direction: DismissDirection.startToEnd,
+          key: Key(index.toString()),
+              child: Container(
+                    margin: const EdgeInsets.all(8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipOval(
+                  // Set background color for the avatar
+                 child: Image.network(
+                   noteData.image ??"",
+                   fit: BoxFit.cover,
+                   height: 60,
+              width: 60,
+                   loadingBuilder: (BuildContext context, Widget child,
+                       ImageChunkEvent? loadingProgress) {
+                     if (loadingProgress == null) {
+                       // Image is done loading
+                       return child;
+                     } else {
+                       // Image is still loading
+                       return const Center(
+                           child: CircularProgressIndicator(color: Colors.blueAccent));
+                     }
+                   },
+                   errorBuilder:
+                       (BuildContext context, Object error, StackTrace? stackTrace) {
+                     // Handle the error by displaying a broken image icon
+                     return  Center(
+                         child: Image.asset('assets/images/profile.png',scale: 5,));
+                   },
+                 ),
+                ),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Text(
+                      noteData.note ?? "",
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        noteData.commented ?? "",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                      Text(
+                        noteData.addedOn ?? "",
+                        style: const TextStyle(fontSize: 12.0),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+                        ),
+                      ],
+                    ),
+                  ),
+            );
+          },
+        ),
+                   
       
                       ],
                     ),

@@ -122,20 +122,19 @@ const SizedBox(height: 15,),
 CustomDropdownButton2(items:model.leavetype, hintText: 'select the leave type', onChanged: model.seteleavetype, labelText: 'Leave Type'),
                       const SizedBox(height: 15,),
 
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    const Text('Half day',style: TextStyle(fontSize: 15),),
-                  Switch(
-                  onChanged: model.toggleSwitch,
-                  value: model.isSwitched,
-                  activeColor: Colors.blue,
-                  activeTrackColor: Colors.blueAccent,
-                  inactiveThumbColor: Colors.grey,
-                  inactiveTrackColor: Colors.grey.shade500,
-                )
-              ],
-),
+
+                  SwitchListTile(
+                    title: Text('Half Day'), // The title of the ListTile
+                    subtitle:
+                    Text('Click here for the half day'), // Optional subtitle
+                    secondary: Icon(Icons.view_day_outlined
+                    ), // Optional leading icon
+                    onChanged: model.toggleSwitch,
+                    value: model.isSwitched,
+                  ),
+
+
+
                       if(model.leavedata.halfDay==1)
                       TextFormField(
                         readOnly: true,

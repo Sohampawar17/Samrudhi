@@ -131,38 +131,50 @@ class ProfileScreen extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       _buildProfileDetail("Employee ID", model.employeedetail.name ?? "N/A", Icons.person),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Date of Joining", model.employeedetail.dateOfJoining ?? "N/A", Icons.calendar_today),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Date of Birth", model.employeedetail.dateOfBirth ?? "N/A", Icons.cake),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Gender", model.employeedetail.gender ?? "N/A", Icons.people),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Official Email", model.employeedetail.companyEmail ?? "N/A", Icons.email),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Personal Email", model.employeedetail.personalEmail ?? "N/A", Icons.email_outlined),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Contact Number", model.employeedetail.cellNumber ?? "N/A", Icons.phone),
-      Row(
-        children: [
-          Icon(
-            Icons.phone_in_talk,
-            color: Colors.blueAccent,
-            size: 30,
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Emergency Contact",
-                style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
-              ),
-               
-               AutoSizeText(
-         textAlign: TextAlign.end,
-        model.employeedetail.emergencyPhoneNumber ?? "N/A",
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        minFontSize: 16,
-      ),
-            ],
-          ),
-        ],
-      ),
+      Divider(thickness: 1,height: 1,color: Colors.black,),
+                     Container(
+                       margin: const EdgeInsets.symmetric(vertical: 8.0),
+                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                         children: [
+                           Icon(
+                             Icons.phone,
+                             color: Colors.blueAccent,
+                             size: 30,
+                           ),
+                           const SizedBox(width: 16.0), // Adjust the spacing between icon and text
+                           Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text(
+                                 "Emergency Contact",
+                                 style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
+                               ),
+                               const SizedBox(height: 4.0), // Adjust the spacing between label and value
+                               AutoSizeText(
+                                 model.employeedetail.emergencyPhoneNumber ??"N/A",
+                                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                 minFontSize: 16,
+                               ),
+
+                             ],
+                           ),
+                         ],
+                       ),
+                     )
+     
      
     ])
 ),
@@ -236,21 +248,19 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  
-Widget _buildProfileDetail(String label, String value, IconData icon) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        
+
+  Widget _buildProfileDetail(String label, String value, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             icon,
             color: Colors.blueAccent,
             size: 30,
           ),
-          const SizedBox(width: 18),
+          const SizedBox(width: 16.0), // Adjust the spacing between icon and text
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -258,20 +268,18 @@ Widget _buildProfileDetail(String label, String value, IconData icon) {
                 label,
                 style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
               ),
-               AutoSizeText(
-        value,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        textAlign: TextAlign.center,
-        minFontSize: 16,
-      ),
+              const SizedBox(height: 4.0), // Adjust the spacing between label and value
+              AutoSizeText(
+                value,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                minFontSize: 16,
+              ),
+
             ],
           ),
         ],
       ),
-     
-      const Divider(thickness: 1, color: Colors.grey),
-      const SizedBox(height: 16),
-    ],
-  );
-}
+    );
+  }
+
 }

@@ -40,10 +40,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                       CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 50,
-                        child: Logo(
-                          Logos.android,
-                          size: 70,
-                        ),
+                        child:  Image.asset('assets/images/atom.png',scale: 7,)
                       ),
                       const SizedBox(height: 20),
                       const AutoSizeText(
@@ -98,8 +95,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                       const BorderSide(color: Colors.transparent),
                                   borderRadius: BorderRadius.circular(40.0),
                                 ),
-                                prefixIcon: const Icon(FontAwesome.person,
-                                    color: Colors.grey),
+                                prefixIcon: const Icon(Icons.person_sharp),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
                                       const BorderSide(color: Colors.transparent),
@@ -145,8 +141,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                       const BorderSide(color: Colors.transparent),
                                   borderRadius: BorderRadius.circular(40.0),
                                 ),
-                                prefixIcon: const Icon(FontAwesome.user_lock,
-                                    color: Colors.grey),
+                                prefixIcon: const Icon(Icons.lock_outlined),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
                                       const BorderSide(color: Colors.transparent),

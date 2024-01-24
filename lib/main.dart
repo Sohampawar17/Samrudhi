@@ -87,6 +87,11 @@ class MyApp extends StatelessWidget {
         }
 
         return MaterialApp(
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightScheme,
+            extensions: [lightCustomColors],
+          ),
           debugShowCheckedModeBanner: false,
           navigatorKey: StackedService.navigatorKey,
           onGenerateRoute: StackedRouter().onGenerateRoute,
@@ -95,4 +100,8 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+
+
+
+
 }

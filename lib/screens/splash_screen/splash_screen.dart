@@ -48,32 +48,42 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: AnimatedOpacity(
+        top: true,
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            image: DecorationImage(
+                fit: BoxFit.fitWidth,
+                image: AssetImage('assets/images/splash.jpg')),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedOpacity(
                 opacity: opacity,
                 duration: const Duration(seconds: 3),
                 child: const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0.0),
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.center,
                     child: Text(
-                      'Mobile CRM\n Developed by Quantbit Technologies',
+                      'QuantBiz',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -53,7 +53,7 @@ class _AddQuotationViewState extends State<AddQuotationView> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
 
                   CustomDropdownButton2(
@@ -152,115 +152,7 @@ if(model.isEdit==true)
                   const SizedBox(
                     height: 15,
                   ),
-                  // TextFormField(
-                  //   readOnly: true,
-                  //   onTap: () async {
-                  //     final SelectedItems = await Navigator.pushNamed(
-                  //       context,
-                  //       Routes.quotationItemScreen,
-                  //        arguments:QuotationItemScreenArguments(items: model.selectedItems),
-                  //       // arguments: ItemScreenArguments(
-                  //       // //     warehouse: model.orderdata.setWarehouse ?? "",
-                  //       //     items: model.selectedItems),
-                  //     ) as List<Items>?;
-                  //     if (SelectedItems != null) {
-                  //       Logger().i(SelectedItems.length);
-                  //
-                  //       // Update the model or perform any actions with the selected items
-                  //       model.setSelectedItems(SelectedItems);
-                  //     }
-                  //   },
-                  //   decoration: InputDecoration(
-                  //     contentPadding: const EdgeInsets.symmetric(
-                  //         vertical: 10.0, horizontal: 12.0),
-                  //     //
-                  //     // labelText: selectedItems.isEmpty
-                  //     //     ? 'Items'
-                  //     //     : 'Selected ${selectedItems.length} item(s)',
-                  //
-                  //     labelText: 'Items',
-                  //     hintText: 'For select items click here',
-                  //     prefixIcon: const Icon(Icons.shopping_basket),
-                  //     labelStyle: const TextStyle(
-                  //       color: Colors.black54, // Customize label text color
-                  //       fontSize: 16.0,
-                  //       fontWeight: FontWeight.bold,
-                  //     ),
-                  //     hintStyle: const TextStyle(
-                  //       color: Colors.grey, // Customize hint text color
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //     ),
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //       borderSide: const BorderSide(
-                  //         color: Colors.blue, // Customize focused border color
-                  //       ),
-                  //     ),
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //       borderSide: const BorderSide(
-                  //         color: Colors.grey, // Customize enabled border color
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  //
-                  // TextFormField(
-                  //   controller: model.itemController,
-                  //   readOnly: true,
-                  //   onTap: () async {
-                  //     final selectedItems = await Navigator.pushNamed(
-                  //       context,
-                  //       Routes.quotationItemScreen,
-                  //       arguments: QuotationItemScreenArguments(items: model.selectedItems),
-                  //     ) as List<Items>?;
-                  //
-                  //     if (selectedItems != null) {
-                  //       Logger().i(selectedItems.length);
-                  //
-                  //       // Update the model or perform any actions with the selected items
-                  //       model.setSelectedItems(selectedItems);
-                  //
-                  //       // Update the value of the TextFormField
-                  //       final selectedItemsValue = selectedItems.isEmpty
-                  //           ? ''
-                  //           : 'Selected ${selectedItems.length} item(s)';
-                  //       model.itemController.text = selectedItemsValue;
-                  //     }
-                  //   },
-                  //   decoration: InputDecoration(
-                  //     contentPadding: const EdgeInsets.symmetric(
-                  //         vertical: 10.0, horizontal: 12.0),
-                  //     labelText: 'Items',
-                  //     hintText: 'For select items click here',
-                  //     prefixIcon: const Icon(Icons.shopping_basket),
-                  //     labelStyle: const TextStyle(
-                  //       color: Colors.black54, // Customize label text color
-                  //       fontSize: 16.0,
-                  //       fontWeight: FontWeight.bold,
-                  //     ),
-                  //     hintStyle: const TextStyle(
-                  //       color: Colors.grey, // Customize hint text color
-                  //     ),
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //     ),
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //       borderSide: const BorderSide(
-                  //         color: Colors.blue, // Customize focused border color
-                  //       ),
-                  //     ),
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.circular(18.0),
-                  //       borderSide: const BorderSide(
-                  //         color: Colors.grey, // Customize enabled border color
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                
                   TextFormField(
                     readOnly: true,
                     key: Key(model.displayString),
@@ -319,85 +211,120 @@ if(model.isEdit==true)
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15,
+                   const SizedBox(
+                    height: 5,
+                  ),
+                  Text('Item List',style: TextStyle(fontWeight: FontWeight.bold,),textAlign: TextAlign.center,),
+                   const SizedBox(
+                    height: 10,
                   ),
                   if (model.selectedItems.isNotEmpty)
-                    ListView.separated(
+                   ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       // Prevent scrolling
                       shrinkWrap: true,
                       itemCount: model.selectedItems.length,
                       itemBuilder: (context, index) {
                         final selectedItem = model.selectedItems[index];
-                        return Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: buildImage(selectedItem.image),
+
+                        return Dismissible(
+                          key: Key(selectedItem.itemCode.toString()), // Use a unique key for each item
+                          background: Container(
+                            color: Colors.red.shade400,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Icon(
+                              Icons.delete_forever_outlined,
+                              color: Colors.white,
+                              size: 40,
                             ),
-                            Expanded(
-                              flex: 4,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AutoSizeText(
-                                        'ID:  ${selectedItem.itemCode}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,fontSize: 20),
-                                      ),
-                                      Expanded(
-                                        child: AutoSizeText(
-                                          '(${selectedItem.itemName})',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w300,fontSize: 20),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            model.deleteitem(index);
-                                          },
-                                          icon: const Icon(
-                                              Icons.delete_outline_rounded))
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const AutoSizeText('Quantity :',   style: TextStyle(
-                                          fontWeight: FontWeight.w700,fontSize: 15),),
-                                      IconButton(
-                                        icon: const Icon(Icons.remove_circle),
+                            alignment: Alignment.centerLeft,
+                          ),
+                          confirmDismiss: (direction) async {
+                            if (direction == DismissDirection.startToEnd) {
+                              bool dismiss = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: const Text("Are you sure you want to delete the item"),
+                                    title: const Text("Delete Item ?"),
+                                    actions: [
+                                      TextButton(
                                         onPressed: () {
-                                          // Decrease quantity when the remove button is pressed
-                                          if (selectedItem.qty != null &&
-                                              (selectedItem.qty ?? 0) > 1) {
-                                            model.removeitem(index);
-                                          }
+                                          Navigator.pop(context, false); // Dismiss without deletion
                                         },
+                                        child: const Text("No"),
                                       ),
-                                      Text(
-                                        model
-                                            .getQuantity(selectedItem)
-                                            .toString(),style: const TextStyle(
-                                          fontWeight: FontWeight.w700,fontSize: 15),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle),
+                                      TextButton(
                                         onPressed: () {
-                                          model.additem(index);
+                                          Navigator.pop(context, true); // Confirm deletion
                                         },
+                                        child: const Text("Yes"),
                                       ),
                                     ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      AutoSizeText(
+                                  );
+                                },
+                              );
+                              return dismiss;
+                            }
+                          },
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) {
+                            model.deleteitem(index); // Delete the item from the model
+                          },
+                          child: Container(
+            padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                            // spreadRadius: 5,
+                                            blurRadius: 7,
+                                            // offset: const Offset(0, 3), // Customize the shadow offset
+                                          ),
+                                        ],
+                                      ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Product Image
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    '$baseurl${selectedItem.image}',
+                    fit: BoxFit.cover,
+                    width: 80.0,
+                    height: 80.0,
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(child: CircularProgressIndicator(color: Colors.blueAccent));
+                      }
+                    },
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return Image.asset('assets/images/image.png',scale: 8,);
+                    },
+                  ),
+                ),
+                SizedBox(width: 10),
+                // Product Details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                       'ID: ${selectedItem.itemCode}(${selectedItem.itemName})',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 5),
+                       AutoSizeText(
                                         'Rate: ${selectedItem.rate.toString()}',
                                         style: const TextStyle(
                                             color: Colors.green,
@@ -409,20 +336,54 @@ if(model.isEdit==true)
                                             color: Colors.green,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider(
-                          thickness: 1,
-                        );
-                      },
+                    ],
+                  ),
+                ),
+                // Quantity and Buttons
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Quantity"),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                                        icon:  Icon(Icons.remove_circle,color: Colors.blueAccent.shade400,),
+                                        onPressed: () {
+                                          // Decrease quantity when the remove button is pressed
+                                          if (selectedItem.qty != null &&
+                                              (selectedItem.qty ?? 0) > 1) {
+                                            model.removeitem(index);
+                                          }
+                                        },
+                                      ),
+                                      Text(
+                                        model
+                                            .getQuantity(selectedItem)
+                                            .toString(),
+                                      ),
+                                      IconButton(
+                                        icon:  Icon(Icons.add_circle,color: Colors.blueAccent.shade400,),
+                                        onPressed: () {
+                                          model.additem(index);
+                                        },
+                                      ),
+                      ],
                     ),
+                    // IconButton(
+                    //   icon: Icon(Icons.delete, size: 20.0),
+                    //   onPressed: () {
+                    //     // Handle delete button action
+                    //   },
+                    // ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }, separatorBuilder: (BuildContext context, int index) { return SizedBox(height: 10,); },
+    ),
                   const SizedBox(
                     height: 8,
                   ),
@@ -447,10 +408,35 @@ if(model.isEdit==true)
                       )
                      :
                       CtextButton(
-                        text:  'Submit Quotation',
-                        onPressed: () =>  model.onSubmitPressed(context), buttonColor: Colors.blueAccent.shade400,
+                        text: 'Submit Quotation',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Confirm"),
+                                content: Text("Permanently Submit quotation?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(false); // Return false when cancel is pressed
+                                    },
+                                    child: Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      model.onSubmitPressed(context); // Return true when confirm is pressed
+                                    },
+                                    child: Text("Confirm"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        buttonColor: Colors.blueAccent.shade400,
                       )
-                     
+
 
                     ],
                   )
