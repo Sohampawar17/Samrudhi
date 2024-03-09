@@ -1,38 +1,32 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+
+import '../constants.dart';
 
 class GeolocationService {
   Future<Position?> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
     try {
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Fluttertoast.showToast(msg: 'Location Serices are disabled');
-        Future.error('Location services are disabled.');
-        return null;
+        throw Exception('Location services are disabled.');
       }
 
-      permission = await Geolocator.checkPermission();
+      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+
         if (permission == LocationPermission.denied) {
-          Fluttertoast.showToast(msg: 'Location permissions are denied');
-          Future.error('Location permissions are denied');
-          return null;
+          throw Exception('Location permissions are denied.');
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        Fluttertoast.showToast(
-            msg:
-                'Location permissions are permanently denied, we cannot request permissions.');
-        Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-        return null;
+        throw Exception('Location permissions are permanently denied.');
       }
 
       return await Geolocator.getCurrentPosition(
@@ -42,6 +36,7 @@ class GeolocationService {
       return null;
     }
   }
+
 
   Future<Placemark?> getPlacemarks(Position? position) async {
     try {
@@ -77,5 +72,35 @@ class GeolocationService {
       // Handle network-related exceptions here, e.g., for connectivity issues
       throw Exception('Error calculating distance: $e');
     }
+  }
+
+  Future<bool> employeeLocation(String longitude,String latitude,String deviceId) async {
+    baseurl =  await geturl();
+    var data = {'longitude': longitude.toString(),"latitude":latitude,"device_id":deviceId};
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.location.user_location',
+        options: Options(
+          method: 'POST',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        Logger().i(response.data["message"].toString());
+        // Fluttertoast.showToast(gravity: ToastGravity.SNACKBAR,msg: response.data["message"].toString().toUpperCase(),textColor:const Color(0xFFFFFFFF),backgroundColor: const Color.fromARGB(255, 26, 186, 29),);
+        return true;
+      } else {
+        // Fluttertoast.showToast(msg: "Unable ot add employee log");
+        return false;
+      }
+    } on DioException catch (e) {
+      // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      // Logger().e(e);
+      Logger().i(e.response!.data["message"].toString());
+    }
+    return false;
   }
 }

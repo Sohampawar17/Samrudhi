@@ -1,5 +1,6 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/profile_screen/profile_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -61,25 +62,13 @@ class ProfileScreen extends StatelessWidget {
                               backgroundColor: Colors.white,
                               radius: 35,
                               child: ClipOval(
-                                child: Image.network(
-                                  model.employeedetail.employeeImage ?? "",
-                                  width: 60,
+                                child: CachedNetworkImage(
+                                  imageUrl: '${model.employeedetail.employeeImage}',
+                                  width: 70, // Set width to twice the radius for a complete circle
                                   height: 70,
                                   fit: BoxFit.cover,
-                                  loadingBuilder: (BuildContext context, Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      return child;
-                                    } else {
-                                      return const Center(
-                                          child: CircularProgressIndicator(color: Colors.blueAccent));
-                                    }
-                                  },
-                                  errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                                    return Center(
-                                      child: Image.asset('assets/images/profile.png', scale: 5),
-                                    );
-                                  },
+                                  placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                                  errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
                                 ),
                               ),
                             ),
@@ -131,25 +120,25 @@ class ProfileScreen extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       _buildProfileDetail("Employee ID", model.employeedetail.name ?? "N/A", Icons.person),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Date of Joining", model.employeedetail.dateOfJoining ?? "N/A", Icons.calendar_today),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Date of Birth", model.employeedetail.dateOfBirth ?? "N/A", Icons.cake),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Gender", model.employeedetail.gender ?? "N/A", Icons.people),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Official Email", model.employeedetail.companyEmail ?? "N/A", Icons.email),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Personal Email", model.employeedetail.personalEmail ?? "N/A", Icons.email_outlined),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
       _buildProfileDetail("Contact Number", model.employeedetail.cellNumber ?? "N/A", Icons.phone),
-      Divider(thickness: 1,height: 1,color: Colors.black,),
+      const Divider(thickness: 1,height: 1,color: Colors.black,),
                      Container(
                        margin: const EdgeInsets.symmetric(vertical: 8.0),
                        child: Row(
                         mainAxisSize: MainAxisSize.min,
                          children: [
-                           Icon(
+                           const Icon(
                              Icons.phone,
                              color: Colors.blueAccent,
                              size: 30,
@@ -158,9 +147,9 @@ class ProfileScreen extends StatelessWidget {
                            Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
-                               Text(
+                               const Text(
                                  "Emergency Contact",
-                                 style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
+                                 style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 14),
                                ),
                                const SizedBox(height: 4.0), // Adjust the spacing between label and value
                                AutoSizeText(

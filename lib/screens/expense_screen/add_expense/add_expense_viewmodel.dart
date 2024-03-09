@@ -26,7 +26,7 @@ List<Attachments> attachment=[];
 
   initialise(BuildContext context) async {
     setBusy(true);
-    expensetype=await AddExpenseServices().fetexpensetype();
+    expensetype=await AddExpenseServices().fetExpenseType();
     setBusy(false);
   }
 
@@ -71,6 +71,7 @@ List<Attachments> attachment=[];
       Fluttertoast.showToast(
         msg: 'Error while picking an image or document: $e',
       );
+      setBusy(false);
     }
   }
 
@@ -98,7 +99,7 @@ List<Attachments> attachment=[];
   }
   void deleteitem(int index,String? name) async {
     attachment.removeAt(index);
-    if(name != null){ delete= await AddExpenseServices().deletedoc(name);}
+    if(name != null){ delete= await AddExpenseServices().deleteDoc(name);}
 
     notifyListeners();
   }

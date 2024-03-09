@@ -61,9 +61,9 @@ class InvoiceListServices{
         Fluttertoast.showToast(msg: "Unable to fetch orders");
         return [];
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized Orders!");
       return [];
     }
   }

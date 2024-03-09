@@ -51,10 +51,12 @@ String name="";
       quotationdata.items?.clear();
       isEdit = true;
       quotationdata = await AddQuotationServices().getquotation(quotationid) ?? AddQuotation();
+      Logger().i(quotationdata.toJson());
       if(quotationdata==quotationdata){
         isSame=true;
         notifyListeners();
       }
+      searchcustomer= await AddQuotationServices().getcustomer(quotationdata.quotationTo ?? "");
       customercontroller.text = quotationdata.partyName ?? "";
       validtilldatecontroller.text = quotationdata.validTill ?? "";
       customernamecontroller.text=quotationdata.customerName ?? "";
@@ -155,6 +157,7 @@ setBusy(false);
       selectedvalidtillDate = picked;
       validtilldatecontroller.text = DateFormat('yyyy-MM-dd').format(picked);
       quotationdata.validTill = validtilldatecontroller.text;
+      isSame=false;
     }
   }
 
@@ -242,7 +245,6 @@ setBusy(false);
     isSame=false;
     selectedItems = SelectedItems;
     for (var item in selectedItems) {
-
       item.amount = (item.qty ?? 1.0) * (item.rate ?? 0.0);
     }
     quotationdata.items = selectedItems;
@@ -277,7 +279,7 @@ setBusy(false);
   }
 
   num getQuantity(Items item) {
-    return item.qty ?? 1;
+    return item.qty ?? 1.0;
   }
 
   void additem(int index) async {

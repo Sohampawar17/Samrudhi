@@ -223,7 +223,7 @@ setBusy(false);
   }
 
   double getQuantity(Items item) {
-    return item.qty ?? 1;
+    return item.qty ?? 1.0;
   }
 
   void additem(int index) async {

@@ -13,7 +13,7 @@ Widget fullScreenLoader(
           ? Container(
               height: getHeight(context),
               width: getWidth(context),
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withOpacity(1),
               child: const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

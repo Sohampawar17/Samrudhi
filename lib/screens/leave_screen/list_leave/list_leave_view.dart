@@ -116,7 +116,7 @@ class ListLeaveScreen extends StatelessWidget {
                           ? ListView.separated(
                              controller: ScrollController(keepScrollOffset: false),
                
-                physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (builder, index) {
                               return Container(
@@ -124,6 +124,14 @@ class ListLeaveScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      // spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,9 +191,8 @@ class ListLeaveScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (context, builder) {
-                              return const Divider(
-                                height: 20,
-                                thickness: 1,
+                              return  const SizedBox(
+                                height: 10,
                               );
                             },
                             itemCount: model.leavelist.length,
@@ -207,6 +214,14 @@ class ListLeaveScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      // spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,9 +282,8 @@ class ListLeaveScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (context, builder) {
-                              return const Divider(
-                                height: 20,
-                                thickness: 1,
+                              return  const SizedBox(
+                                height: 10,
                               );
                             },
                             itemCount: model.takenlist.length,

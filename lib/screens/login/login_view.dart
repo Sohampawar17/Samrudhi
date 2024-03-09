@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:stacked/stacked.dart';
+
 import 'login_model.dart';
 
 class LoginViewScreen extends StatefulWidget {
@@ -42,16 +43,25 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                         radius: 50,
                         child:  Image.asset('assets/images/atom.png',scale: 7,)
                       ),
-                      const SizedBox(height: 20),
+
+                      const SizedBox(height: 40),
                       const AutoSizeText(
-                        'Login to your account',
+                        "Let's sign you in",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        minFontSize: 25,
+                        minFontSize: 30,
                       ),
-                      const SizedBox(height: 25),
+                      const AutoSizeText(
+                        "Enter below details to continue",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        minFontSize: 18,
+                      ),
+                      const SizedBox(height: 45),
                       Form(
                         key: model.formGlobalKey,
                         child: Column(
@@ -61,7 +71,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                               style: const TextStyle(color: Colors.black87),
                               decoration: InputDecoration(
                                 // labelText: "Username",
-                                hintText: "Url",
+                                hintText: "Enter workplace url",
                                 hintStyle: const TextStyle(color: Colors.grey),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -87,8 +97,8 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                               controller: model.usernameController,
                               style: const TextStyle(color: Colors.black87),
                               decoration: InputDecoration(
-                                // labelText: "Username",
-                                hintText: "Username",
+                                // labelText: "Email address or Mobile Number",
+                                hintText: "Email address or Mobile Number",
                                 hintStyle: const TextStyle(color: Colors.grey),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -119,7 +129,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                               controller: model.passwordController,
                               obscureText: model.obscurePassword,
                               decoration: InputDecoration(
-                                // labelText: "Username",
+                                // labelText: "Password",
                                 hintText: "Password",
                                 suffixIcon: InkWell(
                                   onTap: () {
@@ -178,7 +188,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                                     model.loginwithUsernamePassword(context);
                                   }
                                 },
-                                child: model.isloading
+                                child: model.isLoading
                                     ? LoadingAnimationWidget.hexagonDots(
                                         color: Colors.white,
                                         size: 18,
@@ -193,43 +203,49 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                           ],
                         ),
                       ),
-                      // const SizedBox(height: 30),
-                      // Align(
-                      //   alignment: Alignment.bottomCenter,
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       const Text(
-                      //         "Don't have an account?",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.w600,
-                      //           fontSize: 16,
-                      //         ),
-                      //       ),
-                      //       const SizedBox(width: 10),
-                      //       InkWell(
-                      //         onTap: () async {
-                      //           const url =
-                      //               'https://mobilecrm.erpdata.in/user-registration/new';
-                      //           if (await canLaunchUrlString(url)) {
-                      //             await launchUrlString(url);
-                      //           } else {
-                      //             throw 'Could not launch $url';
-                      //           }
-                      //         },
-                      //         child: const Text(
-                      //           'Register',
-                      //           style: TextStyle(
-                      //             color: Color(0xFF007BFF),
-                      //             fontWeight: FontWeight.w600,
-                      //             fontSize: 16,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+
+
+                      const SizedBox(height: 80),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Try Our Demo App",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 50,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF007BFF),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                ),
+                                onPressed: () =>model.loginWithDemoUser(context),
+                                child:model.isDemoLoading
+                                    ? LoadingAnimationWidget.hexagonDots(
+                                  color: Colors.white,
+                                  size: 18,
+                                )
+                                    : const Text(
+                                  'Continue as Demo User >',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

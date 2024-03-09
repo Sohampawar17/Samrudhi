@@ -80,7 +80,7 @@ class CheckinServices {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Employee Location/42ac2c248b',
+        '$baseurl/api/method/mobile.mobile_env.location.getLocation',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},

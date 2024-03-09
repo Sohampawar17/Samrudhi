@@ -76,7 +76,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         onChanged: model.setdate,
                       ),
 const SizedBox(height: 10,),
-CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense type', onChanged: model.setexpensetype, labelText: 'Expense Type'),
+CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense type', onChanged: model.setexpensetype, labelText: 'Expense Type',validator: model.validateexpensetyepe,),
                       const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Expense Description', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
                       const SizedBox(height: 10,),

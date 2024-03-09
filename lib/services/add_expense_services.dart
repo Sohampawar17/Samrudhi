@@ -39,7 +39,7 @@ class AddExpenseServices{
   }
 
 
-  Future<List<String>> fetexpensetype() async {
+  Future<List<String>> fetExpenseType() async {
     baseurl =  await geturl();
     try {
       var dio = Dio();
@@ -60,12 +60,12 @@ class AddExpenseServices{
         dataList.map((item) => item["name"].toString()).toList();
         return namesList;
       } else {
-        Fluttertoast.showToast(msg: "Unable to fetch industry type");
+        Fluttertoast.showToast(msg: "Unable to Expense Claim type");
         return [];
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["exception"].toString()} ',textColor:Color(0xFFFFFFFF),backgroundColor: Color(0xFFBA1A1A),);
       Logger().e(e);
-      Fluttertoast.showToast(msg: "Unauthorized industry!");
       return [];
     }
   }
@@ -106,7 +106,7 @@ class AddExpenseServices{
 
 
 
-  Future<bool> deletedoc(String name) async {
+  Future<bool> deleteDoc(String name) async {
     baseurl =  await geturl();
     try {
       var dio = Dio();

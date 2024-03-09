@@ -13,9 +13,92 @@ class GeolocationViewModel extends BaseViewModel {
   List<String> leadlist = [""];
   GeolocationModel geolocationdata = GeolocationModel();
   String locationid = "";
-
+  List<LocationTable> parsedLocationTables=[];
   void initialise(BuildContext context) async {
     setBusy(true);
+    List<Map<String, dynamic>> routeLocation =[
+
+    {
+    "name": "e8d87ff1e0",
+    "owner": "soham.pawar@erpdata.in",
+    "creation": "2024-03-06 17:26:36.921211",
+    "modified": "2024-03-06 17:26:36.921211",
+    "modified_by": "soham.pawar@erpdata.in",
+    "docstatus": 0,
+    "idx": 2,
+    "longitude": "74.55513000488281",
+    "latitude": "16.77973175048828",
+    "parent": "soham.pawar@erpdata.in-2024-03-06",
+    "parentfield": "location_table",
+    "parenttype": "Employee Location",
+    "doctype": "employee location table"
+    },
+    {
+    "name": "d435963408",
+    "owner": "soham.pawar@erpdata.in",
+    "creation": "2024-03-06 17:26:36.921211",
+    "modified": "2024-03-06 17:26:36.921211",
+    "modified_by": "soham.pawar@erpdata.in",
+    "docstatus": 0,
+    "idx": 3,
+    "longitude": "74.4211932",
+    "latitude": "16.7477491",
+    "parent": "soham.pawar@erpdata.in-2024-03-06",
+    "parentfield": "location_table",
+    "parenttype": "Employee Location",
+    "doctype": "employee location table"
+    },
+    {
+    "name": "8cbcd60ab9",
+    "owner": "soham.pawar@erpdata.in",
+    "creation": "2024-03-06 17:26:36.921211",
+    "modified": "2024-03-06 17:26:36.921211",
+    "modified_by": "soham.pawar@erpdata.in",
+    "docstatus": 0,
+    "idx": 4,
+    "longitude": "74.3152571",
+    "latitude": "16.5750891",
+    "parent": "soham.pawar@erpdata.in-2024-03-06",
+    "parentfield": "location_table",
+    "parenttype": "Employee Location",
+    "doctype": "employee location table"
+    },
+    {
+    "name": "e5fecc12c4",
+    "owner": "soham.pawar@erpdata.in",
+    "creation": "2024-03-06 17:26:36.921211",
+    "modified": "2024-03-06 17:26:36.921211",
+    "modified_by": "soham.pawar@erpdata.in",
+    "docstatus": 0,
+    "idx": 5,
+    "longitude": "74.2405329",
+    "latitude": "16.7028412",
+    "parent": "soham.pawar@erpdata.in-2024-03-06",
+    "parentfield": "location_table",
+    "parenttype": "Employee Location",
+    "doctype": "employee location table"
+    },
+    {
+    "name": "223eeaf43e",
+    "owner": "soham.pawar@erpdata.in",
+    "creation": "2024-03-06 17:26:36.921211",
+    "modified": "2024-03-06 17:26:36.921211",
+    "modified_by": "soham.pawar@erpdata.in",
+    "docstatus": 0,
+    "idx": 6,
+    "longitude": "74.6046248",
+    "latitude": "16.8501169",
+    "parent": "soham.pawar@erpdata.in-2024-03-06",
+    "parentfield": "location_table",
+    "parenttype": "Employee Location",
+    "doctype": "employee location table"
+    }
+    ];
+
+    parsedLocationTables = routeLocation.map<LocationTable>((json) {
+      return LocationTable.fromJson(json);
+    }).toList();
+
 
     geolocationdata =
         await CheckinServices().getmember(locationid) ?? GeolocationModel();
@@ -56,7 +139,7 @@ class GeolocationViewModel extends BaseViewModel {
   }
 
 // Handle directionsResponse
-  void onmapready() async {
+  void onMapReady() async {
 
     geolocationdata =
         await CheckinServices().getmember(locationid) ?? GeolocationModel();

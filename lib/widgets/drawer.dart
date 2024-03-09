@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -34,28 +35,13 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               arrowColor: Colors.black87,
               currentAccountPicture: ClipOval(
                 // Set background color for the avatar
-               child: Image.network(
-                 image,
-                 fit: BoxFit.cover,
+               child: CachedNetworkImage(
+                 imageUrl: image,
+                 width: 70, // Set width to twice the radius for a complete circle
                  height: 70,
-width: 70,
-                 loadingBuilder: (BuildContext context, Widget child,
-                     ImageChunkEvent? loadingProgress) {
-                   if (loadingProgress == null) {
-                     // Image is done loading
-                     return child;
-                   } else {
-                     // Image is still loading
-                     return const Center(
-                         child: CircularProgressIndicator(color: Colors.blueAccent));
-                   }
-                 },
-                 errorBuilder:
-                     (BuildContext context, Object error, StackTrace? stackTrace) {
-                   // Handle the error by displaying a broken image icon
-                   return  Center(
-                       child: Image.asset('assets/images/profile.png',scale: 5,));
-                 },
+                 fit: BoxFit.cover,
+                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                 errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
                ),
               ),
               decoration: const BoxDecoration(
@@ -88,6 +74,16 @@ width: 70,
               Navigator.popAndPushNamed(context, Routes.profileScreen);
             },
           ),
+          // ListTile(
+          //   leading: const Icon(Icons.location_on, color: Colors.black),
+          //   title: const Text(
+          //     'Geolocation',
+          //     style: TextStyle(fontWeight: FontWeight.w300),
+          //   ),
+          //   onTap: () {
+          //     Navigator.popAndPushNamed(context, Routes.geolocation);
+          //   },
+          // ),
 
           const Divider(thickness: 1),
           ListTile(

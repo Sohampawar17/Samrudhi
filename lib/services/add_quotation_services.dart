@@ -118,7 +118,7 @@ class AddQuotationServices {
       );
 
       if (response.statusCode == 200) {
-        Logger().i(AddQuotation.fromJson(response.data["data"]));
+        // Logger().i(AddQuotation.fromJson(response.data["data"]));
         return AddQuotation.fromJson(response.data["data"]);
       } else {
         if (kDebugMode) {

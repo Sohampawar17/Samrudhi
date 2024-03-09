@@ -5,7 +5,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets/full_screen_loader.dart';
-
 import 'geolocation_model.dart';
 
 class Geolocation extends StatelessWidget {
@@ -17,125 +16,179 @@ class Geolocation extends StatelessWidget {
       viewModelBuilder: () => GeolocationViewModel(),
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child) => Scaffold(
+        backgroundColor: Colors.grey,
         appBar: AppBar(
-          title: const AutoSizeText('Geolocation'),
+          title: const AutoSizeText('Route details'),
+          centerTitle: true,
         ),
         body: fullScreenLoader(
           child: Column(
+
             children: [
+              const SizedBox(height: 10,),
+              // Expanded(
+              //   flex: 1,
+              //   child: Container(
+              //     padding: const EdgeInsets.all(8),
+              //
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(18),
+              //       boxShadow: const [
+              //         BoxShadow(
+              //           color: Colors.grey,
+              //           blurRadius: 3,
+              //           offset: Offset(0, 2),
+              //         ),
+              //       ],
+              //     ),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //
+              //         Text(
+              //           'Name: ${model.geolocationdata.user ?? ""}',
+              //         ),
+              //         Text(
+              //           'Date:  ${model.geolocationdata.date}',
+              //         ),
+              //         // Text(
+              //         //   'Distance: ${model.geolocationdata.distance ?? 0.0}',
+              //         // ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Expanded(
-                flex: 1,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 3,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                flex: 8,
+                child: model.locations.isNotEmpty
+                    ? FlutterMap(
+                        options: MapOptions(
+                            center: LatLng(
+                                double.parse(
+                                    model.locations[0].latitude ?? "0.0"),
+                                double.parse(
+                                    model.locations[0].longitude ?? "0.0")),
 
-                      Text(
-                        'Name: ${model.geolocationdata.user ?? ""}',
-                      ),
-                      Text(
-                        'Date: ${model.geolocationdata.date}',
-                      ),
-                      Text(
-                        'Distance: ${model.geolocationdata.distance ?? 0.0}',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 7,
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: model.locations.isNotEmpty
-                        ? FlutterMap(
-                            options: MapOptions(
-                                center: LatLng(
-                                    double.parse(
-                                        model.locations[0].latitude ?? "0.0"),
-                                    double.parse(
-                                        model.locations[0].longitude ?? "0.0")),
-                                maxZoom: 35,
-                                onMapReady: () => model.onmapready),
-                            children: [
-                              TileLayer(
-                                urlTemplate:
-                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                userAgentPackageName:
-                                    'dev.fleaflet.flutter_map.example',
-                                // Plenty of other options available!
-                              ),
-                              MarkerLayer(
-                                markers: model.locations.asMap().entries.map((entry) {
-                                  final int index = entry.key;
-                                  final LatLng latLng = LatLng(
-                                    double.parse(entry.value.latitude ?? ""),
-                                    double.parse(entry.value.longitude ?? ""),
-                                  );
+                            onMapReady: () => model.onMapReady),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            userAgentPackageName:
+                                'dev.fleaflet.flutter_map.example',
+                            // Plenty of other options available!
+                          ),
+                          MarkerLayer(
+                            markers: model.locations.asMap().entries.map((entry) {
+                              final int index = entry.key;
+                              final LatLng latLng = LatLng(
+                                double.parse(entry.value.latitude ?? ""),
+                                double.parse(entry.value.longitude ?? ""),
+                              );
 
-                                  return Marker(
-                                    point: latLng,
-                                    builder: (ctx) {
-                                      return Stack(
-                                        children: [
-                                          const Icon(Icons.location_on, size: 50),
-                                          Positioned(
-                                            left: 5,
-                                            top: 0,
-                                            right: 0,
-                                            child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Text(
-                                                (index + 1).toString(),
-                                                // Display the marker number
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
+                              return Marker(
+                                point: latLng,
+                                builder: (ctx) {
+                                  return Stack(
+                                    children: [
+                                      const Icon(Icons.location_on, size: 50),
+                                      Positioned(
+                                        left: 5,
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            (index + 1).toString(),
+                                            // Display the marker number
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    },
+                                        ),
+                                      ),
+                                    ],
                                   );
-                                }).toList(),
-                              ),
-                              PolylineLayer(
-                                polylines: [
-                                  Polyline(
-                                      points:model.points,
-                                      // model.locations.map((e) {
-                                      //   return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
-                                      // }).toList(),
-                                      color: Colors.blueAccent,
-                                      strokeWidth: 5),
-                                ],
-                              ),
+                                },
+                              );
+                            }).toList(),
+                          ),
+                          MarkerLayer(
+                            markers: model.parsedLocationTables.asMap().entries.map((entry) {
+                              final int index = entry.key;
+                              final LatLng latLng = LatLng(
+                                double.parse(entry.value.latitude ?? ""),
+                                double.parse(entry.value.longitude ?? ""),
+                              );
+
+                              return Marker(
+                                point: latLng,
+                                builder: (ctx) {
+                                  return Stack(
+                                    children: [
+                                      const Icon(Icons.location_on, size: 50),
+                                      Positioned(
+                                        left: 5,
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                            BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            (index + 1).toString(),
+                                            // Display the marker number
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                          PolylineLayer(
+                            polylineCulling: true,
+                            polylines: [
+                              Polyline(
+                              isDotted:true,
+                                  points:
+                                   // model.points,
+                                  model.locations.map((e) {
+                                    return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
+                                  }).toList(),
+                                  color: Colors.blueAccent,
+                                  strokeWidth: 12),
+                              Polyline(
+                                  points:
+                                  // model.points,
+                                  model.parsedLocationTables.map((e) {
+                                    return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
+                                  }).toList(),
+                                  color: Colors.yellowAccent,
+                                  strokeWidth: 5),
                             ],
-                          )
-                        : Container(
-                            child: const Center(
-                                child: Text('To see your location please checkin')),
-                          )),
+                          ),
+                        ],
+                      )
+                    : Container(
+                        child: const Center(
+                            child: Text('To see your location please checkin')),
+                      ),
               ),
 
             ],
@@ -145,7 +198,7 @@ class Geolocation extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () =>
-              model.getCoordinates(model.geolocationdata.locationTable ?? []),
+              model.initialise(context),
           child: const Icon(Icons.refresh_outlined),
         ),
       ),

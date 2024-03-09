@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/sales_order/list_sales_order/list_sales_order_screen.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
@@ -273,21 +274,13 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                 // Product Image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    '$baseurl${selectedItem.image}',
+                  child: CachedNetworkImage(
+                    imageUrl: '$baseurl${selectedItem.image}',
+                    width: 70, // Set width to twice the radius for a complete circle
+                    height: 70,
                     fit: BoxFit.cover,
-                    width: 80.0,
-                    height: 80.0,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return Center(child: CircularProgressIndicator(color: Colors.blueAccent));
-                      }
-                    },
-                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return Image.asset('assets/images/image.png',scale: 8,);
-                    },
+                    placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                    errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/image.png', scale: 5)),
                   ),
                 ),
                 SizedBox(width: 10),
