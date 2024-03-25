@@ -37,15 +37,15 @@ class ListInvoiceScreen extends StatelessWidget {
                 onWillPop: ()  async{
                   Navigator.popAndPushNamed(context,Routes.homePage);
                   return true; },
-                child: fullScreenLoader(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        model.filterInvoiceList.isNotEmpty
-                            ? Expanded(
-                                child: RefreshIndicator(
-                                  onRefresh: ()=>model.refresh(),
+                child: RefreshIndicator(
+                  onRefresh: ()=>model.refresh(),
+                  child: fullScreenLoader(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          model.filterInvoiceList.isNotEmpty
+                              ? Expanded(
                                   child: ListView.separated(
                                     physics: const AlwaysScrollableScrollPhysics(),
                                       itemBuilder: (builder, index) {
@@ -65,7 +65,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                           child: MaterialButton(
                                             onPressed: () => model.onRowClick(
                                                 context, model.filterInvoiceList[index]),
-                
+
                                             child: Padding(
                                               padding: const EdgeInsets.all(15.0),
                                               child: Column(
@@ -192,7 +192,7 @@ class ListInvoiceScreen extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-                
+
                                                 ],
                                               ),
                                             ),
@@ -205,19 +205,19 @@ class ListInvoiceScreen extends StatelessWidget {
                                         );
                                       },
                                       itemCount: model.filterInvoiceList.length),
-                                ),
+                                )
+                              : Center(
+                                child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
+                            child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
                               )
-                            : Center(
-                              child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
-                            )
-                      ],
+                        ],
+                      ),
                     ),
+                    loader: model.isBusy,
+                    context: context,
                   ),
-                  loader: model.isBusy,
-                  context: context,
                 ),
               ),
               floatingActionButton: FloatingActionButton.extended(

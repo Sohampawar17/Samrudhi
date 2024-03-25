@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/router.router.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
-import 'package:geolocation/widgets/text_button.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:logger/logger.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -175,6 +174,10 @@ class _HomePageState extends State<HomePage> {
                                     controller: ScrollController(keepScrollOffset: true),
                                     shrinkWrap: true,
                                     children: [
+                                      if(model.isFormAvailableForDoctype("Customer"))
+                                        buildButton("Customer", 'assets/images/customer.png', () {
+                                          Navigator.pushNamed(context, Routes.customerList);
+                                        },model),
                                       if(model.isFormAvailableForDoctype("Lead"))
                                       buildButton("Lead", 'assets/images/recruitment.png', () {
                                         Navigator.pushNamed(context, Routes.leadListScreen);

@@ -41,7 +41,7 @@ body: fullScreenLoader(
                         children: [
                           Expanded(flex: 4,child: AutoSizeText(model.leaddata.name ?? ""),),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: DropdownButtonHideUnderline(
                                     child: CdropDown(dropdownButton: DropdownButton2<String>(
                                       isExpanded: true,
@@ -62,7 +62,7 @@ body: fullScreenLoader(
                                                 ),
                                               ))
                                           .toList(),
-                                      value: model.leaddata.status,
+                                      value: model.leaddata.customCallStatus,
                                       onChanged: (String? value) {
                                        model.changestatus(widget.updateId, value);
                                       },

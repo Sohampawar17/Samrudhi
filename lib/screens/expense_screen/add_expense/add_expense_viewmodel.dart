@@ -97,6 +97,7 @@ List<Attachments> attachment=[];
     expensedata.expenseDate =datecontroller.text;
     notifyListeners();
   }
+
   void deleteitem(int index,String? name) async {
     attachment.removeAt(index);
     if(name != null){ delete= await AddExpenseServices().deleteDoc(name);}

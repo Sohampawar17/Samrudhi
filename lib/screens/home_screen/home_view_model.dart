@@ -67,8 +67,8 @@ class HomeViewModel extends BaseViewModel {
     availableDoctypes = await _fetchAvailableDoctypes();
     Logger().i(_loadCachedData().toJson());
     Logger().i(availableDoctypes.length);
-    if (_loadCachedData().company == null && availableDoctypes.isEmpty) {
-
+    if (_loadCachedData().company == null) {
+      await _fetchAvailableDoctypes();
       await fetchDashboard();
     }
     if (_cachedDashboard.empName == null) {
