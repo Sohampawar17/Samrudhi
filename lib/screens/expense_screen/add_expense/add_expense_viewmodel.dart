@@ -42,7 +42,7 @@ List<Attachments> attachment=[];
         if (res) {
           if (context.mounted) {
             setBusy(false);
-            Navigator.pushReplacementNamed(context, Routes.expenseScreen);
+            Navigator.pop(context);
           }}
     }
     setBusy(false);

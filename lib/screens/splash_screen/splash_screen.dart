@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
 import '../../router.router.dart';
 
@@ -34,9 +36,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _performAsyncOperations().then((_) {
       if (isLoggedIn) {
-        Navigator.popAndPushNamed(context, Routes.homePage);
+        Navigator.pushNamed(context, Routes.homePage);
       } else {
-        Navigator.popAndPushNamed(context, Routes.loginViewScreen);
+        Navigator.pushNamed(context, Routes.loginViewScreen);
       }
     });
 
@@ -56,28 +58,56 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         top: true,
         child: Container(
+          alignment: Alignment.center,
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.white,
             image: DecorationImage(
-                fit: BoxFit.fitWidth,
-                image: AssetImage('assets/images/splash.jpg')),
+              scale: 2,
+                fit: BoxFit.contain,
+                image: AssetImage('assets/images/atom.jpg')),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
               AnimatedOpacity(
                 opacity: opacity,
                 duration: const Duration(seconds: 3),
-                child: const Padding(
+                child:  Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 20, 0.0, 0.0),
                   child: Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      'QuantBiz',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    child:Column(
+                      children: [
+                        AutoSizeText(
+                          'From',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            Uri url = Uri.parse('https://erpdata.in/');
+                            // Convert Uri to String
+
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          child: const AutoSizeText(
+                            'Developed By © QuantBit Technologies Pvt. Ltd ',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

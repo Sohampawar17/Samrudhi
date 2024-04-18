@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/constants.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/addquotation_model.dart';
@@ -16,7 +17,7 @@ class AddQuotationModel extends BaseViewModel {
   DateTime? selectedtransactionDate;
   DateTime? selectedvalidtillDate;
   List<String> searchcustomer = [""];
-  List<String> quotationto = ["Customer","Lead","Prospect"];
+  List<String> quotationto = ["Customer","Lead"];
   List<Items> selectedItems = [];
   List<Items> selectedItemsList = [];
   List<QuotationDetailsModel> quotationdetailsmodel = [];
@@ -45,7 +46,7 @@ String name="";
     // searchcustomer = await AddQuotationServices().fetchcustomer();
   //  warehouse = await AddQuotationServices().fetchwarehouse();
     QuotationId = quotationid;
-
+quotationStatus=0;
     //setting aleardy available data
     if (QuotationId != "") {
       quotationdata.items?.clear();
@@ -57,6 +58,7 @@ String name="";
         notifyListeners();
       }
       searchcustomer= await AddQuotationServices().getcustomer(quotationdata.quotationTo ?? "");
+      quotationStatus=quotationdata.docstatus;
       customercontroller.text = quotationdata.partyName ?? "";
       validtilldatecontroller.text = quotationdata.validTill ?? "";
       customernamecontroller.text=quotationdata.customerName ?? "";
@@ -72,7 +74,7 @@ String name="";
 
 
   void onSavePressed(BuildContext context) async {
-     if (quotationdata.docstatus == 1) {
+     if (quotationStatus == 1) {
     Fluttertoast.showToast(
       msg: 'You cannot edit the Submitted document',
       backgroundColor: Colors.redAccent,
@@ -114,7 +116,7 @@ setBusy(false);
 
 
   void onSubmitPressed(BuildContext context) async {
-  if (quotationdata.docstatus == 1) {
+  if (quotationStatus == 1) {
     Fluttertoast.showToast(
       msg: 'You cannot submit the Submitted document',
       backgroundColor: Colors.redAccent,
@@ -122,6 +124,7 @@ setBusy(false);
     );
     return; // Move the return statement here
   }
+
     setBusy(true);
     if (formKey.currentState!.validate()) {
       quotationdata.items = selectedItems;
@@ -135,7 +138,7 @@ setBusy(false);
         if (context.mounted) {
           setBusy(false);
           setBusy(false);
-          Navigator.pushReplacementNamed(context, Routes.listQuotationScreen);
+          Navigator.pop(context);
         }
       }
 
@@ -143,6 +146,28 @@ setBusy(false);
     setBusy(false);
   }
 
+  void onCancelPressed(BuildContext context) async {
+
+    setBusy(true);
+    if (formKey.currentState!.validate()) {
+      quotationdata.items = selectedItems;
+
+      quotationdata.docstatus=2;
+      bool res=false;
+      Logger().i(quotationdata.toJson());
+
+      res = await AddQuotationServices().cancelOrder(quotationdata);
+      if (res) {
+        if (context.mounted) {
+          setBusy(false);
+          setBusy(false);
+          Navigator.pop(context);
+        }
+      }
+
+    }
+    setBusy(false);
+  }
   ///dates functions///
 
   Future<void> selectvalidtillDate(BuildContext context) async {

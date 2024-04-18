@@ -4,6 +4,7 @@ import 'package:geolocation/model/create_customer_model.dart';
 import 'package:geolocation/screens/customer_screen/address/address_screen.dart';
 import 'package:geolocation/widgets/drop_down.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../widgets/customtextfield.dart';
 import '../../../widgets/text_button.dart';
@@ -75,11 +76,11 @@ class _AddCustomerState extends State<AddCustomer> {
             const SizedBox(
               height: 15,
             ),
-            CustomSmallTextFormField(readOnly: model.isEdit ?true:false,keyboardtype: TextInputType.emailAddress,controller: model.emailId, labelText: 'Email Id', hintText: 'Enter the email address',validator: model.validateEmail,onChanged: model.setEmail,),
+            CustomSmallTextFormField(keyboardtype: TextInputType.emailAddress,controller: model.emailId, labelText: 'Email Id', hintText: 'Enter the email address',validator: model.validateEmail,onChanged: model.setEmail,),
             const SizedBox(
               height: 15,
             ),
-            CustomSmallTextFormField(readOnly: model.isEdit ?true:false,length: 10,keyboardtype: TextInputType.phone,controller: model.mobileNumber, labelText: 'Mobile Number', hintText: 'Enter the mobile number',validator: model.validateMobile,onChanged: model.setMobile,),
+            CustomSmallTextFormField(length: 10,keyboardtype: TextInputType.phone,controller: model.mobileNumber, labelText: 'Mobile Number', hintText: 'Enter the mobile number',validator: model.validateMobile,onChanged: model.setMobile,),
             const SizedBox(
               height: 15,
             ),
@@ -110,91 +111,139 @@ class _AddCustomerState extends State<AddCustomer> {
             const SizedBox(
               height: 15,
             ),
-        // if(model.billing.country!=null && model.shipping.country!=null)
-        Container(
+        if(model.billing.country!=null || model.shipping.country!=null)
+          Container(
           padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-            children: [
-              model.billing.country!=null?
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Billing Address',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 5),
-                    Text('Address Line 1: ${model.billing.addressLine1}',maxLines: 4,),
-                    Text('Address Line 2: ${model.billing.addressLine2}'),
-                    Text('City:  ${model.billing.city}'),
-                    Text('State:  ${model.billing.state}'),
-                    Text('Pincode:  ${model.billing.pincode}'),
-                    Text('Country:  ${model.billing.country}'),
-                  ],
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Billing Address',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-              ):Container(),
-
-             const Divider(thickness: 1,color: Colors.black87,),
-             model.shipping.country!=null?
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Shipping Address',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 5),
-                    Text('Address Line 1: ${model.shipping.addressLine1}'),
-                    Text('Address Line 2: ${model.shipping.addressLine2}'),
-                    Text('City: ${model.shipping.city}'),
-                    Text('State: ${model.shipping.state}'),
-                    Text('Pincode: ${model.shipping.pincode}'),
-                    Text('Country: ${model.shipping.country}'),
-                  ],
+                SizedBox(height: 8),
+                Text(
+                  '${model.billing.addressLine1},',
+                  style: TextStyle(fontSize: 16),
                 ),
-              ):Container(),
-IconButton(onPressed: (){Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) =>  AddressScreen(billing: model.billing,shipping: model.shipping),
-  ),
-);}, icon: Icon(Icons.edit))
-            ],
+                Text(
+                  '${model.billing.addressLine2},',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'City: ${model.billing.city}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'State: ${model.billing.state}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Pincode: ${model.billing.pincode}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Country: ${model.billing.country}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           ),
-        ),
-            if(model.billing.country!=null && model.shipping.country!=null)
+          Divider(
+            height: 100,
+            color: Colors.green,
+            thickness: 1,
+            indent : 10,
+            endIndent : 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Shipping Address',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '${model.shipping.addressLine1},',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  '${model.shipping.addressLine2},',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'City: ${model.shipping.city}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'State: ${model.shipping.state}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Pincode: ${model.shipping.pincode}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Country: ${model.shipping.country}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddressScreen(billing: model.billing, shipping: model.shipping),
+                ),
+              );
+            },
+            icon: Icon(Icons.edit),
+            color: Colors.blue,
+            iconSize: 30,
+          )
+        ],
+      ),
+    ),
+
+        if(model.billing.country!=null && model.shipping.country!=null)
         const SizedBox(
               height: 15,
             ),
             if(model.isEdit==false)
             ElevatedButton.icon(
               onPressed: () async {
-                final List<Billing> addresses = await Navigator.push(
+                final List<dynamic> addresses = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  AddressScreen(billing: Billing(),shipping: Billing(),),
+                    builder: (context) => AddressScreen(billing: Billing(), shipping: Shipping()),
                   ),
                 );
-                if (addresses.isNotEmpty && addresses.length == 2) {
-                  Billing billingAddress = addresses[0];
-                  Billing shippingAddress = addresses[1];
 
-                  // Now you can assign these addresses to your model or use them as needed
-                  setState(() {
-                    model.billing = billingAddress;
-                    model.shipping = shippingAddress;
-                  });
-                }
-              },
+                Logger().i(addresses[0].toString());
+                Logger().i(addresses[1].toString());
+                Billing billingAddress = addresses[0];
+                Shipping shippingAddress = addresses[1];
 
+                // Now you can assign these addresses to your model or use them as needed
+
+                setState(() {
+                  model.billing = billingAddress;
+                  model.shipping = shippingAddress;
+                });
+                            },
               icon: const Icon(Icons.add_circle_sharp),
               label: const Text('Add Address',style: TextStyle(fontSize: 20),),
             ),
@@ -207,13 +256,18 @@ IconButton(onPressed: (){Navigator.push(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CtextButton(
-                  text: 'Cancel',
-                  onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red.shade400,
+                Expanded(
+                  child: CtextButton(
+                    text: 'Cancel',
+                    onPressed: () => Navigator.of(context).pop(), buttonColor: Colors.red.shade400,
+                  ),
                 ),
-                CtextButton(
-                  text:model.isEdit?'Update Customer' : 'Create Customer',
-                  onPressed: () =>  model.onSavePressed(context), buttonColor: Colors.blueAccent.shade400,
+                SizedBox(width: 20,),
+                Expanded(
+                  child: CtextButton(
+                    text:model.isEdit?'Update Customer' : 'Create Customer',
+                    onPressed: () =>  model.onSavePressed(context), buttonColor: Colors.blueAccent.shade400,
+                  ),
                 )
 
 

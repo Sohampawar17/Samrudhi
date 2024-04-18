@@ -9,7 +9,7 @@ import '../../../widgets/drop_down.dart';
 
 class AddressScreen extends StatefulWidget {
   final Billing billing;
-  final Billing shipping;
+  final Shipping shipping;
   const AddressScreen({super.key, required this.billing, required this.shipping});
 
   @override

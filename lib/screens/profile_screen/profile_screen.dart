@@ -24,13 +24,13 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'My Profile',
-            style: TextStyle(fontSize: 18, color: colorScheme.onPrimary),
+            style: TextStyle(fontSize: 18, ),
           ),
           leading: IconButton.outlined(
-            onPressed: () => Navigator.popAndPushNamed(context, Routes.homePage),
-            icon:  Icon(Icons.arrow_back, color: colorScheme.onPrimary),
+            onPressed: () =>Navigator.pop(context),
+            icon:  Icon(Icons.arrow_back,),
           ),
-          backgroundColor: colorScheme.primary,
+
         ),
            body: fullScreenLoader(
           loader: model.isBusy,
@@ -182,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),child: ListTile(
-              onTap: () => Navigator.popAndPushNamed(context, Routes.changePasswordScreen),
+              onTap: () => Navigator.pushNamed(context, Routes.changePasswordScreen),
               leading: const Icon(Icons.lock_outlined),
               title: const Text('Change the Password',style: TextStyle(fontWeight: FontWeight.bold),),trailing: const Icon(Icons.arrow_forward_ios_outlined),
             )),

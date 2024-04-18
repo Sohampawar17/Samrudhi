@@ -29,7 +29,7 @@ class _CustomerListState extends State<CustomerList> {
           ],),
           body:  WillPopScope(
             onWillPop: ()  async{
-              Navigator.popAndPushNamed(context,Routes.homePage);
+              Navigator.pop(context);
               return true; },
             child: RefreshIndicator(
               onRefresh: ()=>model.refresh(),

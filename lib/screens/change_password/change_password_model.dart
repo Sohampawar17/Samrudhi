@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocation/services/profle_services.dart';
 import 'package:stacked/stacked.dart';
 import '../../model/chane_password.dart';
-import '../../router.router.dart';
+
 
 class ChangePasswordModel extends BaseViewModel{
   TextEditingController currentpasswordcontroller=TextEditingController();
@@ -22,7 +22,7 @@ class ChangePasswordModel extends BaseViewModel{
         if (res) {
           if (context.mounted) {
             setBusy(false);
-            Navigator.pushReplacementNamed(context, Routes.profileScreen);
+            Navigator.pop(context);
           }}
     }
     setBusy(false);

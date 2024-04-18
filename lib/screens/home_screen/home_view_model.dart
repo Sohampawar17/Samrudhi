@@ -109,7 +109,7 @@ class HomeViewModel extends BaseViewModel {
       prefs.clear();
       if (context.mounted) {
         setBusy(false);
-        Navigator.popAndPushNamed(context, Routes.loginViewScreen);
+        Navigator.pushNamed(context, Routes.loginViewScreen);
         Logger().i('logged out success');
       }
     }

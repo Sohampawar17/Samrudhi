@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/model/create_customer_model.dart';
 import 'package:geolocation/services/add_customer_services.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
-import '../../../router.router.dart';
 
 class AddCustomerViewModel extends BaseViewModel{
   final formKey = GlobalKey<FormState>();
@@ -26,7 +23,7 @@ List<String> typeList=["Company",
     "Deemed Export",
     "UIN Holders",
     "Tax Deductor"];
-  Billing shipping= Billing(); Billing billing= Billing();
+  Shipping shipping= Shipping(); Billing billing= Billing();
 TextEditingController customerName=TextEditingController();
   TextEditingController mobileNumber=TextEditingController();
   TextEditingController emailId=TextEditingController();
@@ -49,7 +46,9 @@ bool isEdit=false;
       emailId.text = customerData.emailId ?? "";
       gstIn.text = customerData.gstin ?? "";
       billing=customerData.billing ?? Billing();
-      shipping=customerData.shipping ?? Billing();
+      shipping=customerData.shipping ?? Shipping();
+      Logger().i(billing.country);
+      Logger().i(shipping.country);
     }
 
     setBusy(false);
@@ -77,7 +76,7 @@ void onSavePressed(BuildContext context) async {
       if (res) {
         if (context.mounted) {
           setBusy(false);
-          Navigator.pushReplacementNamed(context, Routes.customerList);
+          Navigator.pop(context);
         }}
     }
     else{
@@ -85,7 +84,7 @@ void onSavePressed(BuildContext context) async {
     if (res) {
       if (context.mounted) {
         setBusy(false);
-        Navigator.pushReplacementNamed(context, Routes.customerList);
+        Navigator.pop(context);
       }}
   }}
   setBusy(false);

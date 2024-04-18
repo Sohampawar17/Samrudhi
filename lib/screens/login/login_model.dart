@@ -10,7 +10,7 @@ import '../../router.router.dart';
 class LoginViewModel extends BaseViewModel {
   final formGlobalKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController urlController = TextEditingController()..text = 'https://mobilecrm.erpdata.in';
+  TextEditingController urlController = TextEditingController()..text = 'http://devsamruddhi.erpdata.in';
   TextEditingController passwordController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
@@ -30,7 +30,7 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
     if (res) {
       if (context.mounted) {
-        Navigator.popAndPushNamed(context, Routes.homePage);
+        Navigator.pushNamed(context, Routes.homePage);
       }
     } else {
       Logger().i('invalid credential');
@@ -54,7 +54,7 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
     if (res) {
       if (context.mounted) {
-        Navigator.popAndPushNamed(context, Routes.homePage);
+        Navigator.pushNamed(context, Routes.homePage);
       }
     } else {
       Logger().i('invalid credential');

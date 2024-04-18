@@ -45,7 +45,7 @@ class ListOrderModel extends BaseViewModel {
   }
 
 Future<void> refresh() async {
-  orderlist= await OrderServices().fetchsalesorder();
+  filterorderlist= await OrderServices().fetchsalesorder();
   notifyListeners();
 }
 
@@ -54,19 +54,14 @@ Future<void> refresh() async {
       case 'Draft':
         return Colors.grey[400] ??
             Colors.grey; // Set the color for Draft status
-      case 'On Hold':
-        return Colors.orangeAccent; // Set the color for On Hold status
-      case 'To Deliver and Bill':
-        return Colors.orange; // Set the color for To Deliver and Bill status
-      case 'To Bill':
-        return Colors.orange; // Set the color for To Bill status
-      case 'To Deliver':
+    // Set the color for To Bill status
+      case 'Partially Dispatch':
         return Colors.orange; // Set the color for To Deliver status
-      case 'Completed':
+      case 'Fully Dispatched':
         return Colors.green; // Set the color for Completed status
-      case 'Cancelled':
+      case 'close':
         return Colors.red; // Set the color for Cancelled status
-      case 'Closed':
+      case 'Delivered':
         return Colors.green; // Set the color for Closed status
       default:
         return Colors.grey; // Set a default color for unknown status

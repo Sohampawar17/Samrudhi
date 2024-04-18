@@ -4,7 +4,6 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../router.router.dart';
 import 'attendence_viewmodel.dart';
 
 
@@ -20,7 +19,7 @@ class AttendanceScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('Attendance'),
 
-            leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),
+            leading: IconButton.outlined(onPressed: ()=> Navigator.pop(context), icon: const Icon(Icons.arrow_back)),
 
             bottom:  PreferredSize(preferredSize: Size(20, 95), child:Container(
               padding: EdgeInsets.all(10),

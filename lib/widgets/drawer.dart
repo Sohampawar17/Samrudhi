@@ -25,7 +25,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
                 ),
               ),
               accountEmail: AutoSizeText(
-                email,
+               email,
                 maxLines: 1,
                 style: const TextStyle(
                   fontSize: 14,
@@ -61,7 +61,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              Navigator.popAndPushNamed(context, Routes.homePage);
+              Navigator.pushNamed(context, Routes.homePage);
             },
           ),
           ListTile(
@@ -71,7 +71,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              Navigator.popAndPushNamed(context, Routes.profileScreen);
+              Navigator.pushNamed(context, Routes.profileScreen);
             },
           ),
           // ListTile(
@@ -81,7 +81,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
           //     style: TextStyle(fontWeight: FontWeight.w300),
           //   ),
           //   onTap: () {
-          //     Navigator.popAndPushNamed(context, Routes.geolocation);
+          //     Navigator.pushNamed(context, Routes.geolocation);
           //   },
           // ),
 

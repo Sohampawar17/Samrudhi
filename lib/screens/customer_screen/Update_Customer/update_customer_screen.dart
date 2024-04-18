@@ -1,4 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:geolocation/screens/customer_screen/Update_Customer/update_customer_model.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
@@ -21,7 +24,10 @@ class _UpdateCustomerState extends State<UpdateCustomer> {
 
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: Text(model.customerData.name ??"",style: TextStyle(color: Colors.white),),
+        title: AutoSizeText(model.customerData.name ??"", style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -104,7 +110,7 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
 
                           Tab(
-                            text: 'Transaction',
+                            text: 'Transactions',
                           ),
                           Tab(
                             text: 'Comments',
@@ -118,187 +124,89 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       TabBarView(
                         children: [
                           // Details Tab Content
-                          Container(
-                            height: 200,
-                            padding: EdgeInsets.symmetric(horizontal: 50),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 7,
-                                ),
-                              ],
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.account_circle_outlined),
-                                    SizedBox(width: 16.0),
-                                    Text(
-                                      model.customerData.customerName ?? "",
-                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 7,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.account_circle_outlined),
+                                          SizedBox(width: 16.0),
+                                          Text(
+                                            model.customerData.customerName ?? "",
+                                            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.phone_outlined),
+                                          SizedBox(width: 16.0),
+                                          Text(
+                                            model.customerData.mobileNo ?? "",
+                                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.email_outlined),
+                                          SizedBox(width: 16.0),
+                                          Text(
+                                            model.customerData.emailId ?? "",
+                                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 15.0),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          CustomButton(
+                                            icon: Icons.phone_outlined,
+                                            text: 'Mobile',
+                                            onPressed: () => model.service.call(model.customerData.mobileNo ?? ""),
+                                          ),
+                                          CustomButton(
+                                            icon: Icons.sms_outlined,
+                                            text: 'SMS',
+                                            onPressed: () => model.service.sendSms(model.customerData.mobileNo ?? ""),
+                                          ),
+                                          CustomButton(
+                                            icon: Icons.email_outlined,
+                                            text: 'Email',
+                                            onPressed: () => model.service.sendEmail(model.customerData.emailId ?? ""),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.phone_outlined),
-                                    SizedBox(width: 16.0),
-                                    Text(
-                                      model.customerData.mobileNo ?? "",
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.email_outlined),
-                                    SizedBox(width: 16.0),
-                                    Text(
-                                      model.customerData.emailId ?? "",
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 8.0),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    CustomButton(
-                                      icon: Icons.phone_outlined,
-                                      text: 'Mobile',
-                                      onPressed: () => model.service.call(model.customerData.mobileNo ?? ""),
-                                    ),
-                                    CustomButton(
-                                      icon: Icons.email_outlined,
-                                      text: 'Email',
-                                      onPressed: () => model.service.sendEmail(model.customerData.emailId ?? ""),
-                                    ),
-                                  ],
-                                ),
+
                               ],
                             ),
                           ),
                           // Transaction Tab Content
-                         Container(child: // Transaction Tab Content
-                         ListView(
-                           children: [
-                             // Filter options
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                 children: [
-                                   // Add your filter options here
-                               Container(
-                               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                           decoration: BoxDecoration(
-                             color: Colors.grey[300],
-                             borderRadius: BorderRadius.circular(20),
-                           ),
-                           child: Text(
-                             'All Orders',
-                             style: TextStyle(
-                               color: Colors.black,
-                               fontWeight: FontWeight.bold,
-                             ),
-                           ),
-                         ),
-                                   Container(
-                                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                     decoration: BoxDecoration(
-                                       color: Colors.grey[300],
-                                       borderRadius: BorderRadius.circular(20),
-                                     ),
-                                     child: Text(
-                                       'Pending',
-                                       style: TextStyle(
-                                         color: Colors.black,
-                                         fontWeight: FontWeight.bold,
-                                       ),
-                                     ),
-                                   ),
-                                   Container(
-                                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                     decoration: BoxDecoration(
-                                       color: Colors.grey[300],
-                                       borderRadius: BorderRadius.circular(20),
-                                     ),
-                                     child: Text(
-                                       'Completed',
-                                       style: TextStyle(
-                                         color: Colors.black,
-                                         fontWeight: FontWeight.bold,
-                                       ),
-                                     ),
-                                   ),
-                                   // Add more filter options as needed
-                                 ],
-                               ),
-                             ),
-                             // List of orders
-                             ListView.builder(
-                               shrinkWrap: true,
-                               itemCount: model.orders.length,
-                               itemBuilder: (context, index) {
-                                 final order = model.orders[index];
-                                 return ListTile(
-                                   leading: Icon(Icons.shopping_cart),
-                                   title: Text(order.title),
-                                   subtitle: Text(order.description),
-                                   trailing: Text('\$${order.amount}'),
-                                   onTap: () {
-                                     // Add onTap functionality here if needed
-                                   },
-                                 );
-                               },
-                             ),
-                           ],
-                         ),
-                             ),
+                          orderList(context,model),
                           // Comment Tab Content
-                          Column(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-
-                                  shrinkWrap: true,
-                                  itemCount: 5, // Replace with your comment list length
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text('Comment $index'),
-                                      subtitle: Text('Comment details'),
-                                    );
-                                  },
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(16.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          hintText: 'Add a comment...',
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: 16.0),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        // Add comment logic here
-                                      },
-                                      child: Text('Add'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                          comment(context,model),
                         ],
                       ),
 
@@ -314,4 +222,206 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
     ));
   }
+
+
+ Widget comment(BuildContext context,UpdateCustomerViewModel model){
+    return Scaffold(
+      body: Column(
+        children: [
+          model.comments.isNotEmpty
+              ?
+          Expanded(
+
+            child: ListView.separated(
+              separatorBuilder: (context, builder) {
+                return const SizedBox(
+                  height: 5,
+                );
+              },
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: model.comments.length,
+              itemBuilder: (context, index) {
+                final comment = model.comments[index];
+                return  Card(
+                  color: Colors.white,
+                  elevation: 1,
+                  child: ListTile(
+
+                    leading:  ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: comment.userImage ?? '',
+                        width: 40,
+                        matchTextDirection: true,
+                        height: 40,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                        errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
+                      ),
+                    ),
+                    title:Html(data: comment.comment.toString().toUpperCase()),
+                    subtitle: Text("${comment.commentBy} | ${comment.creation}"),
+                  ),
+                );
+              },
+            ),
+          ):Center(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: const Text(
+                'Sorry, you got nothing!',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+          Container(
+            color: Colors.blueAccent.shade400,
+            padding: const EdgeInsets.all(10),
+            height: 60,
+            child: Row(
+              children: [
+Expanded(child: Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    color: Colors.white,
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+        // spreadRadius: 5,
+        blurRadius: 7,
+        // offset: const Offset(0, 3), // Customize the shadow offset
+      ),
+    ],
+  ),
+
+  child: TextField(
+    controller: model.comment,
+    decoration: InputDecoration(
+      hintText: 'Enter a comment',
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18.0),
+      ),
+    )
+  ),
+)),
+                IconButton(onPressed: (){
+                  if(model.comment.text.isNotEmpty){
+                  model.addComment(model.customerData.name, model.comment.text);}
+                }, icon: Icon(Icons.send_outlined,size: 30,color: Colors.white,))
+              ],
+            ),
+          ),
+          SizedBox(height: 40,)
+        ],
+      ),
+    );
+
+ }
+
+  Widget orderList(BuildContext context, UpdateCustomerViewModel model) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Sales Orders'),
+        actions: [
+          IconButton(onPressed: (){
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      // Close and filter buttons
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                           IconButton(onPressed: (){ Navigator.pop(context);}, icon: Icon(Icons.close_outlined)),
+
+                          ],
+                        ),
+                      ),
+                      Divider(height: 1, color: Colors.grey),
+                      // List of statuses
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: model.status.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final status = model.status[index];
+                          return ListTile(
+                            tileColor: Colors.black12,
+                            selectedTileColor: Colors.black,
+                            title: Text(status),
+                            onTap: () {
+                              model.addFilter(model.customerData.name.toString(),status);
+                              Navigator.pop(context); // Close the bottom sheet after selecting a status
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }, icon: Icon(Icons.filter_alt_rounded))
+        ],
+      ),
+      body: model.filterOrders.isNotEmpty
+          ? ListView.builder(
+
+        itemCount: model.filterOrders.length,
+        itemBuilder: (context, index) {
+          final order = model.filterOrders[index];
+          return Card(
+            elevation: 1,
+            color: Colors.white,
+            child: ListTile(
+              leading: Icon(Icons.shopping_cart),
+              title: Text(order.name ?? ""),
+              subtitle: Text(order.deliveryDate ?? ""),
+              trailing: Text(
+                '\$${order.roundedTotal}',
+                style: TextStyle(color: Colors.green, fontSize: 15),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.addOrderScreen,
+                    arguments: AddOrderScreenArguments(
+                        orderid: order.name.toString()));
+              },
+            ),
+          );
+        },
+      )
+          : Center(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: const Text(
+            'Sorry, you got nothing!',
+            textDirection: TextDirection.ltr,
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: FloatingActionButton(child: Icon(Icons.add,size: 40,),onPressed: ()=> Navigator.pushNamed(context, Routes.addOrderScreen,
+            arguments: AddOrderScreenArguments(
+                orderid: ""))),
+      ),
+    );
+  }
+
 }

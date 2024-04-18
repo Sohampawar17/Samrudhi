@@ -23,7 +23,7 @@ class _LeadListScreenState extends State<LeadListScreen> {
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child)=> Scaffold(
         backgroundColor: Colors.grey.shade200,
-appBar: AppBar(title: const Text('Lead'),
+appBar: AppBar(title: const Text('Enquiry'),
   actions: [
     IconButton(
       icon: const Icon(Icons.filter_list),
@@ -32,10 +32,10 @@ appBar: AppBar(title: const Text('Lead'),
       },
     ),
   ],
-leading: IconButton.outlined(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.homePage), icon: const Icon(Icons.arrow_back)),),
+leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),),
 body: WillPopScope(
   onWillPop: ()  async{
-                  Navigator.popAndPushNamed(context,Routes.homePage);
+    Navigator.pop(context);
                   return true; },
   child: fullScreenLoader(
                   child: Padding(
@@ -214,7 +214,7 @@ body: WillPopScope(
                   context: context,
                 ),
 ),
-                floatingActionButton: FloatingActionButton.extended(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),label: const Text('Create Lead'),),
+                floatingActionButton: FloatingActionButton.extended(onPressed: ()=> Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments(leadid: '')),label: const Text('Create Enquiry'),),
       ));
   }
 
@@ -230,57 +230,58 @@ body: WillPopScope(
                 appBar: AppBar(
                   title: const Text('Filters'),
                 ),
-                body: Container(
-                  height: 250,
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      CustomDropdownButton2(
-                        value: model.custm,
-                        prefixIcon: Icons.person_2,
-                        items: model.customerlist,
-                        hintText: 'Select the Lead Company',
-                        labelText: 'Lead Company',
-                        onChanged: model.setcustomer,
-                      ),
-                      const SizedBox(height: 10.0),
-                      CustomDropdownButton2(
-                        value: model.territory,
-                        prefixIcon: Icons.my_location,
-                        items: model.territorylist,
-                        hintText: 'Select the Territory',
-                        labelText: 'Territory',
-                        onChanged: model.setqterritory,
-                      ),
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        CustomDropdownButton2(
+                          value: model.custm,
+                          prefixIcon: Icons.person_2,
+                          items: model.customerlist,
+                          hintText: 'Select the Lead Name',
+                          labelText: 'Lead Name',
+                          onChanged: model.setcustomer,
+                        ),
+                        const SizedBox(height: 10.0),
+                        CustomDropdownButton2(
+                          value: model.request,
+                          prefixIcon: Icons.request_page,
+                          items: model.requestType,
+                          hintText: 'Select the Request Type',
+                          labelText: 'Request Type',
+                          onChanged: model.setRequest,
+                        ),
 
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                           CtextButton(
-                              onPressed: () {
-                              model.clearfilter();
-                              Navigator.pop(
-                                  context); // Close the bottom sheet
-                            },
-                                text: 'Clear Filter',
-                                buttonColor: Colors.black54,
-                               
-                              ),
-                              CtextButton(
-                              onPressed: () {
-                              model.setfilter(model.territory ?? "",
-                                  model.custm ?? "");
-                              Navigator.pop(context);
-                            },
-                                  text: 'Apply Filter',
-                                buttonColor: Colors.blueAccent.shade400,
-                               
-                              ),
-                        
-                        ],
-                      ),
-                    ],
+                        const SizedBox(height: 20.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                             CtextButton(
+                                onPressed: () {
+                                model.clearfilter();
+                                Navigator.pop(
+                                    context); // Close the bottom sheet
+                              },
+                                  text: 'Clear Filter',
+                                  buttonColor: Colors.black54,
+
+                                ),
+                                CtextButton(
+                                onPressed: () {
+                                model.setfilter(
+                                    model.custm ?? "",model.request ?? "");
+                                Navigator.pop(context);
+                              },
+                                    text: 'Apply Filter',
+                                  buttonColor: Colors.blueAccent.shade400,
+
+                                ),
+
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

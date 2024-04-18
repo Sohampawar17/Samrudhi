@@ -13,12 +13,21 @@ List<ListLeadModel> filterleadlist=[];
   initialise(BuildContext context) async {
     setBusy(true);
 leadlist= await ListLeadServices().fetchleadlist();
-    customerlist=await ListLeadServices().getcustomer();
-    territorylist=await ListLeadServices().fetchterritory();
+    customerlist=await ListLeadServices().getCustomer();
     filterleadlist=leadlist;
 notifyListeners();
 setBusy(false);
   }
+
+List<String> requestType=[
+  "Enquiry for retailer",
+  "Enquiry as a distributor",
+  "Product Enquiry",
+  "Enquiry as supplier",
+  "Enquiry as bulk product",
+  "Customer Complaint",
+  "Non Relevant"
+];
 
 Future<void> refresh() async {
   leadlist=await ListLeadServices().fetchleadlist();
@@ -61,25 +70,27 @@ Color getColorForStatus(String status) {
   }
 
 String? custm;
-String? territory;
+
+String? request;
 
 void setcustomer(String? customer) {
   custm = customer ?? "";
   notifyListeners();
 }
 
-void setqterritory(String? quotation) {
-  territory = quotation ?? "";
+
+void setRequest(String? customer) {
+  request = customer ?? "";
   notifyListeners();
 }
 
-void setfilter(String territory,String customer) async {
-  filterleadlist= await ListLeadServices().fetchfilterquotation(territory, customer);
+void setfilter(String customer,String request) async {
+  filterleadlist= await ListLeadServices().fetchfilterquotation(customer,request);
   notifyListeners();
 }
 
 void clearfilter() async {
-  territory="";
+request="";
   custm="";
   filterleadlist= await ListLeadServices().fetchleadlist();
   notifyListeners();

@@ -10,7 +10,7 @@ class AddOrderModel {
   String? orderType;
   String? transactionDate;
   String? deliveryDate;
-
+String? customOrderStatus;
   int? skipDeliveryNote;
   int? isReverseCharge;
   int? isExportWithGst;
@@ -77,6 +77,7 @@ class AddOrderModel {
       this.customer,
       this.customerName,
       this.orderType,
+        this.customOrderStatus,
       this.transactionDate,
       this.deliveryDate,
       this.skipDeliveryNote,
@@ -147,7 +148,7 @@ class AddOrderModel {
     orderType = json['order_type'];
     transactionDate = json['transaction_date'];
     deliveryDate = json['delivery_date'];
-
+customOrderStatus=json['custom_order_status'];
     skipDeliveryNote = json['skip_delivery_note'];
     isReverseCharge = json['is_reverse_charge'];
     isExportWithGst = json['is_export_with_gst'];
@@ -233,7 +234,7 @@ class AddOrderModel {
     data['order_type'] = orderType;
     data['transaction_date'] = transactionDate;
     data['delivery_date'] = deliveryDate;
-
+data['custom_order_status']=customOrderStatus;
     data['skip_delivery_note'] = skipDeliveryNote;
     data['is_reverse_charge'] = isReverseCharge;
     data['is_export_with_gst'] = isExportWithGst;

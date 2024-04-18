@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_leave_model.dart';
-import '../../../router.router.dart';
+
 import '../../../services/add_leave_services.dart';
 
 class AddLeaveViewModel extends BaseViewModel{
@@ -39,7 +39,7 @@ bool isSwitched=false;
         if (res) {
           if (context.mounted) {
             setBusy(false);
-            Navigator.pushReplacementNamed(context, Routes.listLeaveScreen);
+            Navigator.pop(context);
           }}
     }
     setBusy(false);

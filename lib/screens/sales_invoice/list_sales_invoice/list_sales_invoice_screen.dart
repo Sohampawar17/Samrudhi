@@ -29,13 +29,13 @@ class ListInvoiceScreen extends StatelessWidget {
           ],
                 leading: IconButton.outlined(
                     onPressed: () {
-                      Navigator.popAndPushNamed(context, Routes.homePage);
+                      Navigator.pop(context);
                     },
                     icon: const Icon(Icons.arrow_back)),
               ),
               body: WillPopScope(
                 onWillPop: ()  async{
-                  Navigator.popAndPushNamed(context,Routes.homePage);
+                  Navigator.pop(context);
                   return true; },
                 child: RefreshIndicator(
                   onRefresh: ()=>model.refresh(),
@@ -222,7 +222,7 @@ class ListInvoiceScreen extends StatelessWidget {
               ),
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, Routes.addInvoiceScreen,
+                  Navigator.pushNamed(context, Routes.addInvoiceScreen,
                       arguments: const AddInvoiceScreenArguments(invoiceid: ""));
                 },
                 label: const Text('Create Invoice'),

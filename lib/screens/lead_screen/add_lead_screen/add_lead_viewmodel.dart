@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:geolocation/model/sub_complaint_model.dart';
 import 'package:geolocation/services/add_lead_services.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../model/add_lead_model.dart';
-import '../../../router.router.dart';
 
 class AddLeadViewModel extends BaseViewModel{
 
@@ -18,13 +17,39 @@ TextEditingController statecontroller=TextEditingController();
 TextEditingController whatsappcontroller=TextEditingController();
 TextEditingController noteController=TextEditingController();
 TextEditingController textEditingController=TextEditingController();
+TextEditingController departmentController=TextEditingController();
 List<Notes> notes=[];
 bool isEdit=false;
 AddLeadModel leaddata =AddLeadModel();
 
 final formKey = GlobalKey<FormState>();
 List<String> industrytype=[""]; 
-List<String> territory=[""]; 
+List<String> territory=[""];
+List<String> customerList=[""];
+List<String> complaintTypeList=[""];
+List<SubComplaint> subComplaintTypeList=[];
+bool visible=false;
+List<String> requestType=["",
+"Enquiry for retailer",
+"Enquiry as a distributor",
+"Product Enquiry",
+"Enquiry as supplier",
+"Enquiry as bulk product",
+"Customer Complaint",
+"Non Relevant"
+];
+
+List<String> complaintStatus=["",
+  "Distributor",
+  "Customer",
+  "Retailer",
+  "B2B Customer",
+  "Supplier",
+  "Service Vendor",
+  "Consumer",
+  "others"
+];
+
 List<String> state=["01-Jammu and Kashmir",
 "02-Himachal Pradesh",
 "03-Punjab",
@@ -66,8 +91,12 @@ List<String> state=["01-Jammu and Kashmir",
 
   initialise(BuildContext context,String leadId) async {
     setBusy(true);
+    customerList=await AddLeadServices().fetchCustomer();
+    complaintTypeList=await AddLeadServices().fetchComplaintType();
 industrytype=await AddLeadServices().fetchindustrytype();
 territory= await AddLeadServices().fetchterritory();
+    subComplaintTypeList=await AddLeadServices().fetchSubComplaintType("");
+    visible=false;
 if(leadId != ""){
   isEdit=true;
   leaddata= await AddLeadServices().getlead(leadId) ?? AddLeadModel();
@@ -79,10 +108,10 @@ if(leadId != ""){
   companynamecontroller.text=leaddata.companyName ?? "";
   citycontroller.text=leaddata.city ?? "";
   statecontroller.text=leaddata.state ?? "";
-notes.addAll(leaddata.notes ?? [] );
-for(var i in notes){
-  noteController.text=RegExp(r'<p>(.*?)<\/p>').firstMatch(i.note ?? "")?.group(1) ?? '';
-}
+departmentController.text=leaddata.customDepartment ?? "";
+  if(leaddata.requestType == "Customer Complaint"){
+    visible=true;
+  }
   notifyListeners();
 }
     setBusy(false);
@@ -99,21 +128,54 @@ for(var i in notes){
       if (res) {
         if (context.mounted) {
           setBusy(false);
-          Navigator.pushReplacementNamed(context, Routes.leadListScreen);
+          Navigator.pop(context);
         
       }}
     }else{
-    
       res = await AddLeadServices().addLead(leaddata);
       if (res) {
         if (context.mounted) {
           setBusy(false);
-          Navigator.pushReplacementNamed(context, Routes.leadListScreen);
+          Navigator.pop(context);
         
       }}}
     }
   setBusy(false);
   }
+
+void setCustomer(String? customComplaintCustomer){
+  leaddata.customComplaintCustomer =customComplaintCustomer;
+  leaddata.firstName=customComplaintCustomer;
+  firstnamecontroller.text=customComplaintCustomer ?? "";
+  notifyListeners();
+}
+
+void setCustomerStatus(String? customComplaintStatus){
+  leaddata.customComplaintStatus=customComplaintStatus;
+  notifyListeners();
+}
+
+void setComplaintType(String? customComplaintType) async {
+  leaddata.customComplaintType =customComplaintType;
+  Logger().i(customComplaintType);
+  notifyListeners();
+  subComplaintTypeList=await AddLeadServices().fetchSubComplaintType(leaddata.customComplaintType);
+  Logger().i(subComplaintTypeList.length);
+  notifyListeners();
+}
+
+void setSubComplaintType(SubComplaint customSubComplaintType){
+  leaddata.customSubComplaintType =customSubComplaintType.name;
+  departmentController.text=customSubComplaintType.department ?? "";
+  leaddata.customDepartment =customSubComplaintType.department;
+  notifyListeners();
+}
+
+void setDepartment(String customDepartment){
+  departmentController.text=customDepartment;
+  leaddata.customDepartment =customDepartment;
+  notifyListeners();
+}
 
 void setfirstname(String firstname){
   firstnamecontroller.text=firstname;
@@ -144,6 +206,17 @@ void setindustry(String? industry){
 }
 void setterritory(String? territory){
   leaddata.territory =territory;
+  notifyListeners();
+}
+
+void setRequestType(String? requestType){
+  leaddata.requestType =requestType;
+  Logger().i(requestType);
+  if(leaddata.requestType == "Customer Complaint"){
+    visible=true;
+  }else{
+    visible=false;
+  }
   notifyListeners();
 }
 
@@ -182,6 +255,13 @@ void setstate(String? state){
     }
     return null;
   }
+
+String? validateRequestType(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please select Request Type';
+  }
+  return null;
+}
 
   String? validatelastname(String? value) {
     if (value == null || value.isEmpty) {
@@ -232,6 +312,7 @@ void setstate(String? state){
     companynamecontroller.dispose();
     noteController.dispose();
     textEditingController.dispose();
+    departmentController.dispose();
     super.dispose();
   }
 }

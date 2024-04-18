@@ -12,7 +12,7 @@ class OrderServices {
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Sales Order?order_by=creation desc&fields=["name","customer_name","transaction_date","grand_total","status","total_qty"]',
+        '$baseurl/api/resource/Sales Order?order_by=creation desc&fields=["name","customer_name","transaction_date","grand_total","status","total_qty","custom_order_status"]',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -44,7 +44,7 @@ class OrderServices {
 
       // Construct the base URL
       String apiUrl =
-          '$baseurl/api/resource/Sales Order?order_by=creation desc&fields=["name","customer_name","transaction_date","grand_total","status","total_qty"]';
+          '$baseurl/api/resource/Sales Order?order_by=creation desc&fields=["name","customer_name","transaction_date","grand_total","status","total_qty","custom_order_status"]';
 
       if(customerName.isNotEmpty && date.isNotEmpty){
         apiUrl += '&filters=[["customer_name", "=", "$customerName"],["transaction_date", "=", "$date"]]';

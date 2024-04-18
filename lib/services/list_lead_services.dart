@@ -35,7 +35,7 @@ class ListLeadServices{
     }
   }
 
-   Future<List<ListLeadModel>> fetchfilterquotation(String territory,String customerName) async {
+   Future<List<ListLeadModel>> fetchfilterquotation(String customerName,String request) async {
      baseurl = await geturl();
      try {
        var dio = Dio();
@@ -44,16 +44,16 @@ class ListLeadServices{
        String apiUrl =
            '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory"]';
 
-       if(customerName.isNotEmpty && territory.isNotEmpty){
-         apiUrl += '&filters=[["company_name", "=", "$customerName"],["territory", "=", "$territory"]]';
+       if(customerName.isNotEmpty && request.isNotEmpty){
+         apiUrl += '&filters=[["lead_name", "=", "$customerName"],["request_type", "=", "$request"]]';
        }
        // Add filters based on conditions
        if(customerName.isNotEmpty) {
-         apiUrl += '&filters=[["company_name", "=", "$customerName"]]';
+         apiUrl += '&filters=[["lead_name", "=", "$customerName"]]';
        }
        // Format the date in a way that your API expects, adjust as needed
-       if(territory.isNotEmpty) {
-         apiUrl += '&filters=[["territory", "=", "$territory"]]';
+       if(request.isNotEmpty) {
+         apiUrl += '&filters=[["request_type", "=", "$request"]]';
        }
        //
        Logger().i(apiUrl);
@@ -83,12 +83,12 @@ class ListLeadServices{
      }
    }
 
-   Future<List<String>> fetchterritory() async {
+   Future<List<String>> getCustomer() async {
      baseurl =  await geturl();
      try {
        var dio = Dio();
        var response = await dio.request(
-         '$baseurl/api/resource/Territory?limit_page_length=99',
+         '$baseurl/api/method/mobile.mobile_env.lead.filter_customer_list',
          options: Options(
            method: 'GET',
            headers: {'Authorization': await getTocken()},
@@ -101,38 +101,7 @@ class ListLeadServices{
          List<dynamic> dataList = jsonDataMap["data"];
          Logger().i(dataList);
          List<String> namesList =
-         dataList.map((item) => item["name"].toString()).toList();
-         return namesList;
-       } else {
-         Fluttertoast.showToast(msg: "Unable to fetch industry type");
-         return [];
-       }
-     } catch (e) {
-       Logger().e(e);
-       Fluttertoast.showToast(msg: "Unauthorized industry!");
-       return [];
-     }
-   }
-
-   Future<List<String>> getcustomer() async {
-     baseurl =  await geturl();
-     try {
-       var dio = Dio();
-       var response = await dio.request(
-         '$baseurl/api/method/mobile.mobile_env.app.filter_customer_list',
-         options: Options(
-           method: 'GET',
-           headers: {'Authorization': await getTocken()},
-         ),
-       );
-
-       if (response.statusCode == 200) {
-         var jsonData = json.encode(response.data);
-         Map<String, dynamic> jsonDataMap = json.decode(jsonData);
-         List<dynamic> dataList = jsonDataMap["data"];
-         Logger().i(dataList);
-         List<String> namesList =
-         dataList.map((item) => item["company_name"].toString()).toList();
+         dataList.map((item) => item["lead_name"].toString()).toList();
          return namesList;
        } else {
          Fluttertoast.showToast(msg: "UNABLE TO get notes!");

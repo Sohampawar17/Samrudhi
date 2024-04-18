@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/constants.dart';
 import 'package:geolocation/model/order_details_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_order_model.dart';
 import '../../../model/search_order_model.dart';
-import '../../../router.router.dart';
 import '../../../services/add_order_services.dart';
 import 'package:intl/intl.dart';
 
@@ -38,6 +38,7 @@ String displayString='';
     searchcutomer = await AddOrderServices().fetchcustomer();
     warehouse = await AddOrderServices().fetchwarehouse();
     // cutomer=await AddOrderServices().fetcustomer();
+    orderStatus=0;
     orderId = orderid;
     //setting aleardy available data
     if (orderId != "") {
@@ -47,6 +48,7 @@ String displayString='';
       orderdata = await AddOrderServices().getOrder(orderid) ?? AddOrderModel();
       isSame=true;
       customercontroller.text = orderdata.customer ?? "";
+      orderStatus=orderdata.docstatus;
       deliverydatecontroller.text = orderdata.deliveryDate ?? "";
       selectedItems.addAll(orderdata.items?.toList() ?? []);
       updateTextFieldValue();
@@ -59,7 +61,7 @@ String displayString='';
 
 
   void onSavePressed(BuildContext context) async {
-    if (orderdata.docstatus == 1) {
+    if (orderStatus == 1) {
     Fluttertoast.showToast(
       msg: 'You cannot edit the Submitted document',
       backgroundColor: Colors.redAccent,
@@ -100,8 +102,8 @@ setBusy(false);
   }
 
 
- void onSubmitPressed(BuildContext context) async {
-  if (orderdata.docstatus == 1) {
+ Future<void> onSubmitPressed(BuildContext context) async {
+  if (orderStatus == 1) {
     Fluttertoast.showToast(
       msg: 'You cannot submit the Submitted document',
       backgroundColor: Colors.redAccent,
@@ -112,6 +114,7 @@ setBusy(false);
 
   setBusy(true);
   if (formKey.currentState!.validate()) {
+
     orderdata.items = selectedItems;
     orderdata.docstatus = 1;
     bool res = false;
@@ -121,13 +124,32 @@ setBusy(false);
     if (res) {
       if (context.mounted) {
         setBusy(false);
-        Navigator.pushReplacementNamed(context, Routes.listOrderScreen);
+        Navigator.pop(context);
       }
     }
   }
   setBusy(false);
 }
 
+  void onCancelPressed(BuildContext context) async {
+    setBusy(true);
+    if (formKey.currentState!.validate()) {
+      orderdata.items = selectedItems;
+      orderdata.docstatus = 2;
+      bool res = false;
+      Logger().i(orderdata.toJson());
+
+      res = await AddOrderServices().cancelOrder(orderdata);
+      if (res) {
+        if (context.mounted) {
+          setBusy(false);
+          Navigator.pop(context);
+        }
+      }
+
+    }
+    setBusy(false);
+  }
 
 
   ///dates functions///

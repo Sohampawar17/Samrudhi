@@ -38,12 +38,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 50,
-                        child:  Image.asset('assets/images/atom.png',scale: 7,)
-                      ),
-
+                     Image.asset('assets/images/atom.jpg',scale: 12,),
                       const SizedBox(height: 40),
                       const AutoSizeText(
                         "Let's sign you in",
@@ -59,7 +54,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        minFontSize: 18,
+                        minFontSize: 20,
                       ),
                       const SizedBox(height: 45),
                       Form(
@@ -94,6 +89,7 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                             ),
                             const SizedBox(height: 16.0),
                             TextFormField(
+                              keyboardType: TextInputType.emailAddress,
                               controller: model.usernameController,
                               style: const TextStyle(color: Colors.black87),
                               decoration: InputDecoration(
@@ -205,47 +201,47 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                       ),
 
 
-                      const SizedBox(height: 80),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Try Our Demo App",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF007BFF),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                                onPressed: () =>model.loginWithDemoUser(context),
-                                child:model.isDemoLoading
-                                    ? LoadingAnimationWidget.hexagonDots(
-                                  color: Colors.white,
-                                  size: 18,
-                                )
-                                    : const Text(
-                                  'Continue as Demo User >',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // const SizedBox(height: 80),
+                      // Align(
+                      //   alignment: Alignment.bottomCenter,
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       const Text(
+                      //         "Try Our Demo App",
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontWeight: FontWeight.w600,
+                      //           fontSize: 20,
+                      //         ),
+                      //       ),
+                      //       const SizedBox(height: 10),
+                      //       SizedBox(
+                      //         height: 60,
+                      //         width: double.infinity,
+                      //         child: ElevatedButton(
+                      //           style: ElevatedButton.styleFrom(
+                      //             backgroundColor: const Color(0xFF007BFF),
+                      //             shape: RoundedRectangleBorder(
+                      //               borderRadius: BorderRadius.circular(10.0),
+                      //             ),
+                      //           ),
+                      //           onPressed: () =>model.loginWithDemoUser(context),
+                      //           child:model.isDemoLoading
+                      //               ? LoadingAnimationWidget.hexagonDots(
+                      //             color: Colors.white,
+                      //             size: 18,
+                      //           )
+                      //               : const Text(
+                      //             'Continue as Demo User >',
+                      //             style: TextStyle(
+                      //                 fontSize: 25, color: Colors.white),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

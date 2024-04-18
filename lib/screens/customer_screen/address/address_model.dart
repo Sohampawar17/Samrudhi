@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 
 class AddressModel extends BaseViewModel{
 
-  Billing shipping= Billing(); Billing billing= Billing();
+  Shipping shipping= Shipping(); Billing billing= Billing();
   TextEditingController billingAddressLine1Controller = TextEditingController();
   TextEditingController billingAddressLine2Controller = TextEditingController();
   TextEditingController billingCityController = TextEditingController();
@@ -56,7 +56,7 @@ class AddressModel extends BaseViewModel{
     "Other Territory"
   ];
 
-  initialise(BuildContext context,Billing editBilling,Billing editShipping)async{
+  initialise(BuildContext context,Billing editBilling,Shipping editShipping)async{
     setBusy(true);
   billing.state="Maharashtra";
     shipping.state="Maharashtra";
