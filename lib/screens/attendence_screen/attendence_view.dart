@@ -121,6 +121,7 @@ class AttendanceScreen extends StatelessWidget {
                         startingDayOfWeek: StartingDayOfWeek.sunday,
                         headerStyle: HeaderStyle(
               
+              
                           // ... header style configuration ...
                           formatButtonVisible: true,
                           formatButtonDecoration: BoxDecoration(

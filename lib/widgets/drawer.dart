@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocation/screens/location_tracking/location_tracker.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../constants.dart';
@@ -74,16 +75,37 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               Navigator.pushNamed(context, Routes.profileScreen);
             },
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.location_on, color: Colors.black),
-          //   title: const Text(
-          //     'Geolocation',
-          //     style: TextStyle(fontWeight: FontWeight.w300),
-          //   ),
-          //   onTap: () {
-          //     Navigator.pushNamed(context, Routes.geolocation);
-          //   },
-          // ),
+          ListTile(
+            leading: const Icon(Icons.route, color: Colors.black),
+            title: const Text(
+              'Routes',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.routeScreen);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.location_on, color: Colors.black),
+            title: const Text(
+              'Geolocation',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.geolocation);
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.file_copy, color: Colors.black),
+            title: const Text(
+              'Visit',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.visitScreen);
+            },
+          ),
 
           const Divider(thickness: 1),
           ListTile(
