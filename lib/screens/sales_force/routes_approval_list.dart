@@ -1,7 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:flutter/material.dart';
-import 'package:geolocation/screens/sales_force/route_approval_screen.dart';
-import 'package:geolocation/screens/sales_force/route_approval_view_model.dart';
+import 'package:geolocation/screens/sales_force/update_route_creation/route_approval_screen.dart';
+import 'package:geolocation/screens/sales_force/update_route_creation/route_approval_view_model.dart';
+
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';

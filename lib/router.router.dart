@@ -48,11 +48,11 @@ import 'package:geolocation/screens/sales_force/assigned_routes/assigned_routes_
     as _i35;
 import 'package:geolocation/screens/sales_force/assigned_routes/maps_screen.dart'
     as _i34;
-import 'package:geolocation/screens/sales_force/route_approval_screen.dart'
+import 'package:geolocation/screens/sales_force/update_route_creation/route_approval_screen.dart'
     as _i32;
 import 'package:geolocation/screens/sales_force/route_assignment_form.dart'
     as _i29;
-import 'package:geolocation/screens/sales_force/route_creation_form.dart'
+import 'package:geolocation/screens/sales_force/add_route_creation/route_creation_form.dart'
     as _i30;
 import 'package:geolocation/screens/sales_force/routes_approval_list.dart'
     as _i33;
