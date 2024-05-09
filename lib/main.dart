@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocation/router.locator.dart';
 import 'package:geolocation/screens/home_screen/home_page.dart';
-import 'package:geolocation/screens/sales_force/route_assignment_form.dart';
-import 'package:geolocation/screens/sales_force/route_creation_form.dart';
-import 'package:geolocation/screens/sales_force/routes_process_screen.dart';
-import 'package:geolocation/screens/splash_screen/splash_screen.dart';
+
 import 'package:stacked_services/stacked_services.dart';
 import 'router.router.dart';
 

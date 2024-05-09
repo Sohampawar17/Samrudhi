@@ -47,7 +47,7 @@ class RouteMasterData {
   String? routeName;
   String? name;
   String? worflowState;
-  List<Waypoint>? wayPoints;
+  List<Waypoints>? wayPoints;
 
   RouteMasterData({
     this.routeName,
@@ -58,7 +58,7 @@ class RouteMasterData {
 
   RouteMasterData.fromJson(dynamic json) {
     var childDataList = json['child_table_data'] as List;
-    List<Waypoint> ways = childDataList.map((data) => Waypoint.fromJson(data)).toList();
+    List<Waypoints> ways = childDataList.map((data) => Waypoints.fromJson(data)).toList();
     worflowState= json['workflow_state'].toString();
     routeName = json['route_name'].toString();
     name = json['name']!.toString();
@@ -75,59 +75,97 @@ class RouteMasterData {
 
 class RouteMaster {
   String? name;
-  String? workflowstate;
-  String? routename;
+  String? workflowState;
+  String? routeName;
   int? enabled;
-  String? doctype;
-  List<Waypoint?>? waypoints;
+  List<Waypoints>? waypoints;
+  List<String>? nextAction;
+  bool? allowEdit;
 
-  RouteMaster({this.name, this.workflowstate, this.routename, this.enabled, this.doctype, this.waypoints});
+  RouteMaster(
+      {this.name,
+        this.workflowState,
+        this.routeName,
+        this.enabled,
+        this.waypoints,
+        this.nextAction,
+        this.allowEdit});
 
   RouteMaster.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    workflowstate = json['workflow_state'];
-    routename = json['route_name'];
+    workflowState = json['workflow_state'];
+    routeName = json['route_name'];
     enabled = json['enabled'];
-    doctype = json['doctype'];
     if (json['waypoints'] != null) {
-      waypoints = <Waypoint>[];
+      waypoints = <Waypoints>[];
       json['waypoints'].forEach((v) {
-        waypoints!.add(Waypoint.fromJson(v));
+        waypoints!.add(new Waypoints.fromJson(v));
       });
     }
+    nextAction = json['next_action'].cast<String>();
+    allowEdit = json['allow_edit'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['name'] = name;
-    data['workflow_state'] = workflowstate;
-    data['route_name'] = routename;
-    data['enabled'] = enabled;
-    data['doctype'] = doctype;
-    data['waypoints'] =waypoints != null ? waypoints!.map((v) => v?.toJson()).toList() : null;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['workflow_state'] = this.workflowState;
+    data['route_name'] = this.routeName;
+    data['enabled'] = this.enabled;
+    if (this.waypoints != null) {
+      data['waypoints'] = this.waypoints!.map((v) => v.toJson()).toList();
+    }
+    data['next_action'] = this.nextAction;
+    data['allow_edit'] = this.allowEdit;
     return data;
   }
 }
 
-class Waypoint {
+class Waypoints {
+  String? name;
+  String? owner;
+  String? modifiedBy;
+  int? docstatus;
+  int? idx;
   String? territory;
   double? latitude;
   double? longitude;
+  String? parent;
 
-  Waypoint({ this.territory, this.latitude, this.longitude});
+  Waypoints(
+      {this.name,
+        this.owner,
+        this.modifiedBy,
+        this.docstatus,
+        this.idx,
+        this.territory,
+        this.latitude,
+        this.longitude,
+        this.parent});
 
-  Waypoint.fromJson(Map<String, dynamic> json) {
-
+  Waypoints.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    owner = json['owner'];
+    modifiedBy = json['modified_by'];
+    docstatus = json['docstatus'];
+    idx = json['idx'];
     territory = json['territory'];
     latitude = json['latitude'];
     longitude = json['longitude'];
+    parent = json['parent'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['territory'] = territory;
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['owner'] = this.owner;
+    data['modified_by'] = this.modifiedBy;
+    data['docstatus'] = this.docstatus;
+    data['idx'] = this.idx;
+    data['territory'] = this.territory;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['parent'] = this.parent;
     return data;
   }
 }

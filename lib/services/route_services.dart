@@ -11,6 +11,44 @@ import 'package:logger/logger.dart';
 
 class RouteServices {
 
+  Future<bool> changeWorkflow(String? id,String? action) async {
+    baseurl =  await geturl();
+
+    var data={
+      "reference_doctype":"Routes Master",
+      "reference_name":id,
+      "action":action
+
+    };
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.app_utils.update_workflow_state',
+        options: Options(
+          method: 'POST',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+
+        Fluttertoast.showToast(msg: response.data["message"].toString());
+        return true;
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO update Order!");
+        return false;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e);
+
+    }
+    return false;
+  }
+
+
+
   Future<List<CustomerTerritoryData>> getCustomerRoute() async {
     try {
       var url = await geturl();
@@ -49,7 +87,7 @@ class RouteServices {
       var token = await getTocken();
       var dio = Dio();
       var response = await dio.request(
-        '$url/api/resource/Territory?fields=["name","custom_latitude","custom_longitude"]',
+        '$url/api/resource/Territory?fields=["name","custom_latitude","custom_longitude"]&limit_page_length=999',
         options: Options(
           method: 'GET',
           headers: {'Authorization':token},
@@ -190,20 +228,13 @@ class RouteServices {
       var dio = Dio();
 
       var response = await dio.request(
-        '$url/api/resource/Routes Master/$name',
+        '$url/api/method/mobile.mobile_env.route.get_master_entry?id=$name',
         options: Options(
           method: 'GET',
           headers: {'Authorization': token},
 
         ),
 
-      queryParameters: { "fields": jsonEncode([
-        "name",
-        "route_name",
-        "workflow_state",
-        "waypoints"
-      ]),
-      }
 
      //   queryParameters: {'fields': '["route_name","name","workflow_state"]'},
       );
