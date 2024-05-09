@@ -23,6 +23,11 @@ class RouteAssignmentViewModel extends BaseViewModel{
     return employee.id!;
   }
 
+  List<Waypoint> getChildTableData(){
+    return[];
+
+  }
+
   List<String> getEmployeeNames(){
     if (employees.isEmpty) {
       return [];

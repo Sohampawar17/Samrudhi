@@ -41,7 +41,7 @@ class ListVisitServices{
       return [];
     }
   }
-  Future<CustomerVisitModel> getCustomerVisitReport(String date)async {
+  Future<CustomerVisitModel> getCustomerVisitReport(String date, String? selectedEmployee)async {
     CustomerVisitModel customerVisitModel= CustomerVisitModel([], []);
     var token = await getTocken();
     baseurl = await geturl();
@@ -50,7 +50,8 @@ class ListVisitServices{
       'Content-Type': 'application/json'
     };
     var data = json.encode({
-      "date": date
+      "date": date,
+      "employee":selectedEmployee
     });
     var dio = Dio();
     var response = await dio.request(
