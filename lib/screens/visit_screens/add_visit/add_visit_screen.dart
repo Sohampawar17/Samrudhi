@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../router.router.dart';
-import '../../../utility/countdown_timer.dart';
-import '../../../widgets/customtextfield.dart';
 import '../../../widgets/drop_down.dart';
 import '../../../widgets/full_screen_loader.dart';
 import '../../../widgets/text_button.dart';
-import '../../customer_screen/add_customer/add_customer_view.dart';
 import 'add_visit_view_model.dart';
 
 class AddVisitScreen extends StatefulWidget {

@@ -47,17 +47,22 @@ class RouteMasterData {
   String? routeName;
   String? name;
   String? worflowState;
+  List<Waypoint>? wayPoints;
 
   RouteMasterData({
     this.routeName,
     this.name,
-    this.worflowState
+    this.worflowState,
+    this.wayPoints
   });
 
   RouteMasterData.fromJson(dynamic json) {
+    var childDataList = json['child_table_data'] as List;
+    List<Waypoint> ways = childDataList.map((data) => Waypoint.fromJson(data)).toList();
     worflowState= json['workflow_state'].toString();
     routeName = json['route_name'].toString();
     name = json['name']!.toString();
+    wayPoints = ways;
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};

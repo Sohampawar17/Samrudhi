@@ -23,6 +23,8 @@ class CustomerVisitViewModel extends BaseViewModel{
     setBusy(true);
 
     customerVisit= await ListVisitServices().getCustomerVisitReport("2024-05-08");
+    await getCoordinates(customerVisit.actualRoutes ?? []);
+    await getCoordinatesForPlannedRoute(customerVisit.plannedRoutes ?? []);
 
 
     notifyListeners();

@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocation/screens/location_tracking/location_tracker.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../constants.dart';
@@ -82,7 +81,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              Navigator.pushNamed(context, Routes.customerReportScreen);
+              Navigator.pushNamed(context, Routes.routeScreen);
             },
           ),
           ListTile(

@@ -108,7 +108,7 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
       mapController: mapController,
       options: MapOptions(
         center: LatLng(latitude!,longitude!),
-        zoom: 9.5,
+        zoom: 12,
         onMapReady:() => viewModel.initialise(),
         onPositionChanged: (MapPosition pos, bool isGesture) {
 
@@ -161,83 +161,80 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
     );
   }
 
-  List<Marker>? _buildMarkers(CustomerVisitViewModel viewModel) {
-    if (viewModel.customerVisit.actualRoutes == null || viewModel.customerVisit.plannedRoutes == null) {
-      return [];
-    }
-    print(viewModel.actualPoints.length);
-    print(viewModel.plannedPoints.length);
-
+  List<Marker> _buildMarkers(CustomerVisitViewModel viewModel) {
     List<Marker> markers = [];
-    // Add actual route markers
-    markers.addAll(viewModel.customerVisit.actualRoutes!.map((location) {
-      var lat = double.tryParse(location.latitude ?? '');
-      var lng = double.tryParse(location.longitude ?? '');
 
-      return Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(lat!, lng!),
-        builder: (context) {
-          return Stack(
-            children: [
-              const Icon(Icons.location_on, size: 50, color: Colors.red),
-              Positioned(
-                left: 5,
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  child: Text(
-                    location.territory ?? '',
-                    style: const TextStyle(
-                      color: Colors.blueGrey,
-                      fontWeight: FontWeight.bold,
+    if (viewModel.customerVisit.actualRoutes != null) {
+      markers.addAll(viewModel.customerVisit.actualRoutes!.map((location) {
+        var lat = double.tryParse(location.latitude ?? '');
+        var lng = double.tryParse(location.longitude ?? '');
+
+        return Marker(
+          width: 80.0,
+          height: 80.0,
+          point: LatLng(lat ?? 0.0, lng ?? 0.0),
+          builder: (context) {
+            return Stack(
+              children: [
+                const Icon(Icons.location_on, size: 50, color: Colors.red),
+                Positioned(
+                  left: 5,
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    child: Text(
+                      location.territory ?? '',
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
-      );
-    }));
+              ],
+            );
+          },
+        );
+      }));
+    }
 
-    // Add planned route markers
-    markers.addAll(viewModel.customerVisit.plannedRoutes!.map((location) {
-      var lat = location.latitude;
-      var lng = location.longitude;
+    if (viewModel.customerVisit.plannedRoutes != null) {
+      markers.addAll(viewModel.customerVisit.plannedRoutes!.map((location) {
+        var lat = location.latitude;
+        var lng = location.longitude;
 
-      return Marker(
-        width: 80.0,
-        height: 80.0,
-        point: LatLng(lat!, lng!),
-        builder: (context) {
-          return Stack(
-            children: [
-              const Icon(Icons.location_on, size: 50, color: Colors.green),
-              Positioned(
-                left: 5,
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  child: Text(
-                    location.territory ?? '',
-                    style: const TextStyle(
-                      color: Colors.blueGrey,
-                      fontWeight: FontWeight.bold,
+        return Marker(
+          width: 80.0,
+          height: 80.0,
+          point: LatLng(lat ?? 0.0, lng ?? 0.0),
+          builder: (context) {
+            return Stack(
+              children: [
+                const Icon(Icons.location_on, size: 50, color: Colors.green),
+                Positioned(
+                  left: 5,
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    child: Text(
+                      location.territory ?? '',
+                      style: const TextStyle(
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
-      );
-    }));
+              ],
+            );
+          },
+        );
+      }));
+    }
 
-    return markers.where((marker) => marker != null).toList();
+    return markers;
   }
 
 
