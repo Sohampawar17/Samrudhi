@@ -82,7 +82,7 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
               style: TextStyle(fontWeight: FontWeight.w300),
             ),
             onTap: () {
-              Navigator.pushNamed(context, Routes.routeScreen);
+              Navigator.pushNamed(context, Routes.customerReportScreen);
             },
           ),
           ListTile(
@@ -104,6 +104,17 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
             ),
             onTap: () {
               Navigator.pushNamed(context, Routes.visitScreen);
+            },
+          ),
+
+          ListTile(
+            leading: const Icon(Icons.file_copy, color: Colors.black),
+            title: const Text(
+              'Customer Visit',
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, Routes.customerReportScreen);
             },
           ),
 

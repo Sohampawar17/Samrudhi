@@ -5,11 +5,11 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i39;
+import 'package:flutter/material.dart' as _i40;
 import 'package:flutter/material.dart';
-import 'package:geolocation/model/add_invoice_model.dart' as _i42;
-import 'package:geolocation/model/add_order_model.dart' as _i40;
-import 'package:geolocation/model/addquotation_model.dart' as _i41;
+import 'package:geolocation/model/add_invoice_model.dart' as _i43;
+import 'package:geolocation/model/add_order_model.dart' as _i41;
+import 'package:geolocation/model/addquotation_model.dart' as _i42;
 import 'package:geolocation/screens/attendence_screen/attendence_view.dart'
     as _i16;
 import 'package:geolocation/screens/change_password/change_password_screen.dart'
@@ -73,12 +73,14 @@ import 'package:geolocation/screens/sales_order/list_sales_order/list_sales_orde
 import 'package:geolocation/screens/splash_screen/splash_screen.dart' as _i2;
 import 'package:geolocation/screens/visit_screens/add_visit/add_visit_screen.dart'
     as _i37;
+import 'package:geolocation/screens/visit_screens/report/customer_report_screen.dart'
+    as _i39;
 import 'package:geolocation/screens/visit_screens/update_visit/update_visit_view.dart'
     as _i38;
 import 'package:geolocation/screens/visit_screens/visit_list/visit_list_screen.dart'
     as _i36;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i43;
+import 'package:stacked_services/stacked_services.dart' as _i44;
 
 class Routes {
   static const splashScreen = '/';
@@ -155,6 +157,8 @@ class Routes {
 
   static const updateVisitScreen = '/update-visit-screen';
 
+  static const customerReportScreen = '/customer-report-screen';
+
   static const all = <String>{
     splashScreen,
     homePage,
@@ -193,6 +197,7 @@ class Routes {
     visitScreen,
     addVisitScreen,
     updateVisitScreen,
+    customerReportScreen,
   };
 }
 
@@ -346,42 +351,46 @@ class StackedRouter extends _i1.RouterBase {
       Routes.updateVisitScreen,
       page: _i38.UpdateVisitScreen,
     ),
+    _i1.RouteDef(
+      Routes.customerReportScreen,
+      page: _i39.CustomerReportScreen,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashScreen(),
         settings: data,
       );
     },
     _i3.HomePage: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.HomePage(),
         settings: data,
       );
     },
     _i4.LoginViewScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.LoginViewScreen(),
         settings: data,
       );
     },
     _i5.Geolocation: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.Geolocation(),
         settings: data,
       );
     },
     _i6.ListOrderScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.ListOrderScreen(),
         settings: data,
       );
     },
     _i7.AddOrderScreen: (data) {
       final args = data.getArgs<AddOrderScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i7.AddOrderScreen(key: args.key, orderid: args.orderid),
         settings: data,
@@ -389,21 +398,21 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i8.ItemScreen: (data) {
       final args = data.getArgs<ItemScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.ItemScreen(
             key: args.key, warehouse: args.warehouse, items: args.items),
         settings: data,
       );
     },
     _i9.LeadListScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.LeadListScreen(),
         settings: data,
       );
     },
     _i10.AddLeadScreen: (data) {
       final args = data.getArgs<AddLeadScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i10.AddLeadScreen(key: args.key, leadid: args.leadid),
         settings: data,
@@ -411,7 +420,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i11.UpdateLeadScreen: (data) {
       final args = data.getArgs<UpdateLeadScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i11.UpdateLeadScreen(key: args.key, updateId: args.updateId),
         settings: data,
@@ -419,77 +428,77 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i12.AddQuotationView: (data) {
       final args = data.getArgs<AddQuotationViewArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i12.AddQuotationView(key: args.key, quotationid: args.quotationid),
         settings: data,
       );
     },
     _i13.ListQuotationScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i13.ListQuotationScreen(),
         settings: data,
       );
     },
     _i14.QuotationItemScreen: (data) {
       final args = data.getArgs<QuotationItemScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i14.QuotationItemScreen(key: args.key, items: args.items),
         settings: data,
       );
     },
     _i15.HolidayScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.HolidayScreen(),
         settings: data,
       );
     },
     _i16.AttendanceScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i16.AttendanceScreen(),
         settings: data,
       );
     },
     _i17.ExpenseScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i17.ExpenseScreen(),
         settings: data,
       );
     },
     _i18.AddExpenseScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i18.AddExpenseScreen(),
         settings: data,
       );
     },
     _i19.ListLeaveScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i19.ListLeaveScreen(),
         settings: data,
       );
     },
     _i20.AddLeaveScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i20.AddLeaveScreen(),
         settings: data,
       );
     },
     _i21.ProfileScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i21.ProfileScreen(),
         settings: data,
       );
     },
     _i22.ChangePasswordScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i22.ChangePasswordScreen(),
         settings: data,
       );
     },
     _i23.AddInvoiceScreen: (data) {
       final args = data.getArgs<AddInvoiceScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i23.AddInvoiceScreen(key: args.key, invoiceid: args.invoiceid),
         settings: data,
@@ -497,7 +506,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i24.InvoiceItemScreen: (data) {
       final args = data.getArgs<InvoiceItemScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i24.InvoiceItemScreen(
             key: args.key,
             invoiceItems: args.invoiceItems,
@@ -506,85 +515,85 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i25.ListInvoiceScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i25.ListInvoiceScreen(),
         settings: data,
       );
     },
     _i26.CustomerList: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i26.CustomerList(),
         settings: data,
       );
     },
     _i27.AddCustomer: (data) {
       final args = data.getArgs<AddCustomerArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i27.AddCustomer(key: args.key, id: args.id),
         settings: data,
       );
     },
     _i28.UpdateCustomer: (data) {
       final args = data.getArgs<UpdateCustomerArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i28.UpdateCustomer(key: args.key, id: args.id),
         settings: data,
       );
     },
     _i29.RouteAssignmentForm: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i29.RouteAssignmentForm(),
         settings: data,
       );
     },
     _i30.RouteCreationForm: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i30.RouteCreationForm(),
         settings: data,
       );
     },
     _i31.RouteScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i31.RouteScreen(),
         settings: data,
       );
     },
     _i32.RouteApprovalScreen: (data) {
       final args = data.getArgs<RouteApprovalScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i32.RouteApprovalScreen(key: args.key, routeId: args.routeId),
         settings: data,
       );
     },
     _i33.RoutesApprovalList: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i33.RoutesApprovalList(),
         settings: data,
       );
     },
     _i34.MapsScreen: (data) {
       final args = data.getArgs<MapsScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i34.MapsScreen(key: args.key, name: args.name),
         settings: data,
       );
     },
     _i35.AssignedRoutesScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => _i35.AssignedRoutesScreen(),
         settings: data,
       );
     },
     _i36.VisitScreen: (data) {
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) => const _i36.VisitScreen(),
         settings: data,
       );
     },
     _i37.AddVisitScreen: (data) {
       final args = data.getArgs<AddVisitScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i37.AddVisitScreen(key: args.key, VisitId: args.VisitId),
         settings: data,
@@ -592,9 +601,15 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i38.UpdateVisitScreen: (data) {
       final args = data.getArgs<UpdateVisitScreenArguments>(nullOk: false);
-      return _i39.MaterialPageRoute<dynamic>(
+      return _i40.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i38.UpdateVisitScreen(key: args.key, updateId: args.updateId),
+        settings: data,
+      );
+    },
+    _i39.CustomerReportScreen: (data) {
+      return _i40.MaterialPageRoute<dynamic>(
+        builder: (context) => _i39.CustomerReportScreen(),
         settings: data,
       );
     },
@@ -613,7 +628,7 @@ class AddOrderScreenArguments {
     required this.orderid,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String orderid;
 
@@ -641,11 +656,11 @@ class ItemScreenArguments {
     required this.items,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String warehouse;
 
-  final List<_i40.Items> items;
+  final List<_i41.Items> items;
 
   @override
   String toString() {
@@ -672,7 +687,7 @@ class AddLeadScreenArguments {
     required this.leadid,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String leadid;
 
@@ -699,7 +714,7 @@ class UpdateLeadScreenArguments {
     required this.updateId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String updateId;
 
@@ -726,7 +741,7 @@ class AddQuotationViewArguments {
     required this.quotationid,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String quotationid;
 
@@ -753,9 +768,9 @@ class QuotationItemScreenArguments {
     required this.items,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
-  final List<_i41.Items> items;
+  final List<_i42.Items> items;
 
   @override
   String toString() {
@@ -780,7 +795,7 @@ class AddInvoiceScreenArguments {
     required this.invoiceid,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String invoiceid;
 
@@ -808,9 +823,9 @@ class InvoiceItemScreenArguments {
     required this.warehouse,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
-  final List<_i42.InvoiceItems> invoiceItems;
+  final List<_i43.InvoiceItems> invoiceItems;
 
   final String warehouse;
 
@@ -839,7 +854,7 @@ class AddCustomerArguments {
     required this.id,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String id;
 
@@ -866,7 +881,7 @@ class UpdateCustomerArguments {
     required this.id,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String id;
 
@@ -893,7 +908,7 @@ class RouteApprovalScreenArguments {
     required this.routeId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String routeId;
 
@@ -920,7 +935,7 @@ class MapsScreenArguments {
     required this.name,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String name;
 
@@ -947,7 +962,7 @@ class AddVisitScreenArguments {
     required this.VisitId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String VisitId;
 
@@ -974,7 +989,7 @@ class UpdateVisitScreenArguments {
     required this.updateId,
   });
 
-  final _i39.Key? key;
+  final _i40.Key? key;
 
   final String updateId;
 
@@ -995,7 +1010,7 @@ class UpdateVisitScreenArguments {
   }
 }
 
-extension NavigatorStateExtension on _i43.NavigationService {
+extension NavigatorStateExtension on _i44.NavigationService {
   Future<dynamic> navigateToSplashScreen([
     int? routerId,
     bool preventDuplicates = true,
@@ -1067,7 +1082,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddOrderScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String orderid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1084,9 +1099,9 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToItemScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String warehouse,
-    required List<_i40.Items> items,
+    required List<_i41.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1117,7 +1132,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddLeadScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String leadid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1134,7 +1149,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToUpdateLeadScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -1151,7 +1166,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddQuotationView({
-    _i39.Key? key,
+    _i40.Key? key,
     required String quotationid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1183,8 +1198,8 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToQuotationItemScreen({
-    _i39.Key? key,
-    required List<_i41.Items> items,
+    _i40.Key? key,
+    required List<_i42.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1312,7 +1327,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddInvoiceScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String invoiceid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1329,8 +1344,8 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToInvoiceItemScreen({
-    _i39.Key? key,
-    required List<_i42.InvoiceItems> invoiceItems,
+    _i40.Key? key,
+    required List<_i43.InvoiceItems> invoiceItems,
     required String warehouse,
     int? routerId,
     bool preventDuplicates = true,
@@ -1376,7 +1391,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddCustomer({
-    _i39.Key? key,
+    _i40.Key? key,
     required String id,
     int? routerId,
     bool preventDuplicates = true,
@@ -1393,7 +1408,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToUpdateCustomer({
-    _i39.Key? key,
+    _i40.Key? key,
     required String id,
     int? routerId,
     bool preventDuplicates = true,
@@ -1452,7 +1467,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToRouteApprovalScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String routeId,
     int? routerId,
     bool preventDuplicates = true,
@@ -1483,7 +1498,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToMapsScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String name,
     int? routerId,
     bool preventDuplicates = true,
@@ -1528,7 +1543,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToAddVisitScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String VisitId,
     int? routerId,
     bool preventDuplicates = true,
@@ -1545,7 +1560,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> navigateToUpdateVisitScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -1555,6 +1570,20 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.updateVisitScreen,
         arguments: UpdateVisitScreenArguments(key: key, updateId: updateId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToCustomerReportScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.customerReportScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1632,7 +1661,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddOrderScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String orderid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1649,9 +1678,9 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithItemScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String warehouse,
-    required List<_i40.Items> items,
+    required List<_i41.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1682,7 +1711,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddLeadScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String leadid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1699,7 +1728,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithUpdateLeadScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -1716,7 +1745,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddQuotationView({
-    _i39.Key? key,
+    _i40.Key? key,
     required String quotationid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1748,8 +1777,8 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithQuotationItemScreen({
-    _i39.Key? key,
-    required List<_i41.Items> items,
+    _i40.Key? key,
+    required List<_i42.Items> items,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1877,7 +1906,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddInvoiceScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String invoiceid,
     int? routerId,
     bool preventDuplicates = true,
@@ -1894,8 +1923,8 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithInvoiceItemScreen({
-    _i39.Key? key,
-    required List<_i42.InvoiceItems> invoiceItems,
+    _i40.Key? key,
+    required List<_i43.InvoiceItems> invoiceItems,
     required String warehouse,
     int? routerId,
     bool preventDuplicates = true,
@@ -1941,7 +1970,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddCustomer({
-    _i39.Key? key,
+    _i40.Key? key,
     required String id,
     int? routerId,
     bool preventDuplicates = true,
@@ -1958,7 +1987,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithUpdateCustomer({
-    _i39.Key? key,
+    _i40.Key? key,
     required String id,
     int? routerId,
     bool preventDuplicates = true,
@@ -2017,7 +2046,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithRouteApprovalScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String routeId,
     int? routerId,
     bool preventDuplicates = true,
@@ -2048,7 +2077,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithMapsScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String name,
     int? routerId,
     bool preventDuplicates = true,
@@ -2093,7 +2122,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithAddVisitScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String VisitId,
     int? routerId,
     bool preventDuplicates = true,
@@ -2110,7 +2139,7 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }
 
   Future<dynamic> replaceWithUpdateVisitScreen({
-    _i39.Key? key,
+    _i40.Key? key,
     required String updateId,
     int? routerId,
     bool preventDuplicates = true,
@@ -2120,6 +2149,20 @@ extension NavigatorStateExtension on _i43.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.updateVisitScreen,
         arguments: UpdateVisitScreenArguments(key: key, updateId: updateId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithCustomerReportScreen([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.customerReportScreen,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

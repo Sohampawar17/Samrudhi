@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/model/customer_visit_model.dart';
 import 'package:logger/logger.dart';
 
 import '../constants.dart';
@@ -40,4 +41,36 @@ class ListVisitServices{
       return [];
     }
   }
+  Future<CustomerVisitModel> getCustomerVisitReport(String date)async {
+    CustomerVisitModel customerVisitModel= CustomerVisitModel([], []);
+    var token = await getTocken();
+    baseurl = await geturl();
+    var headers = {
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    };
+    var data = json.encode({
+      "date": date
+    });
+    var dio = Dio();
+    var response = await dio.request(
+      '$baseurl/api/method/mobile.mobile_env.route.routes',
+      options: Options(
+        method: 'GET',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      return CustomerVisitModel.fromJson(response.data["data"]);
+
+    }
+    else {
+      print(response.statusMessage);
+    }
+    return customerVisitModel;
+  }
+
 }
