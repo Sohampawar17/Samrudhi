@@ -165,7 +165,6 @@ class Geolocation extends StatelessWidget {
                             polylineCulling: true,
                             polylines: [
                               Polyline(
-                              isDotted:true,
                                   points:
                                    // model.points,
                                   model.locations.map((e) {
@@ -173,14 +172,14 @@ class Geolocation extends StatelessWidget {
                                   }).toList(),
                                   color: Colors.blueAccent,
                                   strokeWidth: 12),
-                              Polyline(
-                                  points:
-                                  // model.points,
-                                  model.parsedLocationTables.map((e) {
-                                    return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
-                                  }).toList(),
-                                  color: Colors.yellowAccent,
-                                  strokeWidth: 5),
+                             // Polyline(
+                             //      points:
+                             //       // model.points,
+                             //      model.parsedLocationTables.map((e) {
+                             //        return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
+                             //      }).toList(),
+                             //      color: Colors.red,
+                             //      strokeWidth: 5),
                             ],
                           ),
                         ],

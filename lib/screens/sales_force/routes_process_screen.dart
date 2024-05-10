@@ -8,8 +8,7 @@ import 'package:geolocation/screens/sales_force/routes_approval_list.dart';
 class RouteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: Text('Sales Force Management'),
         ),
@@ -77,7 +76,7 @@ class RouteScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+
     );
   }
 }

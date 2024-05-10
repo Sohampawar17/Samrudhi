@@ -23,7 +23,7 @@ class RouteAssignmentViewModel extends BaseViewModel{
     return employee.id!;
   }
 
-  List<Waypoint> getChildTableData(){
+  List<Waypoints> getChildTableData(){
     return[];
 
   }

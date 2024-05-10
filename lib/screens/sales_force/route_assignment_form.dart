@@ -7,6 +7,7 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../model/get_teritorry_details.dart';
+import '../../widgets/text_button.dart';
 
 
 class RouteAssignmentForm extends StatefulWidget {
@@ -58,27 +59,29 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                   print(selectedRoute);}, labelText:"Routes" ),
 
                 const SizedBox(height: 10),
-                CalendarDatePicker(initialDate: DateTime.now(),  onDateChanged: (newDate){ selectedDate =newDate;}, firstDate: firstDate,lastDate: lastDate),
+                CalendarDatePicker(
+
+                    initialDate: DateTime.now(),  onDateChanged: (newDate){ selectedDate =newDate;}, firstDate: firstDate,lastDate: lastDate),
                 const SizedBox(height: 10),
+                CtextButton(onPressed: ()
+                {
 
-
-                ElevatedButton(
-                  onPressed: () {
-                    // Save route data
-                    print(selectedEmployee);
                     Map<String, dynamic> payload = {
 
-                      "datetime": formatDate(selectedDate!),
+                      "datetime": formatDate(selectedDate ?? DateTime.now()),
                       "route_name": selectedRoute!,
                       "employee_name": selectedEmployee!,
                       "employee":viewModel.getEmployeeId(selectedEmployee!),
                       "route_master": selectedRoute!,
                     };
 
+                    print(payload);
+
                     viewModel.assignRoute(payload);
-                  },
-                  child: Text('Assign Route'),
-                ),
+                },
+                  text: 'Assign Route',
+                  buttonColor: Colors.purple.shade900,),
+
               ],
             ),
           ),

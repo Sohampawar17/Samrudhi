@@ -78,7 +78,7 @@ class RouteMaster {
   String? workflowState;
   String? routeName;
   int? enabled;
-  List<Waypoints>? waypoints;
+  List<Waypoints>? waypoints=[];
   List<String>? nextAction;
   bool? allowEdit;
 

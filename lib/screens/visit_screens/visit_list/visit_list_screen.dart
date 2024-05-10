@@ -67,17 +67,15 @@ class _VisitScreenState extends State<VisitScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  AutoSizeText("${model.visitList[index].name.toString()}\n${model.visitList[index].date}"
-                                      ""
-                                      "}",
+                                  AutoSizeText("${model.visitList[index].name.toString()}\n${model.visitList[index].date}",
 
                                     style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       fontWeight:
-                                      FontWeight.w500,
+                                      FontWeight.w400,
                                     ),),
 
-                                  Card( color: Colors.blue,
+                                  Card( color: Colors.purple.shade900,
                                     shape:
                                     RoundedRectangleBorder(
                                       borderRadius:
@@ -123,7 +121,8 @@ class _VisitScreenState extends State<VisitScreen> {
               context: context,
             ),
           ),
-          floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addVisitScreen,arguments: AddVisitScreenArguments(VisitId: "")),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: ()=>Navigator.pushNamed(context, Routes.addVisitScreen,arguments: AddVisitScreenArguments(VisitId: "")),
             label: const Text('Create Visit'),),
         ));
   }

@@ -47,15 +47,15 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                         viewModel.routesAll.name ?? "",
 
                         style: const TextStyle(
+                          fontSize: 17,
                             fontWeight:
                             FontWeight.w500,
-                            color: Colors.black54
+                            color: Colors.indigo
                         ),),
                     ),
                     Expanded(
                         flex: 3,
                         child: Container(
-
 
                           decoration: BoxDecoration(
                             border: Border.all(color:Colors.grey, width: 1.5),
@@ -71,7 +71,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                                   child: Text(
                                     viewModel.routesAll.workflowState ?? "",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 18,
                                       color: viewModel.getColorForStatus(viewModel.routesAll.workflowState.toString()),
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -79,6 +79,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                                 ),
                               ),
                               PopupMenuButton(
+
                                 icon:  Icon(Icons.arrow_drop_down, color: viewModel.getColorForStatus(viewModel.routesAll.workflowState.toString())),
                                 itemBuilder: (BuildContext context) =>
                                     viewModel.status.map<PopupMenuItem<String>>((String item) {
@@ -99,12 +100,12 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                   ],
                 ),
                 Divider(),
+                const SizedBox(height: 20),
                 const Text(
-                  'Waypoints:',
+                  'Waypoints',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
-
+                const SizedBox(height: 20),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -115,14 +116,13 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
-                        _buildTimelineLine(), // Add line between dots
+                        if (index != 0)
+                          _buildTimelineLine(), // Add line between dots
                         Row(
                           children: [
-                            if(index != 0)
-                              _buildTimelineDot(),
+                            _buildTimelineDot(),
                             SizedBox(width: 10), // Add some space between dot and title
-                            _buildTimelineTitle(territory!.territory!),
+                            _buildTimelineTitle(territory.territory!),
                           ],
                         ),
                         // Add a divider between each timeline event

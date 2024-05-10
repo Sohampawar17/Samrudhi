@@ -4,6 +4,7 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/get_teritorry_details.dart';
 import '../../../widgets/drop_down.dart';
+import '../../../widgets/text_button.dart';
 
 
 
@@ -85,7 +86,8 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (index != 0) _buildTimelineLine(), // Add line between dots
+                        if (index != 0)
+                          _buildTimelineLine(), // Add line between dots
                         Row(
                           children: [
                             _buildTimelineDot(),
@@ -116,36 +118,40 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                 // ),
 
 
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _territoryList.add(TerritoryData(territoryName:selectedWaypoint!));
-                    });
+                SizedBox(height: 20),
+                CtextButton(onPressed: ()
+                {
+                  setState(() {
+                    _territoryList.add(TerritoryData(territoryName:selectedWaypoint!));
+                  });
+
                   },
-                  child: Text('Add Waypoint'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Save route data
-                    String routeName = _routeNameController.text;
-                    String startingLocation = _startingLocationController.text;
-                    String destination = _destinationController.text;
-                    // Do something with route data
-          
-                    Map<String, dynamic> payload = {
-                      "route_name": routeName,
-                      "waypoints": _territoryList.map((waypoint) {
-                        return {
-                          "territory": waypoint.territoryName
-                        };
-                      }).toList()
-                    };
+                  text: 'Add Waypoint',
+                  buttonColor: Colors.purple.shade900,),
+
+                CtextButton(onPressed: ()
+                {
+                  String routeName = _routeNameController.text;
+                  String startingLocation = _startingLocationController.text;
+                  String destination = _destinationController.text;
+                  // Do something with route data
+
+                  Map<String, dynamic> payload = {
+                    "route_name": routeName,
+                    "waypoints": _territoryList.map((waypoint) {
+                      return {
+                        "territory": waypoint.territoryName
+                      };
+                    }).toList()
+                  };
+
+                  print(payload);
                   viewModel.saveRoute(payload);
-          
-                  },
-                  child: Text('Save Route'),
-                ),
+
+                },
+                  text: 'Save Route',
+                  buttonColor: Colors.purple.shade900,),
+
               ],
             ),
           ),
@@ -158,7 +164,7 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
     return Container(
       width: 2,
       height: 20,
-      color: Colors.blue, // Customize the color as needed
+      color: Colors.purple.shade900, // Customize the color as needed
     );
   }
 

@@ -45,7 +45,7 @@ class RouteApprovalViewModel extends BaseViewModel{
       case 'Cancelled':
         return Colors.red; // Red for Do Not Contact
       default:
-        return Colors.grey; // Default Grey for unknown status
+        return Colors.blue; // Default Grey for unknown status
     }
   }
 

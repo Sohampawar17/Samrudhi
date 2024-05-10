@@ -129,6 +129,10 @@ class RouteServices {
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
          print(response.data);
+        Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
+          msg: 'Route Created Successfully',
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),);
         return [];
       } else {
 
@@ -204,6 +208,7 @@ class RouteServices {
         routes = List.from(jsonData["data"]
             .map<RouteMasterData>((data) => RouteMasterData.fromJson(data))
             .toList());
+
         return routes;
       } else {
         return routes;
