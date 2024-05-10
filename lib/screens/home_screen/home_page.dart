@@ -212,6 +212,14 @@ class _HomePageState extends State<HomePage> {
                                         buildButton("Leaves", 'assets/images/flight.png', () {
                                           Navigator.pushNamed(context, Routes.listLeaveScreen);
                                         },model),
+                                        if(model.isFormAvailableForDoctype("Visit"))
+                                          buildButton("Visits", 'assets/images/visit.png', () {
+                                            Navigator.pushNamed(context, Routes.visitScreen);
+                                          },model),
+                                        if(model.isFormAvailableForDoctype("Routes Assignment")&&model.isFormAvailableForDoctype("Routes Master"))
+                                          buildButton("Routes", 'assets/images/routes.png', () {
+                                            Navigator.pushNamed(context, Routes.routeScreen);
+                                          },model),
                                       ],
                                     ),
                                   ),
