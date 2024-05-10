@@ -1,11 +1,8 @@
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/lead_screen/update_screen/update_viewmodel.dart';
 import 'package:geolocation/widgets/customtextfield.dart';
-import 'package:geolocation/widgets/drop_down.dart';
+
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
@@ -45,7 +42,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildInfoItem('Requested Type', model.leaddata.requestType ?? ""),
+                            _buildInfoItem('Requested Type', model.leaddata.customCustomRequestType ?? ""),
                             _buildInfoItem('Lead Owner', model.leaddata.leadOwner ?? ""),
                             _buildInfoItem('Name', model.leaddata.leadName ?? ""),
                             _buildInfoItem('Email', model.leaddata.emailId ??""),

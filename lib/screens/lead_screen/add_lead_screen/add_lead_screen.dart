@@ -5,7 +5,7 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:geolocation/widgets/text_button.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:stacked/stacked.dart';
-import '../../../router.router.dart';
+
 import '../../../widgets/customtextfield.dart';
 import '../../../widgets/drop_down.dart';
 
@@ -40,7 +40,7 @@ leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const 
               children: [
                 CdropDown(dropdownButton: DropdownButtonFormField<String>(
                   isExpanded: true,
-                  value: model.leaddata.requestType,
+                  value: model.leaddata.customCustomRequestType,
                   decoration: const InputDecoration(
                     labelText: 'Request Type*',
                   ),

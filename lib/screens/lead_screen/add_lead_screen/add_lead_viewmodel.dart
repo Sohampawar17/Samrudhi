@@ -210,9 +210,9 @@ void setterritory(String? territory){
 }
 
 void setRequestType(String? requestType){
-  leaddata.requestType =requestType;
+  leaddata.customCustomRequestType =requestType;
   Logger().i(requestType);
-  if(leaddata.requestType == "Customer Complaint"){
+  if(leaddata.customCustomRequestType == "Customer Complaint"){
     visible=true;
   }else{
     visible=false;

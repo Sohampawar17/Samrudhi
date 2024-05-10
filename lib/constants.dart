@@ -103,23 +103,3 @@ File fileFromXFile(XFile xfile) {
   return file;
 }
 
-// Files files = Files();
-//
-// // Function to open file picker and select PDF file
-// Future<void> selectPdf(String fileType, ImageSource source) async {
-//   try {
-//     final result = await ImagePicker().pickImage(source: source);
-//     if (result != null) {
-//       // print("SIZE BEFORE: ${result.files.single.size}");
-//       setBusy(true);
-//       File? compressedFile = await compressFile(fileFromXFile(result));
-//       // print("SIZE BEFORE: ${compressedFile?.lengthSync()}");
-//       files.setFile(fileType, compressedFile);
-//       setBusy(false);
-//       notifyListeners();
-//     }
-//   } catch (e) {
-//     Fluttertoast.showToast(
-//         msg: 'Error while picking an image or document: $e');
-//   }
-// }

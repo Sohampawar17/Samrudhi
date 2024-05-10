@@ -6,6 +6,7 @@ class AddLeadModel {
   int? idx;
   String? namingSeries;
   String? requestType;
+  String? customCustomRequestType;
   String? customComplaintCustomer;
   String? customComplaintStatus;
   String? salutation;
@@ -54,6 +55,7 @@ class AddLeadModel {
         this.idx,
         this.namingSeries,
         this.requestType,
+        this.customCustomRequestType,
         this.customComplaintCustomer,
         this.customComplaintStatus,
         this.salutation,
@@ -102,6 +104,7 @@ class AddLeadModel {
     idx = json['idx'];
     namingSeries = json['naming_series'];
     requestType = json['request_type'];
+    customCustomRequestType=json['custom_custom_request_type'];
     customComplaintCustomer = json['custom_complaint_customer'];
     customComplaintStatus = json['custom_complaint_status'];
     salutation = json['salutation'];
@@ -158,6 +161,7 @@ class AddLeadModel {
     data['naming_series'] = namingSeries;
     data['request_type'] = requestType;
     data['custom_complaint_customer'] = customComplaintCustomer;
+    data['custom_custom_request_type']=customCustomRequestType;
     data['custom_complaint_status'] = customComplaintStatus;
     data['salutation'] = salutation;
     data['first_name'] = firstName;
