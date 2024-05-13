@@ -10,7 +10,6 @@ import '../../../constants.dart';
 import '../../../model/employee_list.dart';
 import '../../../model/visit_list_model.dart';
 import '../../../router.router.dart';
-import '../../../services/add_visit_services.dart';
 import '../../../services/list_visit_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -106,10 +105,11 @@ class CustomerVisitViewModel extends BaseViewModel{
     List listOfPoints = [];
     if (location.isNotEmpty) {
       // Requesting for openrouteservice API
-      var response = await http.get(getRouteUrl(
-        "${location[0].longitude},${location[0].latitude}",
-        "${location.last.longitude},${location.last.latitude}",
-      ));
+      // var response = await http.get(getRouteUrl(
+      //   "${location[0].longitude},${location[0].latitude}",
+      //   "${location.last.longitude},${location.last.latitude}",
+      // ));
+      var response = await http.get(getRouteUrlForAllActualPoints(location));
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -129,10 +129,12 @@ class CustomerVisitViewModel extends BaseViewModel{
     List listOfPoints = [];
     if (location.isNotEmpty) {
       // Requesting for openrouteservice API
-      var response = await http.get(getRouteUrl(
-        "${location[0].longitude},${location[0].latitude}",
-        "${location.last.longitude},${location.last.latitude}",
-      ));
+      // var response = await http.get(getRouteUrl(
+      //   "${location[0].longitude},${location[0].latitude}",
+      //   "${location.last.longitude},${location.last.latitude}",
+      // ));
+      //
+      var response = await http.get(getRouteUrlForAllPoints(location));
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

@@ -38,7 +38,7 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<RouteCreationViewModel>.reactive(
         viewModelBuilder: () => RouteCreationViewModel(),
-        onViewModelReady: (viewModel) => viewModel.initialise(context),
+        onViewModelReady: (viewModel) => viewModel.initialise(context,""),
     builder: (context, viewModel, child) => Scaffold(
       appBar: AppBar(
         title: Text('Route Creation'),
@@ -93,6 +93,18 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                             _buildTimelineDot(),
                             SizedBox(width: 10), // Add some space between dot and title
                             _buildTimelineTitle(territory.territoryName!),
+                            IconButton(
+                              iconSize: 15,
+                              icon: Icon(Icons.close,), // Add your delete icon here
+                              onPressed: () {
+                                setState(() {
+                                  _territoryList.removeAt(index); //
+                                 // _territoryList.remove(TerritoryData(territoryName:selectedWaypoint!));
+                                });
+                                // Add your delete logic here
+                              },
+                            ),
+
                           ],
                         ),
                         // Add a divider between each timeline event

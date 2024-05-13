@@ -213,12 +213,16 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.pushNamed(context, Routes.listLeaveScreen);
                                         },model),
                                         if(model.isFormAvailableForDoctype("Visit"))
-                                          buildButton("Visits", 'assets/images/visit.png', () {
+                                          buildButton("Visits", 'assets/images/customer_visit.png', () {
                                             Navigator.pushNamed(context, Routes.visitScreen);
                                           },model),
                                         if(model.isFormAvailableForDoctype("Routes Assignment")&&model.isFormAvailableForDoctype("Routes Master"))
                                           buildButton("Routes", 'assets/images/routes.png', () {
                                             Navigator.pushNamed(context, Routes.routeScreen);
+                                          },model),
+                                        if(model.isFormAvailableForDoctype("Visit"))
+                                          buildButton("Visit Report", 'assets/images/visit.png', () {
+                                            Navigator.pushNamed(context, Routes.customerReportScreen);
                                           },model),
                                       ],
                                     ),

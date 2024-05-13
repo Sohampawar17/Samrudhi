@@ -1,8 +1,12 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocation/model/customer_visit_model.dart';
 import 'package:geolocation/router.router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'model/get_teritorry_details.dart';
 
 getHeight(context) => (MediaQuery.of(context).size.height);
 
@@ -25,6 +29,34 @@ int? quotationStatus=0;
 
 getRouteUrl(String startPoint, String endPoint) {
   return Uri.parse('$apiurl?api_key=$apiKey&start=$startPoint&end=$endPoint');
+}
+
+ getRouteUrlForAllPoints(List<PlannedRoute> points) {
+  String pointsString = points.map((point) {
+    return "${point.longitude},${point.latitude}";
+  }).join(';');
+  String url = '$apiurl?api_key=$apiKey&&start=${points[0].longitude},${points[0].latitude}&end=${points.last.longitude},${points.last.latitude}&coordinates=$pointsString';
+  print(url);
+  return Uri.parse('$apiurl?api_key=$apiKey&&start=${points[0].longitude},${points[0].latitude}&end=${points.last.longitude},${points.last.latitude}&coordinates=$pointsString');
+}
+getRouteWaypoints(List<Waypoints> points) {
+  String pointsString = points.map((point) {
+    return "${point.longitude},${point.latitude}";
+  }).join(';');
+  String url = '$apiurl?api_key=$apiKey&&start=${points[0].longitude},${points[0].latitude}&end=${points.last.longitude},${points.last.latitude}&coordinates=$pointsString';
+  print(url);
+  return Uri.parse('$apiurl?api_key=$apiKey&&start=${points[0].longitude},${points[0].latitude}&end=${points.last.longitude},${points.last.latitude}&coordinates=$pointsString');
+}
+
+
+
+getRouteUrlForAllActualPoints(List<ActualRoute> points) {
+  String pointsString = points.map((point) {
+    return "${point.longitude},${point.latitude}";
+  }).join(';');
+  String url = '$apiurl?api_key=$apiKey&start=${points[0].longitude},${points[0].latitude}&coordinates=$pointsString';
+  print(url);
+  return Uri.parse('$apiurl?api_key=$apiKey&start=${points[0].longitude},${points[0].latitude}&end=${points.last.longitude},${points.last.latitude}&coordinates=$pointsString');
 }
 
 ///functions

@@ -24,7 +24,7 @@ class HomeServices {
 
       if (response.statusCode == 200) {
 
-        return   DashBoard.fromJson(response.data["data"]);
+        return DashBoard.fromJson(response.data["data"]);
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO data!");
         return null;

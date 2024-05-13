@@ -68,7 +68,6 @@ class _VisitScreenState extends State<VisitScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   AutoSizeText("${model.visitList[index].name.toString()}\n${model.visitList[index].date}",
-
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight:
@@ -97,6 +96,19 @@ class _VisitScreenState extends State<VisitScreen> {
                                   )
                                 ],
                               ),
+                              const SizedBox(height: 10),
+                              AutoSizeText("Visit Time: ${model.visitList[index].startTime} - ${model.visitList[index].endTime} ",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight:
+                                  FontWeight.w400,
+                                ),),
+                              AutoSizeText("Duration: ${model.visitList[index].duration}",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight:
+                                  FontWeight.w400,
+                                ),),
                               const SizedBox(height: 10),
                               Text( "Customer Name", style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w800)),
 

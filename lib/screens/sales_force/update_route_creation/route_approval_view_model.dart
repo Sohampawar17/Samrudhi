@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../constants.dart';
 import '../../../model/get_teritorry_details.dart';
 import '../../../services/route_services.dart';
+import 'package:http/http.dart' as http;
 
 class RouteApprovalViewModel extends BaseViewModel{
 
@@ -11,26 +16,53 @@ class RouteApprovalViewModel extends BaseViewModel{
    List<RouteMasterData> routes = [];
   RouteMaster routesAll = RouteMaster();
    String selectedRoute ="";
-   String routeId = "";
+  String routeId = "";
   List<String> status=[];
+  List<LatLng> points = [];
+  List<TerritoryData> territories = [];
 
   initialise (BuildContext context, String routeId)async{
     setBusy(true);
      routeId = routeId;
     if(routeId != ""){
       routesAll =  await RouteServices().getRouteDetails(routeId);
+      if (routesAll.waypoints != null) {
+        getCoordinates(routesAll.waypoints!);
+      }
       status=routesAll.nextAction ?? [];
       // status=await AddPaymentServices().getStatus();
       status=status.toSet().toList();
+
     }else{
       routes = await RouteServices().getPlannedRoutes("Pending");
+
     }
     setBusy(false);
     notifyListeners();
   }
+
   Future<void> refresh() async {
     routes= await RouteServices().getPlannedRoutes("Pending");
     notifyListeners();
+  }
+
+
+
+  getCoordinates(List<Waypoints> location) async {
+    List listOfPoints = [];
+    if (location.isNotEmpty) {
+      var response = await http.get(getRouteWaypoints(location));
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        listOfPoints = data['features'][0]['geometry']['coordinates'];
+        points = listOfPoints
+            .map((p) => LatLng(p[1].toDouble(), p[0].toDouble()))
+            .toList();
+      }
+    } else {
+      // Handle the case where the location list is empty
+    }
+     notifyListeners();
   }
 
   Color getColorForStatus(String status) {
@@ -69,6 +101,22 @@ class RouteApprovalViewModel extends BaseViewModel{
     notifyListeners();
     setBusy(false);
   }
+
+  List<String> getTerritoryNames(){
+    if (territories.isEmpty) {
+      return [];
+    }
+    return territories
+        .where((item) => item.territoryName != null && item.territoryName!.isNotEmpty)
+        .map((item) => item.territoryName.toString())
+        .toList();
+  }
+
+  TerritoryData getTerritoryDetails(String name){
+    var territory = territories.firstWhere((details) => details.territoryName == name);
+    return territory;
+  }
+
 
 
 }

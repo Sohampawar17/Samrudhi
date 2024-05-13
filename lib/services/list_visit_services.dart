@@ -24,11 +24,12 @@ class ListVisitServices{
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
-        List<VisitListModel> caneList = List.from(jsonData['data'])
+        List<VisitListModel> visitList = List.from(jsonData['data'])
             .map<VisitListModel>((data) => VisitListModel.fromJson(data))
             .toList();
-        Logger().i(caneList.first.toJson());
-        return caneList;
+        print(response.data);
+        Logger().i(visitList.first.toJson());
+        return visitList;
 
       } else {
         Fluttertoast.showToast(msg: "Unable to fetch Quotation");

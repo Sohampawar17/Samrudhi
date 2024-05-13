@@ -127,7 +127,6 @@ class RouteServices {
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
          print(response.data);
         Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
           msg: 'Route Created Successfully',
@@ -143,7 +142,38 @@ class RouteServices {
       Logger().e(e);
     }
     return [];
+  }
 
+  Future<List<CustomerTerritoryData>> editRoute(String routeName,Map<String, dynamic> payload) async {
+    try {
+      var url = await geturl();
+      var token = await getTocken();
+      var dio = Dio();
+      var response = await dio.request(
+        '$url/api/resource/Routes Master/$routeName',
+        data: jsonEncode(payload),
+        options: Options(
+          method: 'PUT',
+          headers: {'Authorization':token},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print(response.data);
+        Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
+          msg: 'Route Updated Successfully',
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),);
+        return [];
+      } else {
+
+        return [];
+      }
+    }  on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e);
+    }
+    return [];
   }
   Future<List<EmployeeAssignerDetails>> getEmployeeList() async {
     List<EmployeeAssignerDetails> employeeNames = [];
@@ -247,7 +277,7 @@ class RouteServices {
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         print(jsonData["data"]);
-       // print(jsonData.toString());
+        print(jsonData.toString());
 
            routes = RouteMaster.fromJson(jsonData["data"]);
           // Handle the case where "data" key is missing or not a list

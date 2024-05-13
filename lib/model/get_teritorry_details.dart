@@ -150,8 +150,8 @@ class Waypoints {
     docstatus = json['docstatus'];
     idx = json['idx'];
     territory = json['territory'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    latitude = json['latitude']is int ? (json['latitude'] as int).toDouble() : json['latitude'];;
+    longitude = json['longitude']is int ? (json['longitude'] as int).toDouble() : json['longitude'];;
     parent = json['parent'];
   }
 
