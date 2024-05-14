@@ -333,7 +333,7 @@ class RouteServices {
 
 
 
-  Future<void> assignRoute(Map<String, dynamic> payload) async {
+  Future<bool> assignRoute(Map<String, dynamic> payload) async {
     try {
       var dio = Dio();
       var url = await geturl();
@@ -350,12 +350,15 @@ class RouteServices {
       if (response.statusCode == 200) {
         Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Route is assigned successfully.',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
         print(response.data);
+        return true;
       } else {
-
+return false;
       }
     } on DioException catch (e) {
+
       Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
-      Logger().e(e);
+      Logger().e(e.response?.data["exception"].toString());
+      return false;
     }
 
   }

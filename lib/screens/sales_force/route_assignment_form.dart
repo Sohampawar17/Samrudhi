@@ -16,14 +16,10 @@ class RouteAssignmentForm extends StatefulWidget {
 }
 
 class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
-  final TextEditingController _routeNameController = TextEditingController();
-  final TextEditingController _startingLocationController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
 
   String? selectedEmployee;
-  String? selectedRoute;
+
   CustomerTerritoryData? selectedValue;
-  List<CustomerTerritoryData> _waypoints = [];
   DateTime firstDate = DateTime.now().subtract(Duration(days: 30)); // One year ago from now
   DateTime lastDate = DateTime.now().add(Duration(days: 30));
   DateTime? selectedDate ;
@@ -50,13 +46,11 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                 const SizedBox(height: 10),
                 CustomDropdownButton2(value:selectedEmployee,items: viewModel.getEmployeeNames(), hintText:"Select Employee", onChanged:(newValue) { selectedEmployee = newValue;}, labelText:"Employees" ),
                 const SizedBox(height: 10),
-                CustomDropdownButton2(value:selectedRoute,
+                CustomDropdownButton2(value:viewModel.selectedRoute,
                     items: viewModel.getRouteNames(), hintText:"Select Route",
                     onChanged:(newValue) {
-                  selectedRoute = newValue;
-                  var routeId = viewModel.getRouteId(selectedRoute!!);
-                //  viewModel.getRouteDetails(routeId);
-                  print(selectedRoute);}, labelText:"Routes" ),
+                      var routeId = viewModel.routes.firstWhere((details) => details.routeName == newValue);
+                  viewModel.changed(routeId);}, labelText:"Routes" ),
 
                 const SizedBox(height: 10),
                 CalendarDatePicker(
@@ -67,17 +61,19 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                 {
 
                     Map<String, dynamic> payload = {
-
+"routes_table": viewModel.waypoints.map((waypoint) {
+                return {"territory": waypoint.territory};
+                }).toList(),
                       "datetime": formatDate(selectedDate ?? DateTime.now()),
-                      "route_name": selectedRoute!,
-                      "employee_name": selectedEmployee!,
+                      "route_name": viewModel.selectedRoute ?? "",
+                      "employee_name": selectedEmployee ?? "",
                       "employee":viewModel.getEmployeeId(selectedEmployee!),
-                      "route_master": selectedRoute!,
+                      "routes_master": viewModel.selectedRoute ?? "",
                     };
 
-                    print(payload);
+                    print("route assignment ${payload}");
 
-                    viewModel.assignRoute(payload);
+                    viewModel.assignRoute(context,payload);
                 },
                   text: 'Assign Route',
                   buttonColor: Colors.purple.shade900,),

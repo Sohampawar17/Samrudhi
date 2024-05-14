@@ -9,7 +9,8 @@ class RouteAssignmentViewModel extends BaseViewModel{
   bool res = false;
   List<RouteMasterData> routes = [];
   List<EmployeeAssignerDetails> employees = [];
-
+  List<Waypoints>  waypoints=[];
+  String? selectedRoute;
   initialise (BuildContext context)async{
     setBusy(true);
     employees = await RouteServices().getEmployeeList();
@@ -26,6 +27,14 @@ class RouteAssignmentViewModel extends BaseViewModel{
   List<Waypoints> getChildTableData(){
     return[];
 
+  }
+
+  void changed(RouteMasterData? route){
+    selectedRoute = route?.name;
+    var routeId = getRouteId(selectedRoute!);
+  getRouteDetails(routeId);
+   waypoints.addAll(route?.wayPoints?.toList() ?? []);
+   notifyListeners();
   }
 
   List<String> getEmployeeNames(){
@@ -47,16 +56,22 @@ class RouteAssignmentViewModel extends BaseViewModel{
         .toList();
   }
 
-  Future<void> assignRoute(Map<String, dynamic> payload) async {
+  Future<void> assignRoute(BuildContext context,Map<String, dynamic> payload) async {
     setBusy(true);
-    await RouteServices().assignRoute(payload);
+    bool res=false;
+    res=await RouteServices().assignRoute(payload);
+    if (res) {
+      if (context.mounted) {
+        setBusy(false);
+        Navigator.pop(context);
+      }}
     setBusy(false);
   }
 
   Future<RouteMaster> getRouteDetails(String route_Id) async {
-    setBusy(true);
+
     return await RouteServices().getRouteDetails(route_Id);
-    setBusy(false);
+
   }
 
 
