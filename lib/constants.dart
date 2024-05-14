@@ -83,7 +83,7 @@ void logout(BuildContext context) async {
   final SharedPreferences prefs = await prefs0;
   prefs.clear();
   if (context.mounted) {
-    Navigator.pushNamed(context, Routes.loginViewScreen);
+    Navigator.popAndPushNamed(context, Routes.loginViewScreen);
   }
 }
 

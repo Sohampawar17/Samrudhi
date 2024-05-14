@@ -127,7 +127,8 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
 
-                  children: viewModel.routesAll.waypoints!.asMap().entries.map((entry) {
+                  children:  viewModel.routesAll.waypoints != null
+                      ?viewModel.routesAll.waypoints!.asMap().entries.map((entry) {
                     final index = entry.key;
                     final territory = entry.value;
 
@@ -146,7 +147,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                         // Add a divider between each timeline event
                       ],
                     );
-                  }).toList(),
+                  }).toList():[],
                 ),
                 const SizedBox(height: 20),
                 Container(
@@ -183,7 +184,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
       mapController: mapController,
       options: MapOptions(
         center: LatLng(initialLatitude, initialLongitude), // Center map on the first waypoint
-        zoom: 12.5,
+        zoom: 9,
         //onMapReady: () => viewModel.initialise(context, widget.routeId),
         onPositionChanged: (MapPosition pos, bool isGesture) {
           // Perform actions once the map is ready

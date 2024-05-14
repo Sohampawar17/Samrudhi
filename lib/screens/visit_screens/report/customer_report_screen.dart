@@ -43,25 +43,9 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
             child: Container(
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
 
-
-                  ),
-
-                  ListTile(leading: Text(viewModel.formatDate(viewModel.selectedDate??DateTime.now()),style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      trailing: Text("Select Date",   style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
+                  ListTile(leading: Text(viewModel.formatDate(viewModel.selectedDate??DateTime.now()),style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      trailing: Text("Select Date",   style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
                   onTap: ()=>{
                     _selectDate(context,viewModel)
                   }
@@ -71,7 +55,45 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
                     viewModel.assignSelectedEmployee(selectedEmployee!);
 
                     }, labelText:"Employees" )),
-
+                  const SizedBox(height: 10.0),
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 12.0,
+                              height: 12.0,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.red,
+                              ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            const Text("Planned Routes"),
+                          ],
+                        ),
+                    
+                        Row(
+                          children: [
+                            Container(
+                              width: 12.0,
+                              height: 12.0,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            const Text("Actual Routes"),
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                      ],
+                    
+                    ),
+                  ),
                   Expanded(child: buildMap(viewModel)
                   )],
               ),
@@ -80,11 +102,64 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               // Example: Move the map to a new center
-              mapController.move(const LatLng(52.0, -0.1), 13.0);
+             // mapController.move(const LatLng(52.0, -0.1), 13.0);
+              _showBottomSheet(viewModel);
             },
             child: const Icon(Icons.add_location),
           ),
         ) );
+  }
+
+  void _showBottomSheet(CustomerVisitViewModel customerVisitViewModel) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'Planned Routes',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              if (customerVisitViewModel.plannedRoutes.isNotEmpty)
+                Container(
+                height: 150,
+                child: ListView.builder(
+                  itemCount: customerVisitViewModel.plannedRoutes.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(customerVisitViewModel.plannedRoutes[index].territory!),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+              const Text(
+                'Actual Routes',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              if (customerVisitViewModel.actualRoutes.isNotEmpty)
+                Container(
+                height: 150,
+                child: ListView.builder(
+                  itemCount: customerVisitViewModel.actualRoutes.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(customerVisitViewModel.actualRoutes[index].territory),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _selectDate(BuildContext context,CustomerVisitViewModel customerViewModel) async {
@@ -123,7 +198,7 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
       options: MapOptions(
         center: LatLng(latitude ?? 0.0,longitude ?? 0.0),
         zoom: 12,
-        onMapReady:() => viewModel.initialise(),
+       // onMapReady:() => viewModel.initialise(),
         onPositionChanged: (MapPosition pos, bool isGesture) {
 
           // Perform actions once the map is ready
@@ -155,18 +230,18 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
               color: Colors.blueAccent,
               strokeWidth: 8,
             ),
-            if(viewModel.plannedPoints.isNotEmpty)
+            if(viewModel.plannedRoutes.isNotEmpty)
             Polyline(
               isDotted: false,
-              points: viewModel.plannedPoints.map((e) {
+              points: viewModel.plannedRoutes.map((e) {
                 // Access latitude and longitude from the map
                 double? lat = e.latitude;
                 double? lng = e.longitude;
 
                 // Return a LatLng object
-                return LatLng(lat, lng);
+                return LatLng(lat!, lng!);
               }).toList(),
-              color: Colors.green,
+              color: Colors.red,
               strokeWidth: 5,
             )
           ],
@@ -209,7 +284,7 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
                   child: Text(
                     location.territory ?? '',
                     style: const TextStyle(
-                      color: Colors.blueGrey,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -234,7 +309,7 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
         builder: (context) {
           return Stack(
             children: [
-              const Icon(Icons.location_on, size: 50, color: Colors.red),
+              const Icon(Icons.location_on, size: 50, color: Colors.blue),
               Positioned(
                 left: 5,
                 top: 0,
@@ -244,7 +319,7 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
                   child: Text(
                     location.territory ?? '',
                     style: const TextStyle(
-                      color: Colors.blueGrey,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -256,6 +331,9 @@ class _CustomerReportScreenState extends State<CustomerReportScreen> {
       );
     }).whereType<Marker>() .toList(); // Filter out null markers
   }
+
+
+
 
 
 

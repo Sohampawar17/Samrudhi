@@ -61,7 +61,7 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                 {
 
                     Map<String, dynamic> payload = {
-"routes_table": viewModel.waypoints.map((waypoint) {
+                  "routes_table": viewModel.waypoints.map((waypoint) {
                 return {"territory": waypoint.territory};
                 }).toList(),
                       "datetime": formatDate(selectedDate ?? DateTime.now()),

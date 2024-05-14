@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocation/router.locator.dart';
 import 'package:geolocation/screens/home_screen/home_page.dart';
+import 'package:geolocation/screens/splash_screen/splash_screen.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'router.router.dart';
 
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           navigatorKey: StackedService.navigatorKey,
           onGenerateRoute: StackedRouter().onGenerateRoute,
-          home:  HomePage(),
+          home:  SplashScreen(),
         );
       }
 

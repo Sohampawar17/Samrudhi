@@ -89,13 +89,13 @@ class _MapsScreenState extends State<MapsScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Example: Move the map to a new center
-          mapController.move(const LatLng(52.0, -0.1), 13.0);
-        },
-        child: const Icon(Icons.add_location),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Example: Move the map to a new center
+      //     mapController.move(const LatLng(52.0, -0.1), 13.0);
+      //   },
+      //   child: const Icon(Icons.add_location),
+      // ),
     ) );
   }
 
@@ -104,7 +104,7 @@ class _MapsScreenState extends State<MapsScreen> {
       padding: const EdgeInsets.only(left: 30.0),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
         ),
@@ -160,7 +160,7 @@ class _MapsScreenState extends State<MapsScreen> {
           polylines: [
             Polyline(
               isDotted: false,
-              points: viewModel.points.map((e) {
+              points: viewModel.locations.map((e) {
                 // Access latitude and longitude from the map
                 double? lat = e.latitude;
                 double? lng = e.longitude;

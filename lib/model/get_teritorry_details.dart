@@ -74,13 +74,13 @@ class RouteMasterData {
 }
 
 class RouteMaster {
-  String? name;
-  String? workflowState;
-  String? routeName;
-  int? enabled;
+  String? name ="";
+  String? workflowState="";
+  String? routeName="";
+  int? enabled=0;
   List<Waypoints>? waypoints=[];
   List<String>? nextAction;
-  bool? allowEdit;
+  bool? allowEdit= false;
 
   RouteMaster(
       {this.name,

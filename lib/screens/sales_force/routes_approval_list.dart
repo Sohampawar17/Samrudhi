@@ -18,7 +18,7 @@ class RoutesApprovalList extends StatelessWidget {
         viewModelBuilder: () => RouteApprovalViewModel(),
         onViewModelReady: (viewModel) => viewModel.initialise(context,""),
         builder: (context, viewModel, child) => Scaffold(
-          backgroundColor: Colors.grey.shade300,
+
           appBar: AppBar(
             title: const Text('Routes Approval'),
             leading: IconButton.outlined(
@@ -50,11 +50,10 @@ class RoutesApprovalList extends StatelessWidget {
                                     Icons.route,
                                     size: 34, // Adjust the size of the icon as needed
                                   ),
-                                  title: Text(viewModel.routes[index].routeName?? 'Not available', style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal,color: Colors.blueGrey)),
+                                  title: Text(viewModel.routes[index].routeName?? 'Not available', style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal)),
                                   trailing: Card(color:Colors.orange,child: Padding(padding:EdgeInsets.all(8.0),child: Text(viewModel.routes[index].worflowState?? 'Not available', style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal,color: Colors.white60)))),
                                   onTap: () {
                                   // viewModel.setSelectedString(viewModel.routes[index].name!);
-
                                    Navigator.push(
                                         context, MaterialPageRoute(builder: (_) => RouteApprovalScreen(routeId:viewModel.routes[index].name!)
                                     ));

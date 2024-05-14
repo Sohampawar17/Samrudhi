@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/constants.dart';
 import 'package:geolocation/model/dashboard.dart';
 import 'package:geolocation/model/emp_data.dart';
 import 'package:geolocation/services/home_services.dart';
@@ -68,6 +69,9 @@ class HomeViewModel extends BaseViewModel {
     availableDoctypes = await _fetchAvailableDoctypes();
     Logger().i(_loadCachedData().toJson());
     Logger().i(availableDoctypes.length);
+    if(availableDoctypes.isEmpty || availableDoctypes.length == 0){
+      logout(context);
+    }
     if (_loadCachedData().company == null) {
       await _fetchAvailableDoctypes();
       await fetchDashboard();

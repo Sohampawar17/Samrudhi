@@ -80,17 +80,8 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
                     ],
                   ),
 
-
-                    //  CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Description', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
-
                       const SizedBox(height: 25,),
-                      // Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //     children: [Expanded(child: CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.redAccent.shade400,)),
-                      //       SizedBox(width: 20),
-                      //       Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:model.isEdit? 'Update Visit':'Create Visit', buttonColor: Colors.blueAccent.shade400,))
-                      //     ]
-                      // )
+
                     ],
                   ),
                 ),
@@ -104,7 +95,7 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
               FloatingActionButton(
                 onPressed: () {
                   if (!viewModel.isTimerRunning) {
-                    Navigator.pushNamed(context, Routes.addCustomer,arguments: AddCustomerArguments( id: ''));
+                    Navigator.pushNamed(context, Routes.addCustomer,arguments: const AddCustomerArguments( id: ''));
                   }
                 },
                 child: Icon(Icons.person),
@@ -114,7 +105,7 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
               FloatingActionButton(
                 onPressed: () {
                   if (!viewModel.isTimerRunning) {
-                    Navigator.pushNamed(context, Routes.addLeadScreen,arguments: AddLeadScreenArguments( leadid: ''));
+                    Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments( leadid: ''));
                   }
                 },
                 child: Icon(Icons.add),
@@ -132,11 +123,11 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Report'),
+          title: const Text('Report'),
           content: TextField(
             controller: addVisitViewModel.descriptoncontroller,
             maxLines: 2,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Description',
               hintText: 'Enter your description',
             ),
@@ -146,14 +137,15 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 addVisitViewModel.onVisitSubmit(context);
-               // Navigator.of(context).pop();
+
+                Navigator.of(context).popUntil((route) => route.settings.name == Routes.visitScreen);
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         );
