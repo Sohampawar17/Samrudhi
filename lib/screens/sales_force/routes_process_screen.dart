@@ -18,24 +18,10 @@ class RouteScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.asset('assets/images/sales_force.png'), // Adjust the image path as needed
-              SizedBox(height: 20), // Add some space between image and buttons
-
-              Card(
-                elevation: 4,
-                child: ListTile(
-                  title: Text('Route Creation'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RouteCreationForm()),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Card(
                 child: ListTile(
-                  title: Text('Route Approval'),
+                  title: Text('Routes Master'),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -45,24 +31,12 @@ class RouteScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(height: 10),// Add some space between buttons
-              Card(
-                child: ListTile(
 
-                  title: Text('Routes Assignment'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RouteAssignmentForm()),
-                    );
-                  },
-                ),
-              ),
               SizedBox(height: 10),
               Card(
                 child: ListTile(
 
-                  title: Text('Routes Reports'),
+                  title: Text('Routes Assignment'),
                   onTap: () {
                     Navigator.push(
                       context,

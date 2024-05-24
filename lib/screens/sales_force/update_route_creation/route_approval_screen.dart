@@ -7,16 +7,17 @@ import 'package:geolocation/screens/sales_force/update_route_creation/update_rou
 
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:stacked/stacked.dart';
 
 import '../../../model/get_teritorry_details.dart';
+import '../../../router.router.dart';
 
 
 class RouteApprovalScreen extends StatefulWidget {
 
   final String routeId;
-   RouteApprovalScreen({super.key, required this.routeId});
+   const RouteApprovalScreen({super.key, required this.routeId});
 
   @override
   _RouteApprovalScreenState createState() => _RouteApprovalScreenState();
@@ -32,27 +33,33 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return ViewModelBuilder<RouteApprovalViewModel>.reactive(
       viewModelBuilder: () => RouteApprovalViewModel(),
       onViewModelReady: (viewModel) => viewModel.initialise(context,widget.routeId),
       builder: (context, viewModel, child) => Scaffold(
         appBar: AppBar(
-          title: Text("Route Details"),
-          actions: [ IconButton(
+          title: Text("Route Approval"),
+          actions: viewModel.routesAll.workflowState == "Pending"
+          ? [
+            IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => RouteUpdateScreen(routeId:widget.routeId)
-                ));
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => RouteUpdateScreen(routeId: widget.routeId)));
               },
             ),
-          ],
+          ]
+              : [],
         ),
         body: fullScreenLoader(
           loader: viewModel.isBusy,
           context: context,
-          child: SingleChildScrollView(
+          child: viewModel.routesAll.routeName != null ? SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
+          
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -68,7 +75,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                           fontSize: 17,
                             fontWeight:
                             FontWeight.w500,
-                            color: Colors.indigo
+                            color: Colors.blueAccent
                         ),),
                     ),
                     Expanded(
@@ -79,38 +86,43 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                             border: Border.all(color:Colors.white, width: 1.5),
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    viewModel.routesAll.workflowState ?? "",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: viewModel.getColorForStatus(viewModel.routesAll.workflowState.toString()),
-                                      fontWeight: FontWeight.bold,
+                          child: Card(
+                            color:  viewModel.getColorForStatus(viewModel.routesAll.workflowState.toString()),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: Text(
+                                      viewModel.routesAll.workflowState ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              PopupMenuButton(
-                                icon:  Icon(Icons.arrow_drop_down, color: viewModel.getColorForStatus(viewModel.routesAll.workflowState.toString())),
-                                itemBuilder: (BuildContext context) =>
-                                    viewModel.status.map<PopupMenuItem<String>>((String item) {
-                                      // Populate menu items from fetched data
-                                      return PopupMenuItem<String>(
-                                        value: item,
-                                        child: Text(item),
-                                      );
-                                    }).toList(),
-                                onSelected: (value) {
-                                  viewModel.changeState(context,value);
-                                },
-                              ),
-                            ],
+                                PopupMenuButton(
+                                  color: Colors.white,
+                                  icon:  Icon(Icons.arrow_drop_down),
+                                  itemBuilder: (BuildContext context) =>
+                                      viewModel.status.map<PopupMenuItem<String>>((String item) {
+                                        // Populate menu items from fetched data
+                                        return PopupMenuItem<String>(
+                                          value: item,
+                                          child: Text(item,
+                                          style: TextStyle(color: Colors.black),),
+                                        );
+                                      }).toList(),
+                                  onSelected: (value) {
+                                    viewModel.changeState(context,value);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         )
                     ),
@@ -118,9 +130,78 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
                 ),
                 Divider(),
                 const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Zone',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            viewModel.routesAll.zone ?? "--",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Region",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            viewModel.routesAll.region??"--",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Area",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      viewModel.routesAll.area??"--",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
                 const Text(
                   'Waypoints',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
                 Column(
@@ -162,8 +243,11 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
 
               ]
             ),
-          ),
+          ):const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(textAlign: TextAlign.center,"Sorry, Data is not available or You don't have permission to access for it.")),
         ),
+
       ),
     );
   }
@@ -301,7 +385,7 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
     return Container(
       width: 10,
       height: 10,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.grey, // Customize the color as needed
       ),
@@ -313,9 +397,9 @@ class _RouteApprovalScreenState extends State<RouteApprovalScreen> {
       padding: const EdgeInsets.only(left: 30.0),
       child: Text(
         title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+        style: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 14,
         ),
       ),
     );

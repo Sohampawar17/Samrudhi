@@ -103,7 +103,7 @@ class AddVisitViewModel extends BaseViewModel{
   void onSavePressed(BuildContext context) async {
    // setBusy(true);
     if (formKey.currentState!.validate()) {
-      Logger().i(visitdata.toJson());
+
       //bool res = false;
       GeolocationService geolocationService = GeolocationService();
       try {
@@ -133,9 +133,7 @@ class AddVisitViewModel extends BaseViewModel{
         visitdata.startTime =formatTime();
 
        visitId = await AddVisitServices().addVisit(visitdata);
-
-       Logger().i(visitId);
-
+        Logger().i(visitdata.toJson());
       } catch (e) {
         Fluttertoast.showToast(msg: '$e');
       } finally {
@@ -196,7 +194,7 @@ class AddVisitViewModel extends BaseViewModel{
            visitdata.description = descriptoncontroller.text;
            visitdata.name = visitId;
            await AddVisitServices().addVisit(visitdata);
-           Navigator.popUntil(context, ModalRoute.withName(Routes.visitScreen));
+         //  Navigator.popUntil(context, ModalRoute.withName(Routes.visitScreen));
          } catch (e) {
            Fluttertoast.showToast(msg: '$e');
          } finally {

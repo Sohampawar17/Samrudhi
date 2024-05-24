@@ -24,6 +24,7 @@ import 'package:geolocation/screens/sales_force/route_assignment_form.dart';
 import 'package:geolocation/screens/sales_force/add_route_creation/route_creation_form.dart';
 import 'package:geolocation/screens/sales_force/routes_approval_list.dart';
 import 'package:geolocation/screens/sales_force/routes_process_screen.dart';
+import 'package:geolocation/screens/sales_force/update_route_assignment_screen.dart';
 import 'package:geolocation/screens/sales_force/update_route_creation/route_approval_screen.dart';
 import 'package:geolocation/screens/sales_invoice/add_sales_invoice/add_invoice_screen.dart';
 import 'package:geolocation/screens/sales_invoice/items/add_items_screen.dart';
@@ -80,7 +81,8 @@ import 'screens/lead_screen/lead_list/lead_screen.dart';
     MaterialRoute(page: VisitScreen),
     MaterialRoute(page: AddVisitScreen),
     MaterialRoute(page: UpdateVisitScreen),
-    MaterialRoute(page: CustomerReportScreen)
+    MaterialRoute(page: CustomerReportScreen),
+    MaterialRoute(page: UpdateRouteAssignmentForm)
 
 
 

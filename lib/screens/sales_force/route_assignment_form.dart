@@ -29,7 +29,7 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<RouteAssignmentViewModel>.reactive(
       viewModelBuilder: () => RouteAssignmentViewModel(),
-      onViewModelReady: (viewModel) => viewModel.initialise(context),
+      onViewModelReady: (viewModel) => viewModel.initialise(context,""),
       builder: (context, viewModel, child) => Scaffold(
       appBar: AppBar(
         title: Text('Route Assignment'),
@@ -59,10 +59,9 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                 const SizedBox(height: 10),
                 CtextButton(onPressed: ()
                 {
-
-                    Map<String, dynamic> payload = {
-                  "routes_table": viewModel.waypoints.map((waypoint) {
-                return {"territory": waypoint.territory};
+                  Map<String, dynamic> payload = {
+                        "routes_table": viewModel.waypoints.map((waypoint) {
+                        return {"territory": waypoint.territory};
                 }).toList(),
                       "datetime": formatDate(selectedDate ?? DateTime.now()),
                       "route_name": viewModel.selectedRoute ?? "",

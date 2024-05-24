@@ -25,6 +25,7 @@ class AddVisitServices{
         ),
         data: data,
       );
+      Logger().i(data);
 
       if (response.statusCode == 200) {
         var jsonData = json.encode(response.data);

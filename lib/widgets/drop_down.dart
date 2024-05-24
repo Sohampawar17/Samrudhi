@@ -61,9 +61,9 @@ class CustomDropdownButton2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-     height:60,
+     height:55,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(18.0),
+        borderRadius: BorderRadius.circular(10.0),
       
         border: Border.all(
           width: 1,

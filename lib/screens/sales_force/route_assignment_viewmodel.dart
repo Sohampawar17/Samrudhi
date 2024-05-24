@@ -11,10 +11,18 @@ class RouteAssignmentViewModel extends BaseViewModel{
   List<EmployeeAssignerDetails> employees = [];
   List<Waypoints>  waypoints=[];
   String? selectedRoute;
-  initialise (BuildContext context)async{
+  String? selectedE;
+  RoutesAssignment routesAssignment = RoutesAssignment();
+
+  initialise (BuildContext context,String assignmentId)async{
     setBusy(true);
     employees = await RouteServices().getEmployeeList();
     routes = await RouteServices().getPlannedRoutes("Approved");
+    if(assignmentId != ""){
+       routesAssignment = await RouteServices().getRouteTableDetails(assignmentId);
+       selectedRoute= routesAssignment.routeName;
+
+    }
     setBusy(false);
     notifyListeners();
   }
@@ -69,7 +77,6 @@ class RouteAssignmentViewModel extends BaseViewModel{
   }
 
   Future<RouteMaster> getRouteDetails(String route_Id) async {
-
     return await RouteServices().getRouteDetails(route_Id);
 
   }

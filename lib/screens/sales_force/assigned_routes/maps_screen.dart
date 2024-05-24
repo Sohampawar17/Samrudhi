@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocation/screens/sales_force/assigned_routes/maps_routes_view_model.dart';
+import 'package:geolocation/screens/sales_force/update_route_assignment_screen.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:stacked/stacked.dart';
+
+import '../../../router.router.dart';
 
 
 class MapsScreen extends StatefulWidget {
@@ -35,6 +38,14 @@ class _MapsScreenState extends State<MapsScreen> {
     builder: (context, viewModel, child) => Scaffold(
       appBar: AppBar(
         title: Text('Check Your Routes'),
+        actions: [
+          IconButton(onPressed: ()=> {
+    Navigator.push(
+    context, MaterialPageRoute(builder: (_) => UpdateRouteAssignmentForm(assignmentId:widget.name))
+
+    ) }, icon: Icon(Icons.edit))
+        ],
+
       ),
       body: fullScreenLoader(
         loader: viewModel.isBusy,
@@ -44,17 +55,6 @@ class _MapsScreenState extends State<MapsScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 3,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: viewModel.locations.asMap().entries.map((entry) {

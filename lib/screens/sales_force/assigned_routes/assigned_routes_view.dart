@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../router.router.dart';
+
 
 class AssignedRoutesScreen extends StatelessWidget {
 
@@ -106,7 +108,6 @@ class AssignedRoutesScreen extends StatelessWidget {
 
                                   onTap: () {
                                     // viewModel.setSelectedString(viewModel.routes[index].name!);
-
                                     Navigator.push(
                                         context, MaterialPageRoute(builder: (_) => MapsScreen(name : model.routes[index].name!)
                                     ));
@@ -127,11 +128,18 @@ class AssignedRoutesScreen extends StatelessWidget {
                         decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
                         child: const Text('Sorry, you got nothing!',style: TextStyle(fontWeight: FontWeight.w700),),),
                     )
-
             ],
-
           ),
-        )))));
+        ))),
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: ()=>Navigator.pushNamed(context, Routes.routeAssignmentForm),
+             label: const Text('Assign Route'),),
+    )
+
+
+    );
+
+
   }
   String formatDate(DateTime dateTime){
     DateFormat formatter = DateFormat('yyyy-MM-dd'); // Change the format as needed

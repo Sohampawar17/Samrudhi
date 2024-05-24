@@ -20,6 +20,10 @@ class RouteApprovalViewModel extends BaseViewModel{
   List<String> status=[];
   List<LatLng> points = [];
   List<TerritoryData> territories = [];
+  String? selectedZone;
+  String? selectedRegion;
+  String? selectedArea;
+
 
   initialise (BuildContext context, String routeId)async{
     setBusy(true);
@@ -35,7 +39,6 @@ class RouteApprovalViewModel extends BaseViewModel{
 
     }else{
       routes = await RouteServices().getPlannedRoutes("Pending");
-
     }
     setBusy(false);
     notifyListeners();
@@ -102,6 +105,22 @@ class RouteApprovalViewModel extends BaseViewModel{
     setBusy(false);
   }
 
+
+  void setSelectedZone(String zone){
+    selectedZone = zone;
+    notifyListeners();
+  }
+
+  void setSelectedRegion(String region){
+    selectedRegion = region;
+    notifyListeners();
+  }
+  void setSelectedArea(String area){
+    selectedArea = area;
+    notifyListeners();
+  }
+
+
   List<String> getTerritoryNames(){
     if (territories.isEmpty) {
       return [];
@@ -117,6 +136,53 @@ class RouteApprovalViewModel extends BaseViewModel{
     return territory;
   }
 
+  List<String> getZones(){
+    if (routes.isEmpty) {
+      return [];
+    }
+    return routes
+        .where((item) => item.zone != null && item.zone!.isNotEmpty)
+        .map((item) => item.zone
+        .toString()).toSet()
+        .toList();
+  }
 
+  List<String> getRegions(){
+    if (routes.isEmpty) {
+      return [];
+    }
+    return routes
+        .where((item) => item.region != null && item.region!.isNotEmpty)
+        .map((item) => item.region
+        .toString()).toSet()
+        .toList();
+  }
+
+  List<String> getAreas(){
+    if (routes.isEmpty) {
+      return [];
+    }
+    return routes
+        .where((item) => item.area != null && item.area!.isNotEmpty)
+        .map((item) => item.area
+        .toString()).toSet()
+        .toList();
+  }
+
+
+  void getRoutesAccordingToZones(String zone){
+    routes = routes.where((element) => element.zone==zone).toList();
+    notifyListeners();
+  }
+
+  void getRoutesAccordingToRegions(String region){
+    routes = routes.where((element) => element.region==region).toList();
+    notifyListeners();
+  }
+
+  void getRoutesAccordingToAreas(String area){
+    routes = routes.where((element) => element.area==area).toList();
+    notifyListeners();
+  }
 
 }

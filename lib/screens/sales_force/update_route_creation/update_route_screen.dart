@@ -11,6 +11,7 @@ import '../../../widgets/text_button.dart';
 class RouteUpdateScreen extends StatefulWidget {
   final String routeId;
 
+
   RouteUpdateScreen({required this.routeId});
 
   @override
@@ -22,6 +23,9 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
 
   List<TerritoryData> _territoryList = [];
   String? selectedWaypoint;
+  String? selectedZone;
+  String? selectedRegion;
+  String? selectedArea;
 
 
   @override
@@ -47,13 +51,50 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
                     decoration: InputDecoration(labelText: 'Route Name'),
                   ),
                   SizedBox(height: 20),
-                  const Text(
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomDropdownButton2(
+                          value: viewModel.selectedZone,
+                          items: viewModel.zones,
+                          hintText: "Select Zone",
+                          onChanged: (newValue) {
+                            viewModel.setSelectedZone(newValue!);
+                            viewModel.getRegions(newValue);
+                          },
+                          labelText: "Zones",
+                        ),
+                      ),
+                      SizedBox(width: 16), // Add space between the dropdowns
+                      Expanded(
+                        child: CustomDropdownButton2(
+                          value: viewModel.selectedRegion,
+                          items: viewModel.regions,
+                          hintText: "Select Region",
+                          onChanged: (newValue) {
+                            viewModel.setSelectedRegion(newValue!);
+                            viewModel.getAreas(newValue);
+                          },
+                          labelText: "Regions",
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  CustomDropdownButton2(value:viewModel.selectedArea,items: viewModel.areas, hintText:"Select Area",
+                      onChanged:(newValue) {
+                        viewModel.setSelectedArea(newValue!);
+                        viewModel.getEndNodes(newValue);
+                      }, labelText:"Area" ),
+
+                   Text(
                     'Waypoints:',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
-                  SizedBox(height: 10),
-                  CustomDropdownButton2(value:selectedWaypoint,items: viewModel.getTerritoryNames(), hintText:"Select Territory", onChanged:(newValue) { selectedWaypoint = newValue;}, labelText:"Territories" ),
+                  CustomDropdownButton2(value:selectedWaypoint,items: viewModel.endNodes, hintText:"Select Territory", onChanged:(newValue) { selectedWaypoint = newValue;}, labelText:"Territories" ),
+
+               //   CustomDropdownButton2(value:selectedWaypoint,items: viewModel.getTerritoryNames(), hintText:"Select Territory", onChanged:(newValue) { selectedWaypoint = newValue;}, labelText:"Territories" ),
                   SizedBox(height: 20),
 
                   Column(
@@ -106,7 +147,7 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
                   CtextButton(
                     onPressed: () {
                       // Save route logic
-                      _saveRoute(viewModel);
+                      _saveRoute(context,viewModel);
                     },
                     text: 'Update Route',
                     buttonColor: Colors.purple.shade900,
@@ -131,13 +172,6 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
   Widget _buildTimelineDot() {
     return Container(
       width: 10,
-
-
-
-
-
-
-
       height: 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -159,20 +193,16 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
     );
   }
 
-  void _editWaypoint(int index) {
-    // Implement the edit logic here
-    // For example, you can open a dialog to edit the waypoint details
-  }
 
-  void _addWaypoint() {
-  }
-
-  void _saveRoute(RouteCreationViewModel viewModel) {
+  void _saveRoute(BuildContext context,RouteCreationViewModel viewModel) {
     String routeName = viewModel.routeNameController.text;
     // Save route logic here
     // For example, you can create a payload and call the saveRoute method
     Map<String, dynamic> payload = {
       "name": viewModel.routesAll.name,
+      "zone": viewModel.selectedZone,
+      "region": viewModel.selectedRegion,
+      "area": viewModel.selectedArea,
       "route_name": routeName,
       "waypoints": viewModel.waypoints.map((waypoint) {
         return {"territory": waypoint.territory};
@@ -180,6 +210,6 @@ class _RouteUpdateScreenState extends State<RouteUpdateScreen> {
     };
 
     print(payload);
-   viewModel.updateRoute(viewModel.routesAll.name!,payload);
+    viewModel.updateRoute(context,viewModel.routesAll.name!,payload);
   }
 }

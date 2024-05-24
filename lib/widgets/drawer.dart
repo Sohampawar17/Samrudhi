@@ -95,27 +95,6 @@ Widget myDrawer(BuildContext context, String name, String email, String image) {
             },
           ),
 
-          // ListTile(
-          //   leading: const Icon(Icons.file_copy, color: Colors.black),
-          //   title: const Text(
-          //     'Visit',
-          //     style: TextStyle(fontWeight: FontWeight.w300),
-          //   ),
-          //   onTap: () {
-          //     Navigator.pushNamed(context, Routes.visitScreen);
-          //   },
-          // ),
-          //
-          ListTile(
-            leading: const Icon(Icons.file_copy, color: Colors.black),
-            title: const Text(
-              'Customer Visit',
-              style: TextStyle(fontWeight: FontWeight.w300),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, Routes.customerReportScreen);
-            },
-          ),
 
           const Divider(thickness: 1),
           ListTile(

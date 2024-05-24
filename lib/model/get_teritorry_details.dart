@@ -48,12 +48,24 @@ class RouteMasterData {
   String? name;
   String? worflowState;
   List<Waypoints>? wayPoints;
+  String? owner = "";
+  String? approver = "";
+  String? creation = "";
+  String? zone ="";
+  String? region = "";
+  String? area = "";
 
   RouteMasterData({
     this.routeName,
     this.name,
     this.worflowState,
-    this.wayPoints
+    this.wayPoints,
+    this.owner,
+    this.approver,
+    this.creation,
+    this.zone,
+    this.region,
+    this.area
   });
 
   RouteMasterData.fromJson(dynamic json) {
@@ -62,7 +74,13 @@ class RouteMasterData {
     worflowState= json['workflow_state'].toString();
     routeName = json['route_name'].toString();
     name = json['name']!.toString();
+    owner = json['owner']!.toString();
+    approver =json['approver']?.toString() ?? 'N.A.';
+    creation = json['creation']!.toString();
     wayPoints = ways;
+    zone = json["zone"];
+    region = json["region"];
+    area = json["area"];
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -81,6 +99,13 @@ class RouteMaster {
   List<Waypoints>? waypoints=[];
   List<String>? nextAction;
   bool? allowEdit= false;
+  String? owner = "";
+  String? approver = "";
+  String? creation = "";
+  String? zone ="";
+  String? region = "";
+  String? area = "";
+
 
   RouteMaster(
       {this.name,
@@ -89,7 +114,15 @@ class RouteMaster {
         this.enabled,
         this.waypoints,
         this.nextAction,
-        this.allowEdit});
+        this.allowEdit,
+        this.owner,
+        this.approver,
+        this.creation,
+        this.zone,
+        this.region,
+        this.area
+
+      });
 
   RouteMaster.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -104,6 +137,12 @@ class RouteMaster {
     }
     nextAction = json['next_action'].cast<String>();
     allowEdit = json['allow_edit'];
+    owner = json["owner"];
+    approver = json["approver"];
+    creation = json["creation"];
+    zone = json["zone"];
+    region = json["region"];
+    area = json["area"];
   }
 
   Map<String, dynamic> toJson() {

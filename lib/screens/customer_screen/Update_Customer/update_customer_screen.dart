@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:geolocation/screens/customer_screen/Update_Customer/update_customer_model.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
@@ -8,6 +10,8 @@ import 'package:stacked/stacked.dart';
 
 import '../../../router.router.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/drop_down.dart';
+import '../../../widgets/text_button.dart';
 
 class UpdateCustomer extends StatefulWidget {
   final String id;
@@ -49,12 +53,12 @@ physics: AlwaysScrollableScrollPhysics(),
               Container(
                 color: Colors.blueAccent,
                 padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
 
                   children: [
                     Row(
-mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'Receivable\n RS. 100',
@@ -94,7 +98,7 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: TabBar(
+                      child: const TabBar(
                         tabAlignment: TabAlignment.fill,
                         // isScrollable: true,
                         // indicator: BoxDecoration(
@@ -200,6 +204,64 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   ),
                                 ),
 
+                                const SizedBox(height: 15,),
+
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 7,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        'Add Your Visit',
+                                        style: TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      CustomDropdownButton2(value: model.selectedVisitType,items:model.visitType, hintText: 'select the visit type', onChanged:(newValue){model.setVisitType(newValue!);}, labelText: 'Visit Type'),
+                                      const SizedBox(height: 15),
+
+                                      const Text(
+                                        'Timer',
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        model.formatTimer(model.countdownSeconds),
+                                        style: Theme.of(context).textTheme.headlineMedium,
+                                      ),
+                                      const SizedBox(
+                                        height: 32,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(child: CtextButton(onPressed: () => model.initTimerOperation(context), text: 'Start Timer', buttonColor: Colors.red)),
+                                          SizedBox(width: 20),
+                                          Expanded(child: CtextButton(onPressed: () =>
+                                          {
+                                            model.stopTimer(),
+                                            showAlertDialog(context,model)
+                                          },
+                                            text: 'Stop Timer',
+                                            buttonColor: Colors.blue,))
+
+                                          //CtextButton(onPressed: () => resetTimer, text: 'Reset', buttonColor: Colors.redAccent.shade400,)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+
                               ],
                             ),
                           ),
@@ -285,30 +347,30 @@ mainAxisAlignment: MainAxisAlignment.spaceBetween,
             height: 60,
             child: Row(
               children: [
-Expanded(child: Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
-    color: Colors.white,
-    boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
-        // spreadRadius: 5,
-        blurRadius: 7,
-        // offset: const Offset(0, 3), // Customize the shadow offset
-      ),
-    ],
-  ),
+              Expanded(child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                      // spreadRadius: 5,
+                      blurRadius: 7,
+                      // offset: const Offset(0, 3), // Customize the shadow offset
+                    ),
+                  ],
+                ),
 
-  child: TextField(
-    controller: model.comment,
-    decoration: InputDecoration(
-      hintText: 'Enter a comment',
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18.0),
-      ),
-    )
-  ),
-)),
+                child: TextField(
+                  controller: model.comment,
+                  decoration: InputDecoration(
+                    hintText: 'Enter a comment',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                  )
+                ),
+              )),
                 IconButton(onPressed: (){
                   if(model.comment.text.isNotEmpty){
                   model.addComment(model.customerData.name, model.comment.text);}
@@ -423,5 +485,43 @@ Expanded(child: Container(
       ),
     );
   }
+
+  void showAlertDialog(BuildContext context,UpdateCustomerViewModel updateVisitViewModel) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Report'),
+          content: TextField(
+            controller: updateVisitViewModel.descriptonController,
+            maxLines: 2,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+              hintText: 'Enter your description',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                updateVisitViewModel.onVisitSubmit(context);
+
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
 }

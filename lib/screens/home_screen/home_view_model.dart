@@ -67,11 +67,11 @@ class HomeViewModel extends BaseViewModel {
     _cachedDashboard = _loadCachedData();
     employeeData= await HomeServices().getEmpName() ?? EmpData();
     availableDoctypes = await _fetchAvailableDoctypes();
-    Logger().i(_loadCachedData().toJson());
-    Logger().i(availableDoctypes.length);
-    if(availableDoctypes.isEmpty || availableDoctypes.length == 0){
-      logout(context);
-    }
+    // Logger().i(_loadCachedData().toJson());
+    // Logger().i(availableDoctypes.length);
+    // if(availableDoctypes.isEmpty || availableDoctypes.length == 0){
+    //   logout(context);
+    // }
     if (_loadCachedData().company == null) {
       await _fetchAvailableDoctypes();
       await fetchDashboard();

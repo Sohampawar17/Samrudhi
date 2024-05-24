@@ -25,10 +25,11 @@ class MapsRoutesViewModel extends BaseViewModel{
 
   Future<void> fetchLocations(String name) async {
     RoutesAssignment routesAssignment = await  RouteServices().getRouteTableDetails(name);
-    print(routesAssignment.routesTable!.length.toString());
-    locations.addAll(routesAssignment.routesTable?.toList()??[]);
-    print(locations);
-    await getCoordinates(locations);
+    if(routesAssignment.routesTable != null) {
+      locations.addAll(routesAssignment.routesTable?.toList() ?? []);
+      await getCoordinates(locations);
+    }
+
   }
 
   getCoordinates(List<RoutesTable> location) async {
