@@ -51,10 +51,35 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
                     onChanged:(newValue) {
                       var routeId = viewModel.routes.firstWhere((details) => details.routeName == newValue);
                   viewModel.changed(routeId);}, labelText:"Routes" ),
+                const SizedBox(height: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: viewModel.waypoints.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final territory = entry.value;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (index != 0)
+                          _buildTimelineLine(), // Add line between dots
+                        Row(
+                          children: [
+                            _buildTimelineDot(),
+                            SizedBox(width: 10), // Add some space between dot and title
+                            _buildTimelineTitle(territory.territory!),
+
+
+                          ],
+                        ),
+                        // Add a divider between each timeline event
+                      ],
+                    );
+                  }).toList(),
+                ),
 
                 const SizedBox(height: 10),
                 CalendarDatePicker(
-
                     initialDate: DateTime.now(),  onDateChanged: (newDate){ selectedDate =newDate;}, firstDate: firstDate,lastDate: lastDate),
                 const SizedBox(height: 10),
                 CtextButton(onPressed: ()
@@ -83,6 +108,41 @@ class _RouteAssignmentFormState extends State<RouteAssignmentForm> {
         ),
       ),
     ));
+  }
+
+
+  Widget _buildTimelineLine() {
+    return Container(
+      width: 2,
+      height: 20,
+      color: Colors.purple.shade900,
+    );
+  }
+
+  Widget _buildTimelineDot() {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.grey,
+      ),
+    );
+  }
+
+
+
+  Widget _buildTimelineTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
   }
 
   String formatDate(DateTime dateTime){

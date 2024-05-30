@@ -22,6 +22,11 @@ class RouteAssignmentViewModel extends BaseViewModel{
        routesAssignment = await RouteServices().getRouteTableDetails(assignmentId);
        selectedRoute= routesAssignment.routeName;
        selectedEmployee = routesAssignment.employeeName;
+     var routesWay= routes.where((details) => details.routeName == selectedRoute).toList();
+       routesWay.forEach((route) {
+         waypoints.addAll(route.wayPoints!);
+       });
+
 
     }
     setBusy(false);
@@ -38,14 +43,17 @@ class RouteAssignmentViewModel extends BaseViewModel{
 
   }
 
-  void changed(RouteMasterData? route){
+  void changed(RouteMasterData? route) async {
+    setBusy(true);
     selectedRoute = route?.name;
-    var routeId = getRouteId(selectedRoute!);
-  getRouteDetails(routeId);
-   waypoints.addAll(route?.wayPoints?.toList() ?? []);
-   notifyListeners();
+    if (selectedRoute != null) {
+      waypoints = route?.wayPoints != null ? route!.wayPoints! : [];
+    } else {
+      waypoints = [];
+    }
+    setBusy(false);
+    notifyListeners();
   }
-
   List<String> getEmployeeNames(){
     if (employees.isEmpty) {
       return [];

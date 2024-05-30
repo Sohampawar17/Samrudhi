@@ -46,7 +46,6 @@ class AssignedRoutesScreen extends StatelessWidget {
                       onChanged:(newValue) {
                            model.updateSelectedEmployee(newValue!);
                   }, labelText:"Employees" ),
-                  const SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -94,7 +93,7 @@ class AssignedRoutesScreen extends StatelessWidget {
                           );
                         },
                         defaultBuilder: (context, date, _) {
-                          final isAssigned = model.routes.any((routeData) {
+                          final isAssigned = model.filteredList.any((routeData) {
                             DateTime routeDate =
                             DateFormat('yyyy-MM-dd').parse(routeData.datetime!);
                             return isSameDay(date, routeDate);
@@ -147,7 +146,7 @@ class AssignedRoutesScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  model.routes.isNotEmpty
+                  model.filteredList.isNotEmpty
                       ? ListView.separated(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -162,8 +161,8 @@ class AssignedRoutesScreen extends StatelessWidget {
                             size: 34,
                           ),
                           title: Text(
-                            model.routes[index].routeName ?? 'Not Available',
-                            style: TextStyle(
+                            model.filteredList[index].routeName ?? 'Not Available',
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black),
@@ -175,8 +174,8 @@ class AssignedRoutesScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: Text(
-                                  model.routes[index].employeeName ?? 'Not available',
-                                  style: TextStyle(
+                                  model.filteredList[index].employeeName ?? 'Not available',
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                       color: Colors.blue),
@@ -185,8 +184,8 @@ class AssignedRoutesScreen extends StatelessWidget {
                             ],
                           ),
                           trailing: Text(
-                            model.routes[index].datetime ?? 'Not Available',
-                            style: TextStyle(
+                            model.filteredList[index].datetime ?? 'Not Available',
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
                                 color: Colors.black),
@@ -196,7 +195,7 @@ class AssignedRoutesScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (_) =>
-                                      MapsScreen(name: model.routes[index].name!)),
+                                      MapsScreen(name: model.filteredList[index].name!)),
                             );
                           },
                         ),
@@ -205,7 +204,7 @@ class AssignedRoutesScreen extends StatelessWidget {
                     separatorBuilder: (context, builder) {
                       return const SizedBox(height: 10);
                     },
-                    itemCount: model.routes.length,
+                    itemCount: model.filteredList.length,
                   )
                       : Center(
                     child: Container(

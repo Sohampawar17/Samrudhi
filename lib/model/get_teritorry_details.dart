@@ -64,7 +64,7 @@ class RouteMasterData {
   String? routeName;
   String? name;
   String? worflowState;
-  List<Waypoints>? wayPoints;
+  List<Waypoints>? wayPoints=[];
   String? owner = "";
   String? approver = "";
   String? creation = "";

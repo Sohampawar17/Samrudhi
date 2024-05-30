@@ -1,18 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:geolocation/model/calendar_services.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../model/calendar_services.dart';
 import '../../../model/employee_list.dart';
-import '../../../model/get_teritorry_details.dart';
-import '../../../services/route_services.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
-import 'package:stacked/stacked.dart';
-import 'package:table_calendar/table_calendar.dart';
-
 import '../../../model/get_teritorry_details.dart';
 import '../../../services/route_services.dart';
 
@@ -49,16 +41,15 @@ class RoutesViewModel extends BaseViewModel {
     employees = await RouteServices().getEmployeeList();
 
     await getAssignedDetailsForTheMonth(_selectedYear!, _selectedMonth!);
-   // await getAssignmentDetails(DateFormat('yyyy-MM-dd').format(DateTime.now()));
     setBusy(false);
   }
+
   void setFocusedDay(DateTime date) {
     focusedDay = date;
     notifyListeners();
   }
 
-
-  List<String> getEmployeeNames(){
+  List<String> getEmployeeNames() {
     if (employees.isEmpty) {
       return [];
     }
@@ -68,7 +59,6 @@ class RoutesViewModel extends BaseViewModel {
         .toList();
   }
 
-
   /// Sets the calendar format.
   void calenderformat(CalendarFormat format) {
     calendarFormat = format;
@@ -77,35 +67,32 @@ class RoutesViewModel extends BaseViewModel {
 
   /// Retrieves route assignment details for the specified date.
   Future<void> getAssignmentDetails(String date) async {
-    filteredList = await RouteServices().getRouteAssignmentDetails(date);
-    notifyListeners();
+    routes = await RouteServices().getRouteAssignmentDetails(date);
+    applyFilters();
   }
 
   /// Update the selected employee.
-  Future<void> updateSelectedEmployee(String employee) async {
+  void updateSelectedEmployee(String employee) async {
     selectedEmployee = employee;
-    filteredList = routes.where((item) => item.employeeName != null && item.employeeName! == selectedEmployee)
-        .toList();
-    notifyListeners();
+    applyFilters();
   }
-
 
   /// Updates the selected day.
   void updateSelectedDay(int? day) {
     _selectedDay = day;
-    notifyListeners();
+    applyFilters();
   }
 
   /// Updates the selected year.
   void updateSelectedYear(int? year) {
     _selectedYear = year;
-    notifyListeners();
+    applyFilters();
   }
 
   /// Updates the selected month.
   void updateSelectedMonth(int? month) {
     _selectedMonth = month;
-    notifyListeners();
+    applyFilters();
   }
 
   Future<void> getAssignedDetailsForTheMonth(int year, int month) async {
@@ -113,45 +100,37 @@ class RoutesViewModel extends BaseViewModel {
     DateTime lastDayOfMonth = DateTime(year, month + 1, 0);
     String startDate = formatDate(firstDayOfMonth);
     String endDate = formatDate(lastDayOfMonth);
-    filteredList = await CalendarServices().getRouteAssignmentDetailsForMonth(startDate, endDate);
-    // routes = assignmentList.where((item) => item.employeeName != null && item.employeeName! == selectedEmployee)
-    //     .toList();
-    notifyListeners();
+    routes = await CalendarServices().getRouteAssignmentDetailsForMonth(startDate, endDate);
+    applyFilters();
   }
 
-  void getAssignedDetailsForTheWeek(DateTime startOfWeek) async{
+  void getAssignedDetailsForTheWeek(DateTime startOfWeek) async {
     final DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
     final String startWeek = DateFormat('yyyy-MM-dd').format(startOfWeek);
     final String endWeek = DateFormat('yyyy-MM-dd').format(endOfWeek);
 
-   filteredList = await  CalendarServices().getRouteAssignmentDetailsForMonth(startWeek, endWeek);
-    // routes = assignmentList.where((item) => item.employeeName != null && item.employeeName! == selectedEmployee)
-    //     .toList();
-   notifyListeners();
-
+    routes = await CalendarServices().getRouteAssignmentDetailsForMonth(startWeek, endWeek);
+    applyFilters();
   }
 
-
-  String formatDate(DateTime dateTime){
+  String formatDate(DateTime dateTime) {
     DateFormat formatter = DateFormat('yyyy-MM-dd'); // Change the format as needed
     String formattedDate = formatter.format(dateTime);
     return formattedDate;
   }
 
+  /// Apply filters to the routes list based on the selected criteria.
+  void applyFilters() {
+    print('Applying filters...');
+    filteredList = routes.where((route) {
+      bool matchesEmployee = selectedEmployee == null || route.employeeName == selectedEmployee;
+      return matchesEmployee;
+    }).toList();
 
+    print('Filtered routes count: ${filteredList.length}');
 
-//   /// Retrieves routes data for the selected month.
-//  void  getRoutesForSelectedMonth() {
-//     if (_selectedMonth != null && _selectedYear != null) {
-//       routes =  routes.where((route) {
-//         DateTime routeDate = DateFormat('yyyy-MM-dd').parse(route.datetime!);
-//          routeDate.month == _selectedMonth! &&
-//             routeDate.year == _selectedYear!;
-//       }).toList();
-//       notifyListeners();
-//     } else {
-//       routes =[];
-//     }
-//   }
-// }
+    filteredList.sort((a, b) => DateFormat('yyyy-MM-dd').parse(b.datetime!).compareTo(DateFormat('yyyy-MM-dd').parse(a.datetime!)));
+
+    notifyListeners();
+  }
 }

@@ -35,7 +35,7 @@ class _UpdateRouteAssignmentFormState extends State<UpdateRouteAssignmentForm> {
         onViewModelReady: (viewModel) => viewModel.initialise(context,widget.assignmentId),
         builder: (context, viewModel, child) => Scaffold(
           appBar: AppBar(
-            title: Text('Route Assignment'),
+            title: const Text('Route Reassignment'),
           ),
           body: fullScreenLoader(
             loader: viewModel.isBusy,
@@ -55,6 +55,32 @@ class _UpdateRouteAssignmentFormState extends State<UpdateRouteAssignmentForm> {
                         onChanged:(newValue) {
                           var routeId = viewModel.routes.firstWhere((details) => details.routeName == newValue);
                           viewModel.changed(routeId);}, labelText:"Routes" ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: viewModel.waypoints.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final territory = entry.value;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (index != 0)
+                              _buildTimelineLine(), // Add line between dots
+                            Row(
+                              children: [
+                                _buildTimelineDot(),
+                                SizedBox(width: 10), // Add some space between dot and title
+                                _buildTimelineTitle(territory.territory!),
+
+
+                              ],
+                            ),
+                            // Add a divider between each timeline event
+                          ],
+                        );
+                      }).toList(),
+                    ),
 
                     const SizedBox(height: 10),
                     CalendarDatePicker(
@@ -102,6 +128,40 @@ class _UpdateRouteAssignmentFormState extends State<UpdateRouteAssignmentForm> {
   String _twoDigits(int n) {
     if (n >= 10) return "$n";
     return "0$n";
+  }
+
+  Widget _buildTimelineLine() {
+    return Container(
+      width: 2,
+      height: 20,
+      color: Colors.purple.shade900,
+    );
+  }
+
+  Widget _buildTimelineDot() {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.grey,
+      ),
+    );
+  }
+
+
+
+  Widget _buildTimelineTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
   }
 
 
