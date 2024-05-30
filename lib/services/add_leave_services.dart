@@ -77,4 +77,34 @@ class AddLeaveServices{
     return false;
   }
 
+  Future<AddLeaveModel?> getLeave(String id) async {
+    baseurl =  await geturl();
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/resource/Leave Application/$id',
+        options: Options(
+          method: 'GET',
+          headers: {'Authorization': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Logger().i(AddLeaveModel.fromJson(response.data["data"]));
+        return AddLeaveModel.fromJson(response.data["data"]);
+      } else {
+
+        return null;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(toastLength: Toast.LENGTH_LONG,
+        msg: "${e.response?.data['message'].toString()}",
+        backgroundColor: Color(0xFFBA1A1A),
+        textColor: Color(0xFFFFFFFF),
+      );
+      Logger().e(e.response?.data['message'].toString());
+    }
+    return null;
+  }
+
 }

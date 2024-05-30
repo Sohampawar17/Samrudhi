@@ -11,8 +11,8 @@ import '../../../widgets/view_docs_from_internet.dart';
 import 'add_expense_viewmodel.dart';
 
 class AddExpenseScreen extends StatefulWidget {
-
-  const AddExpenseScreen({super.key});
+final String expenseId;
+  const AddExpenseScreen({super.key, required this.expenseId});
 
   @override
   State<AddExpenseScreen> createState() => _AddExpenseScreenState();

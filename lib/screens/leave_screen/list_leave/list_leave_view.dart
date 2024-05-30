@@ -133,60 +133,63 @@ class ListLeaveScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Card( color: Colors.blue,
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                20.0),
-                                           // Set border color and width
+                                child: MaterialButton(
+                                  onPressed: ()=>model.onRowClick(context, model.leavelist[index]),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Card( color: Colors.blue,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  20.0),
+                                             // Set border color and width
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: AutoSizeText(model.leavelist[index].leaveType.toString(), textAlign:
+                                              TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                  FontWeight.w700,
+                                                ),),
+                                            ),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: AutoSizeText(model.leavelist[index].leaveType.toString(), textAlign:
-                                            TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight:
-                                                FontWeight.w700,
-                                              ),),
-                                          ),
-                                        ),
-                          
-                                        Card( color: model.getColorForStatus(model.leavelist[index].status.toString()),
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                20.0),
-                                            // Set border color and width
-                                          ),
-                                          // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: AutoSizeText(model.leavelist[index].status ?? "",  textAlign:
-                                            TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight:
-                                                FontWeight.bold,
-                                              ),),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text( "Leave from ${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
-                                    const SizedBox(height: 10),
-                                    if(model.leavelist[index].description != "")
-                                      Text("Description:- ${model.leavelist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
-                                  ],
+
+                                          Card( color: model.getColorForStatus(model.leavelist[index].status.toString()),
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  20.0),
+                                              // Set border color and width
+                                            ),
+                                            // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: AutoSizeText(model.leavelist[index].status ?? "",  textAlign:
+                                              TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                ),),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text( "Leave from ${model.leavelist[index].fromDate ?? ""} to ${model.leavelist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                                      const SizedBox(height: 10),
+                                      if(model.leavelist[index].description != "")
+                                        Text("Description:- ${model.leavelist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -223,61 +226,64 @@ class ListLeaveScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Card(
-                                          color: Colors.blue,
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                20.0),
-                                            // Set border color and width
+                                child: MaterialButton(
+                                  onPressed: ()=>model.onRowClick(context, model.takenlist[index]),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Card(
+                                            color: Colors.blue,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  20.0),
+                                              // Set border color and width
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: AutoSizeText(model.takenlist[index].leaveType.toString(), textAlign:
+                                              TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                  FontWeight.w700,
+                                                ),),
+                                            ),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: AutoSizeText(model.takenlist[index].leaveType.toString(), textAlign:
-                                            TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight:
-                                                FontWeight.w700,
-                                              ),),
-                                          ),
-                                        ),
-                          
-                                        Card(
-                                          color: model.getColorForStatus(model.takenlist[index].status.toString()),
-                                          shape:
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                20.0),
-                                            // Set border color and width
-                                          ),
-                                          // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: AutoSizeText(model.takenlist[index].status ?? "",  textAlign:
-                                            TextAlign.center,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight:FontWeight.bold,
-                                              ),),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
-                                    const SizedBox(height: 10),
-                                    if(model.takenlist[index].description != null)
-                                    Text("Description:- ${model.takenlist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
-                                  ],
+
+                                          Card(
+                                            color: model.getColorForStatus(model.takenlist[index].status.toString()),
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  20.0),
+                                              // Set border color and width
+                                            ),
+                                            // color:model.getColorForStatus(model.expenselist[index].approvalStatus.toString()),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: AutoSizeText(model.takenlist[index].status ?? "",  textAlign:
+                                              TextAlign.center,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight:FontWeight.bold,
+                                                ),),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text( "Leave From:- ${model.takenlist[index].fromDate ?? ""} to ${model.takenlist[index].toDate ?? ""}", style: const TextStyle(fontSize: 15)),
+                                      const SizedBox(height: 10),
+                                      if(model.takenlist[index].description != null)
+                                      Text("Description:- ${model.takenlist[index].description.toString()}", style: const TextStyle(fontSize: 15)),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -299,7 +305,7 @@ class ListLeaveScreen extends StatelessWidget {
               context: context,
             ),
           ),
-floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen),
+floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addLeaveScreen,arguments: AddLeaveScreenArguments(leaveId: "")),
 label: const Text('Create Leave'),),
         ));
   }

@@ -476,8 +476,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i18.AddExpenseScreen: (data) {
+      final args = data.getArgs<AddExpenseScreenArguments>(nullOk: false);
       return _i41.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i18.AddExpenseScreen(),
+        builder: (context) =>
+            _i18.AddExpenseScreen(key: args.key, expenseId: args.expenseId),
         settings: data,
       );
     },
@@ -488,8 +490,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i20.AddLeaveScreen: (data) {
+      final args = data.getArgs<AddLeaveScreenArguments>(nullOk: false);
       return _i41.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i20.AddLeaveScreen(),
+        builder: (context) =>
+            _i20.AddLeaveScreen(key: args.key, leaveId: args.leaveId),
         settings: data,
       );
     },
@@ -804,6 +808,60 @@ class QuotationItemScreenArguments {
   @override
   int get hashCode {
     return key.hashCode ^ items.hashCode;
+  }
+}
+
+class AddExpenseScreenArguments {
+  const AddExpenseScreenArguments({
+    this.key,
+    required this.expenseId,
+  });
+
+  final _i41.Key? key;
+
+  final String expenseId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "expenseId": "$expenseId"}';
+  }
+
+  @override
+  bool operator ==(covariant AddExpenseScreenArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.expenseId == expenseId;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ expenseId.hashCode;
+  }
+}
+
+class AddLeaveScreenArguments {
+  const AddLeaveScreenArguments({
+    this.key,
+    required this.leaveId,
+  });
+
+  final _i41.Key? key;
+
+  final String leaveId;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "leaveId": "$leaveId"}';
+  }
+
+  @override
+  bool operator ==(covariant AddLeaveScreenArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key && other.leaveId == leaveId;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ leaveId.hashCode;
   }
 }
 
@@ -1296,14 +1354,17 @@ extension NavigatorStateExtension on _i45.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToAddExpenseScreen([
+  Future<dynamic> navigateToAddExpenseScreen({
+    _i41.Key? key,
+    required String expenseId,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.addExpenseScreen,
+        arguments: AddExpenseScreenArguments(key: key, expenseId: expenseId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1324,14 +1385,17 @@ extension NavigatorStateExtension on _i45.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToAddLeaveScreen([
+  Future<dynamic> navigateToAddLeaveScreen({
+    _i41.Key? key,
+    required String leaveId,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.addLeaveScreen,
+        arguments: AddLeaveScreenArguments(key: key, leaveId: leaveId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1892,14 +1956,17 @@ extension NavigatorStateExtension on _i45.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithAddExpenseScreen([
+  Future<dynamic> replaceWithAddExpenseScreen({
+    _i41.Key? key,
+    required String expenseId,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.addExpenseScreen,
+        arguments: AddExpenseScreenArguments(key: key, expenseId: expenseId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1920,14 +1987,17 @@ extension NavigatorStateExtension on _i45.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithAddLeaveScreen([
+  Future<dynamic> replaceWithAddLeaveScreen({
+    _i41.Key? key,
+    required String leaveId,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.addLeaveScreen,
+        arguments: AddLeaveScreenArguments(key: key, leaveId: leaveId),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

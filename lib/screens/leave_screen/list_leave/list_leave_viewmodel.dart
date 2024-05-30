@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/leave_list.dart';
+import '../../../router.router.dart';
 import '../../../services/list_leave_services.dart';
 
 
@@ -61,6 +62,15 @@ Color getColorForStatus(String status) {
   }
 }
 
+void onRowClick(BuildContext context, LeaveList? leadList) {
+  Navigator.pushNamed(
+    context,
+    Routes.addLeaveScreen,
+    arguments: AddLeaveScreenArguments(leaveId: leadList?.name.toString() ?? ""),
+  );
+}
+
+
 Future<List<LeaveList>> fetchTakenLeaveForCurrentYear() async {
   // Get the current year and month
   _selectedYear = DateTime.now().year;
@@ -110,7 +120,6 @@ _upcomingleavelist=await  ListLeaveServices().fetchLeaves();
   }
   notifyListeners();
 }
-
 
 
 

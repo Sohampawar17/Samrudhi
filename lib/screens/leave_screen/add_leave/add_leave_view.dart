@@ -10,8 +10,8 @@ import '../../../widgets/customtextfield.dart';
 import 'add_leave_viewmodel.dart';
 
 class AddLeaveScreen extends StatefulWidget {
-
-  const AddLeaveScreen({super.key});
+final String leaveId;
+  const AddLeaveScreen({super.key, required this.leaveId});
 
   @override
   State<AddLeaveScreen> createState() => _AddLeaveScreenState();
@@ -22,7 +22,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddLeaveViewModel>.reactive(
         viewModelBuilder: () => AddLeaveViewModel(),
-        onViewModelReady: (model) => model.initialise(context),
+        onViewModelReady: (model) => model.initialise(context,widget.leaveId),
         builder: (context, model, child)=>Scaffold(
 
           appBar:AppBar(title:  const Text('Create Leave',style: TextStyle(fontSize: 18),),
@@ -121,7 +121,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
                         ],
                       ),
 const SizedBox(height: 15,),
-CustomDropdownButton2(items:model.leavetype, hintText: 'select the leave type', onChanged: model.seteleavetype, labelText: 'Leave Type'),
+CustomDropdownButton2(items:model.leavetype, hintText: 'select the leave type', onChanged: model.seteleavetype, labelText: 'Leave Type',value: model.leavedata.leaveType,),
                       const SizedBox(height: 15,),
 
 

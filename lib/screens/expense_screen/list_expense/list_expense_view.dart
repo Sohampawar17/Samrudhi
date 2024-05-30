@@ -295,7 +295,7 @@ class ExpenseScreen extends StatelessWidget {
               context: context,
             ),
           ),
-floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addExpenseScreen),
+floatingActionButton: FloatingActionButton.extended(onPressed: ()=>Navigator.pushNamed(context, Routes.addExpenseScreen,arguments: AddExpenseScreenArguments(expenseId: "")),
 label: const Text('Create Expense'),),
         ));
   }
