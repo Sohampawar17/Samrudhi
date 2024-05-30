@@ -21,6 +21,10 @@ class RouteScreen extends StatelessWidget {
               SizedBox(height: 20),
               Card(
                 child: ListTile(
+                  leading: const Icon(
+                    Icons.route,
+                    size: 34,
+                  ),
                   title: Text('Routes Master'),
                   onTap: () {
                     Navigator.push(
@@ -35,7 +39,10 @@ class RouteScreen extends StatelessWidget {
               SizedBox(height: 10),
               Card(
                 child: ListTile(
-
+                  leading: const Icon(
+                    Icons.route,
+                    size: 34,
+                  ),
                   title: Text('Routes Assignment'),
                   onTap: () {
                     Navigator.push(

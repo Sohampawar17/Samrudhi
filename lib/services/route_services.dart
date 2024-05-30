@@ -8,8 +8,6 @@ import 'package:geolocation/constants.dart';
 import 'package:geolocation/model/employee_list.dart';
 import 'package:geolocation/model/get_teritorry_details.dart';
 import 'package:geolocation/router.router.dart';
-import 'package:geolocation/screens/sales_force/routes_approval_list.dart';
-import 'package:geolocation/screens/sales_force/update_route_creation/route_approval_screen.dart';
 import 'package:logger/logger.dart';
 
 
@@ -143,13 +141,13 @@ class RouteServices {
         return [];
       }
     }  on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Failed to create route',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e);
     }
     return [];
   }
 
-  Future<List<CustomerTerritoryData>> editRoute(BuildContext context,String routeName,Map<String, dynamic> payload) async {
+  Future<void> editRoute(BuildContext context,String routeName,Map<String, dynamic> payload) async {
     try {
       var url = await geturl();
       var token = await getTocken();
@@ -164,25 +162,22 @@ class RouteServices {
       );
 
       if (response.statusCode == 200) {
-        Navigator.popAndPushNamed(
-          context,
-        Routes.routeApprovalScreen,arguments: RouteApprovalScreenArguments(routeId: routeName),
-        );
+        Navigator.popAndPushNamed(context, Routes.routeApprovalScreen,arguments: RouteApprovalScreenArguments(routeId: routeName),);
         print(response.data);
         Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
           msg: 'Route Updated Successfully',
           textColor: const Color(0xFFFFFFFF),
           backgroundColor: const Color(0xFFBA1A1A),);
-        return [];
+
       } else {
 
-        return [];
       }
     }  on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Failed to update route',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+     // Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e);
     }
-    return [];
+
   }
   Future<List<EmployeeAssignerDetails>> getEmployeeList() async {
     List<EmployeeAssignerDetails> employeeNames = [];
@@ -276,11 +271,7 @@ class RouteServices {
         options: Options(
           method: 'GET',
           headers: {'Authorization': token},
-
         ),
-
-
-     //   queryParameters: {'fields': '["route_name","name","workflow_state"]'},
       );
 
       if (response.statusCode == 200) {
@@ -354,12 +345,45 @@ class RouteServices {
         print(response.data);
         return true;
       } else {
-return false;
+         return false;
       }
     } on DioException catch (e) {
 
       Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response?.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
       Logger().e(e.response?.data["exception"].toString());
+      return false;
+    }
+
+  }
+
+  Future<bool> editAssignRoute(BuildContext context,String assignmentId,Map<String, dynamic> payload) async {
+    try {
+      var dio = Dio();
+      var url = await geturl();
+      var token = await getTocken();
+      var response = await dio.request(
+        '$url/api/resource/Routes Assignment/$assignmentId',
+        data: jsonEncode(payload),
+        options: Options(
+          method: 'PUT',
+          headers: {'Authorization':token},
+        ),
+      );
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+       // Navigator.popAndPushNamed(context, Routes.routeApprovalScreen,arguments: RouteApprovalScreenArguments(routeId: routeName),);
+
+        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Route is assigned successfully.',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+       // print(response.data);
+        return true;
+      } else {
+        return false;
+      }
+    } on DioException catch (e) {
+
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Please check for the duplicate entry or enter the correct value.',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+     // Logger().e(e.response?.data["exception"].toString());
       return false;
     }
 

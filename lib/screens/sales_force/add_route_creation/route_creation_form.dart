@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,16 +19,14 @@ class RouteCreationForm extends StatefulWidget {
 
 class _RouteCreationFormState extends State<RouteCreationForm> {
   final TextEditingController _routeNameController = TextEditingController();
-  final TextEditingController _startingLocationController = TextEditingController();
-  final TextEditingController _destinationController = TextEditingController();
   final MapController mapController = MapController();
   TerritoryData? selectedValue;
   String? selectedWaypoint;
   String? selectedZone;
   String? selectedRegion;
   String? selectedArea;
- // List<CustomerTerritoryData> _waypoints = [];
-  List<TerritoryData> _territoryList = [];
+  final List<TerritoryData> _territoryList = [];
+  bool _isMapVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,25 +42,20 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
         context: context,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
                   controller: _routeNameController,
-                  decoration: InputDecoration(labelText: 'Route Name'),
+                  decoration: const InputDecoration(labelText: 'Route Name'),
                 ),
-                SizedBox(height: 20),
-                // TextFormField(
-                //   controller: _startingLocationController,
-                //   decoration: InputDecoration(labelText: 'Starting Location'),
-                // ),
-                // SizedBox(height: 20),
-                // TextFormField(
-                //   controller: _destinationController,
-                //   decoration: InputDecoration(labelText: 'Destination'),
-                // ),
-                // SizedBox(height: 20),
+                const SizedBox(height: 15),
+                const Text(
+                  'Please select the zone first, followed by the region, area, and territory to proceed with route creation.',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                ),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
@@ -104,15 +98,13 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                 ),
                 SizedBox(height: 10),
                 CustomDropdownButton2(value:selectedWaypoint,items: viewModel.endNodes, hintText:"Select Territory", onChanged:(newValue) { selectedWaypoint = newValue;}, labelText:"Territories" ),
-                SizedBox(height: 20),
-          
+                SizedBox(height: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: _territoryList.asMap().entries.map((entry) {
                     final index = entry.key;
                     final territory = entry.value;
-          
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -160,11 +152,12 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                 // ),
 
 
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 CtextButton(onPressed: ()
                 {
+                  TerritoryData data = viewModel.getTerritoryDetails(selectedWaypoint!);
                   setState(() {
-                    _territoryList.add(TerritoryData(territoryName:selectedWaypoint!));
+                    _territoryList.add(data);
                   });
 
                   },
@@ -193,21 +186,24 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
                       };
                     }).toList()
                   };
-
+                  setState(() {
+                    _isMapVisible = true;
+                  });
                   print(payload);
                   viewModel.saveRoute(payload);
 
                 },
                   text: 'Save Route',
                   buttonColor: Colors.blue),
-                // Container(
-                //   height: 350,
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(30), // Add rounded corners
-                //
-                //   ),// Set a specific height here
-                //   child: buildMap(context),
-                // ),
+                SizedBox(height: 10),
+                if(_isMapVisible)Container(
+                  height: 350,
+                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30), // Add rounded corners
+
+                  ),// Set a specific height here
+                  child: buildMap(context,viewModel),
+                ),
 
               ],
             ),
@@ -218,21 +214,19 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
     );
   }
 
-  Widget buildMap(BuildContext context) {
-    // Check if _territoryList is not empty
-    if (_territoryList.isEmpty) {
-      return Center(child: Text('No data available'));
+  Widget buildMap(BuildContext context, RouteCreationViewModel viewModel) {
+    if (_territoryList.isEmpty || _territoryList.length == 0) {
+      return const SizedBox(); // Return an empty widget if no waypoints available
     }
-
-    // Get the first waypoint
+    print(_territoryList.length);
     final firstWaypoint = _territoryList[0];
-    final initialLatitude = double.parse(firstWaypoint.latitude ?? '0.0');
-    final initialLongitude = double.parse(firstWaypoint.longitude ?? '0.0');
+    final initialLatitude = double.tryParse(firstWaypoint.latitude ?? '') ?? 0.0; // Set default latitude
+    final initialLongitude = double.tryParse(firstWaypoint.longitude ?? '') ?? 0.0; // Set default longitude
 
     return FlutterMap(
       mapController: mapController,
       options: MapOptions(
-        center: LatLng(initialLatitude, initialLongitude),
+        center: LatLng(initialLatitude, initialLongitude), // Center map on the first waypoint
         zoom: 9,
         //onMapReady: () => viewModel.initialise(context, widget.routeId),
         onPositionChanged: (MapPosition pos, bool isGesture) {
@@ -242,29 +236,46 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
         },
       ),
       children: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'com.example.app',
+        ),
+        MarkerLayer(markers: _buildMarkers()),
 
-
+        if(_territoryList.isNotEmpty)
+          PolylineLayer(
+            polylineCulling: true,
+            polylines: [
+              Polyline(
+                isDotted: false,
+                points: _territoryList.map((e) {
+                  // Access latitude and longitude from the map
+                  final lat = double.tryParse(e.latitude ?? '') ?? 0.0; // Set default latitude
+                  final long = double.tryParse(e.longitude ?? '') ?? 0.0; // Set default longitude
+                  return LatLng(lat, long);
+                }).toList(),
+                color: Colors.blueAccent,
+                strokeWidth: 5,
+              )
+            ],
+          ),
       ],
     );
   }
 
 
+
   List<Marker> _buildMarkers() {
+    return _territoryList.map((territory) {
+      final lat = double.parse(territory.latitude ?? '0.0');
+      final lng = double.parse(territory.longitude ?? '0.0');
 
-    return _territoryList.map((location) {
-      final lat = double.parse(location.latitude!);
-      final lng = double.parse(location.longitude!);
-
-      // Check for null values in latitude and longitude
-      if (lat == null || lng == null) {
-        // Provide default coordinates for markers with missing or invalid coordinates
+      if (lat == 0.0 || lng == 0.0) {
         return Marker(
           width: 80.0,
           height: 80.0,
-          point: LatLng(0.0, 0.0), // Default coordinates (0, 0)
-          builder: (context) {
-            return Container(); // Return an empty container for markers with default coordinates
-          },
+          point: LatLng(0.0, 0.0),
+          builder: (context) => Container(),
         );
       }
 
@@ -272,37 +283,36 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
         width: 80.0,
         height: 80.0,
         point: LatLng(lat, lng),
-        builder: (context) {
-          return Stack(
-            children: [
-              const Icon(Icons.location_on, size: 50, color: Colors.red),
-              Positioned(
-                left: 5,
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  child: Text(
-                    location.territoryName ?? '', // Provide a default value for territory
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+        builder: (context) => Stack(
+          children: [
+            Icon(Icons.location_on, size: 50, color: Colors.red),
+            Positioned(
+              left: 5,
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                child: Text(
+                  territory.territoryName ?? '',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ],
-          );
-        },
+            ),
+          ],
+        ),
       );
     }).toList();
   }
+
 
   Widget _buildTimelineLine() {
     return Container(
       width: 2,
       height: 20,
-      color: Colors.purple.shade900, // Customize the color as needed
+      color: Colors.purple.shade900,
     );
   }
 
@@ -312,10 +322,12 @@ class _RouteCreationFormState extends State<RouteCreationForm> {
       height: 10,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.grey, // Customize the color as needed
+        color: Colors.grey,
       ),
     );
   }
+
+
 
   Widget _buildTimelineTitle(String title) {
     return Padding(

@@ -47,7 +47,7 @@ class _UpdateRouteAssignmentFormState extends State<UpdateRouteAssignmentForm> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 10),
-                    CustomDropdownButton2(value:selectedEmployee,items: viewModel.getEmployeeNames(), hintText:"Select Employee", onChanged:(newValue) { selectedEmployee = newValue;}, labelText:"Employees" ),
+                    CustomDropdownButton2(value:viewModel.selectedEmployee,items: viewModel.getEmployeeNames(), hintText:"Select Employee", onChanged:(newValue) { selectedEmployee = newValue;}, labelText:"Employees" ),
                     const SizedBox(height: 10),
                     CustomDropdownButton2(
                         value:viewModel.selectedRoute,
@@ -64,18 +64,19 @@ class _UpdateRouteAssignmentFormState extends State<UpdateRouteAssignmentForm> {
                     {
 
                       Map<String, dynamic> payload = {
+                        "name":viewModel.routesAssignment.name,
                         "routes_table": viewModel.waypoints.map((waypoint) {
                           return {"territory": waypoint.territory};
                         }).toList(),
                         "datetime": formatDate(selectedDate ?? DateTime.now()),
                         "route_name": viewModel.selectedRoute ?? "",
-                        "employee_name": selectedEmployee ?? "",
-                        "employee":viewModel.getEmployeeId(selectedEmployee!),
+                        "employee_name": viewModel.selectedEmployee ?? "",
+                        "employee":viewModel.getEmployeeId(viewModel.selectedEmployee!),
                         "routes_master": viewModel.selectedRoute ?? "",
                       };
 
                       print("route assignment ${payload}");
-                      viewModel.assignRoute(context,payload);
+                      viewModel.editRoute(context,viewModel.routesAssignment.name!,payload);
                     },
                       text: 'Assign Route',
                       buttonColor: Colors.purple.shade900,),

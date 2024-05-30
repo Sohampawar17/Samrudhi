@@ -134,7 +134,7 @@ class _VisitScreenState extends State<VisitScreen> {
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: ()=>Navigator.pushNamed(context, Routes.addVisitScreen,arguments: AddVisitScreenArguments(VisitId: "")),
+            onPressed: ()=>Navigator.pushNamed(context, Routes.customerList),
             label: const Text('Create Visit'),),
         ));
   }

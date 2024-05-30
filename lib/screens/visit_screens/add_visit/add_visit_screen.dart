@@ -25,95 +25,108 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
     return ViewModelBuilder<AddVisitViewModel>.reactive(
         viewModelBuilder: () => AddVisitViewModel(),
         onViewModelReady: (viewModel) => viewModel.initialise(context,widget.VisitId),
-        builder: (context, viewModel, child)=>Scaffold(
+        builder: (context, viewModel, child)=>WillPopScope(
+          onWillPop: () async{
+            if (viewModel.isTimerRunning) {
+            await viewModel.saveTimerState();
+             }
+             return true;
+            },
+          child: Scaffold(
 
-          appBar:AppBar(title:   Text(viewModel.isEdit? (viewModel.visitdata.name ?? ""):'Create Visit',style: TextStyle(fontSize: 18),),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-              IconButton.outlined(onPressed: ()=>viewModel.onSavePressed(context), icon: const Icon(Icons.check))
-            ],),
-          body: fullScreenLoader(
-            loader: viewModel.isBusy,context: context,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: viewModel.formKey,
-                  child: Column(
-                    children: [
-                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CustomDropdownButton2(value: viewModel.visitdata.customer,items:viewModel.customer, hintText: 'select the customer', onChanged: viewModel.setcustomer, labelText: 'Customer'),
-                      const SizedBox(height: 15,),
-                      CustomDropdownButton2(value: viewModel.visitdata.visitType,items:viewModel.visitType, hintText: 'select the visit type', onChanged: viewModel.seteleavetype, labelText: 'Visit Type'),
-                      const SizedBox(height: 15,),
+            appBar:AppBar(title:   Text(viewModel.isEdit? (viewModel.visitdata.name ?? ""):'Create Visit',style: TextStyle(fontSize: 18),),
+              leading: IconButton.outlined(onPressed: () async =>
+                 {
+                   if (viewModel.isTimerRunning) {
+                      await viewModel.saveTimerState()
+                   },
+                 Navigator.pop(context)}, icon: const Icon(Icons.arrow_back)),actions: [
+                IconButton.outlined(onPressed: ()=>viewModel.onSavePressed(), icon: const Icon(Icons.check))
+              ],),
+            body: fullScreenLoader(
+              loader: viewModel.isBusy,context: context,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: viewModel.formKey,
+                    child: Column(
+                      children: [
+                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CustomDropdownButton2(value: viewModel.visitdata.customer,items:viewModel.customer, hintText: 'select the customer', onChanged: viewModel.setcustomer, labelText: 'Customer'),
+                        const SizedBox(height: 15,),
+                        CustomDropdownButton2(value: viewModel.visitdata.visitType,items:viewModel.visitType, hintText: 'select the visit type', onChanged: viewModel.seteleavetype, labelText: 'Visit Type'),
+                        const SizedBox(height: 15,),
 
-                      const Text(
-                        'Timer',
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        viewModel.formatTimer(viewModel.countdownSeconds),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(child: CtextButton(onPressed: () => viewModel.initTimerOperation(context), text: 'Start Timer', buttonColor: Colors.red)),
-                          SizedBox(width: 20),
-                          Expanded(child: CtextButton(onPressed: () =>
-                          {
-                            viewModel.stopTimer(),
-                            showAlertDialog(context,viewModel)
-                          },
-                            text: 'Stop Timer',
-                            buttonColor: Colors.blue,))
+                        const Text(
+                          'Timer',
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          viewModel.formatTimer(viewModel.countdownSeconds),
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(child: CtextButton(onPressed: () => viewModel.initTimerOperation(context), text: 'Start Timer', buttonColor: Colors.red)),
+                            SizedBox(width: 20),
+                            Expanded(child: CtextButton(onPressed: () =>
+                            {
+                              viewModel.stopTimer(),
+                              showAlertDialog(context,viewModel)
+                            },
+                              text: 'Stop Timer',
+                              buttonColor: Colors.blue,))
 
-                          //CtextButton(onPressed: () => resetTimer, text: 'Reset', buttonColor: Colors.redAccent.shade400,)
-                        ],
-                      )
-                    ],
-                  ),
+                            //CtextButton(onPressed: () => resetTimer, text: 'Reset', buttonColor: Colors.redAccent.shade400,)
+                          ],
+                        )
+                      ],
+                    ),
 
-                      const SizedBox(height: 25,),
+                        const SizedBox(height: 25,),
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                onPressed: () {
-                  if (!viewModel.isTimerRunning) {
-                    Navigator.pushNamed(context, Routes.addCustomer,arguments: const AddCustomerArguments( id: ''));
-                  }
-                },
-                child: Icon(Icons.person),
-                backgroundColor: Colors.white,
-              ),
-              SizedBox(height: 16),
-              FloatingActionButton(
-                onPressed: () {
-                  if (!viewModel.isTimerRunning) {
-                    Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments( leadid: ''));
-                  }
-                },
-                child: Icon(Icons.add),
-                backgroundColor: Colors.white,
-              ),
-            ],
-          ),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    if (!viewModel.isTimerRunning) {
+                      Navigator.pushNamed(context, Routes.addCustomer,arguments: const AddCustomerArguments( id: ''));
+                    }
+                  },
+                  child: Icon(Icons.person),
+                  backgroundColor: Colors.white,
+                ),
+                SizedBox(height: 16),
+                FloatingActionButton(
+                  onPressed: () {
+                    if (!viewModel.isTimerRunning) {
+                      Navigator.pushNamed(context, Routes.addLeadScreen,arguments: const AddLeadScreenArguments( leadid: ''));
+                    }
+                  },
+                  child: Icon(Icons.add),
+                  backgroundColor: Colors.white,
+                ),
+              ],
+            ),
 
+          ),
         ));
   }
 

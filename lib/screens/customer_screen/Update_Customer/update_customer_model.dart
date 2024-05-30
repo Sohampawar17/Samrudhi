@@ -9,6 +9,7 @@ import 'package:geolocation/services/update_customer_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../model/add_visit_model.dart';
@@ -27,8 +28,17 @@ class UpdateCustomerViewModel extends BaseViewModel{
   bool res=false;
   List<CustOrderList> orders = [];
   List<CustOrderList> filterOrders = [];
+  late SharedPreferences prefs;
+
   List<String> visitType=[""];
   String selectedVisitType = "";
+  bool isTimerRunning = false;
+  static const String timerStartKey = 'timer_start';
+  static const String timerElapsedKey = 'timer_elapsed';
+  static const String customerKey = 'customerKey';
+  static const String visitTypeKey = 'visitTypeKey';
+  static const String visitIdKey = 'visitIdKey';
+
   List<String> status=[
   "Not Delivered",
   "Fully Delivered",
@@ -45,17 +55,39 @@ class UpdateCustomerViewModel extends BaseViewModel{
 
   CountdownTimer? countdownTimer;
   int countdownSeconds = 0; // Initial countdown seconds
-  bool isTimerRunning = false;
+
 
   initialise(BuildContext context,String id) async {
     setBusy(true);
-     visitType=await AddVisitServices().fetchVisitType();
+    prefs = await SharedPreferences.getInstance();
+    visitType=await AddVisitServices().fetchVisitType();
+    customerData = await AddCustomerServices().getCustomer(id) ?? CreateCustomer();
      if(id!=""){
-      customerData = await AddCustomerServices().getCustomer(id) ?? CreateCustomer();
       comments=await UpdateCustomerService().fetchComments(id);
       orders=await UpdateCustomerService().fetchCustomerOrder(id);
       filterOrders=orders;
     }
+    await restoreTimerState();
+
+    // Listen to app lifecycle changes
+    SystemChannels.lifecycle.setMessageHandler((msg) async {
+      print("msg $msg");
+      if (msg == AppLifecycleState.paused.toString()) {
+        if (isTimerRunning) {
+          await saveTimerState();
+          countdownTimer?.pause(countdownSeconds);
+        }
+      }
+
+      if (msg == AppLifecycleState.resumed.toString()) {
+        if (isTimerRunning) {
+          await restoreTimerState();
+          countdownTimer?.resume();
+        }
+      }
+      return Future(() => null);
+    });
+
     setBusy(false);
   }
 
@@ -80,7 +112,32 @@ class UpdateCustomerViewModel extends BaseViewModel{
     notifyListeners();
   }
 
+  Future<void> restoreTimerState() async {
+
+    final timerStart = prefs.getInt(timerStartKey);
+    final timerElapsed = prefs.getInt(timerElapsedKey);
+    final customerId = prefs.getString(customerKey);
+    final visitTypeString = prefs.getString(visitTypeKey);
+
+    if (timerStart != null && timerElapsed != null  && customerId == customerData.name) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final elapsed = (now - timerStart) ~/ 1000 + timerElapsed;
+      countdownSeconds = elapsed;
+      selectedVisitType = visitTypeString!;
+
+      startTimer(countdownSeconds);
+
+      notifyListeners();
+    }
+  }
+
   void initTimerOperation(BuildContext context) {
+    // Initialize timer callbacks
+    startTimer(countdownSeconds);
+  }
+
+
+  void startTimer(int countdownseconds) {
     // Initialize timer callbacks
     countdownTimer = CountdownTimer(
       seconds: countdownSeconds,
@@ -96,37 +153,37 @@ class UpdateCustomerViewModel extends BaseViewModel{
       },
     );
 
-    // Listen to app lifecycle changes
-    SystemChannels.lifecycle.setMessageHandler((msg) {
-      // On AppLifecycleState: paused
-      if (msg == AppLifecycleState.paused.toString()) {
-        if (isTimerRunning) {
-          // Pause the timer
-          countdownTimer?.pause(countdownSeconds);
-        }
-      }
-
-      // On AppLifecycleState: resumed
-      if (msg == AppLifecycleState.resumed.toString()) {
-        if (isTimerRunning) {
-          // Resume the timer
-          countdownTimer?.resume();
-        }
-      }
-      return Future(() => null);
-    });
-
     // Start the timer
     isTimerRunning = true;
     countdownTimer?.start();
 
     // Handle any view-specific logic
-    onStartTimerClicked(context);
+    //  onSavePressed();
   }
+
+  Future<void> saveTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    await prefs.setInt(timerStartKey, now);
+    await prefs.setInt(timerElapsedKey, countdownSeconds);
+    await prefs.setString(customerKey, customerData.name!);
+    await prefs.setString(visitTypeKey,selectedVisitType);
+  }
+
+  Future<void> clearTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(timerStartKey);
+    await prefs.remove(timerElapsedKey);
+    await prefs.remove(visitTypeKey);
+    await prefs.remove(customerKey);
+  }
+
 
   void stopTimer() {
     isTimerRunning = false;
     countdownTimer?.stop();
+    clearTimerState();
     // Notify listeners about changes
     notifyListeners();
   }
@@ -138,10 +195,10 @@ class UpdateCustomerViewModel extends BaseViewModel{
     notifyListeners();
   }
 
-
   void onStartTimerClicked(BuildContext context) async {
     // setBusy(true);
       //bool res = false;
+      Fluttertoast.showToast(msg: 'Fetching location. Wait for few seconds..');
       GeolocationService geolocationService = GeolocationService();
       try {
         Position? position = await geolocationService.determinePosition();
@@ -172,6 +229,12 @@ class UpdateCustomerViewModel extends BaseViewModel{
         visitdata.startTime =formatTime();
 
         visitId = await AddVisitServices().addVisit(visitdata);
+        await prefs.setString(visitIdKey,visitId);
+        if(visitId.isNotEmpty || visitId != null){
+          startTimer(countdownSeconds);
+        }else{
+          Fluttertoast.showToast(msg: 'Failed to upload data. Timer can not be started');
+        }
         Logger().i(visitdata.toJson());
       } catch (e) {
         Fluttertoast.showToast(msg: '$e');
@@ -197,6 +260,9 @@ class UpdateCustomerViewModel extends BaseViewModel{
 
 
   void onVisitSubmit(BuildContext context) async {
+    if(visitId.isEmpty) {
+      visitId = prefs.getString(visitIdKey)!;
+    }
     if(visitId.isNotEmpty) {
       print(visitId);
       setBusy(true);
@@ -230,6 +296,7 @@ class UpdateCustomerViewModel extends BaseViewModel{
           visitdata.description = descriptonController.text;
           visitdata.name = visitId;
           await AddVisitServices().addVisit(visitdata);
+          await prefs.remove(visitIdKey);
         //  Navigator.popUntil(context, ModalRoute.withName(Routes.visitScreen));
         } catch (e) {
           Fluttertoast.showToast(msg: '$e');

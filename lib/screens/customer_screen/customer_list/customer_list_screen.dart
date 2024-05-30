@@ -76,7 +76,7 @@ class _CustomerListState extends State<CustomerList> {
                                               children: [
                                                 AutoSizeText(
                                                   model.filterCustomerList[index].customerName ?? "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
 fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
@@ -86,13 +86,13 @@ fontSize: 20,
                                                 ),
                                                 Text(
                                                   model.filterCustomerList[index].customerGroup ?? "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.white70,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            Icon(
+                                            const Icon(
                                               Icons.person,
                                               color: Colors.white,
                                               size: 40,
@@ -106,7 +106,7 @@ fontSize: 20,
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'GST Category',
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -115,7 +115,7 @@ fontSize: 20,
                                                 ),
                                                 Text(
                                                   model.filterCustomerList[index].gstCategory?.toString() ?? "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),
@@ -125,7 +125,7 @@ fontSize: 20,
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   "Territory",
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -134,7 +134,7 @@ fontSize: 20,
                                                 ),
                                                 Text(
                                                   model.filterCustomerList[index].territory?.toString() ?? "",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w600,
                                                   ),

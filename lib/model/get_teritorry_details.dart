@@ -1,4 +1,8 @@
 
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 class CustomerTerritoryData {
 
   String? customerName;
@@ -27,7 +31,9 @@ class TerritoryData {
   String? longitude;
 
   TerritoryData({
-    this.territoryName
+    this.territoryName,
+    this.latitude,
+    this.longitude
   });
 
   TerritoryData.fromJson(dynamic json) {
@@ -39,6 +45,17 @@ class TerritoryData {
     final data = <String, dynamic>{};
     data['name'] = territoryName;
     return data;
+  }
+
+  List<Polyline> drawPolylines(List<List<List<double>>> coordinates) {
+    return coordinates.map((lineCoordinates) {
+      List<LatLng> points = lineCoordinates.map((coord) => LatLng(coord[1], coord[0])).toList();
+      return Polyline(
+        points: points,
+        strokeWidth: 5,
+        color: Colors.blue,
+      );
+    }).toList();
   }
 }
 

@@ -140,7 +140,7 @@ class _MapsScreenState extends State<MapsScreen> {
       options: MapOptions(
 
         center: LatLng(viewModel.locations[0].latitude!,viewModel.locations[0].longitude!),
-        zoom: 9.5,
+        zoom: 8.5,
         onMapReady:() => viewModel.fetchLocations(widget.name),
         onPositionChanged: (MapPosition pos, bool isGesture) {
 

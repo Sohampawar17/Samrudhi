@@ -11,7 +11,7 @@ class RouteAssignmentViewModel extends BaseViewModel{
   List<EmployeeAssignerDetails> employees = [];
   List<Waypoints>  waypoints=[];
   String? selectedRoute;
-  String? selectedE;
+  String? selectedEmployee;
   RoutesAssignment routesAssignment = RoutesAssignment();
 
   initialise (BuildContext context,String assignmentId)async{
@@ -21,6 +21,7 @@ class RouteAssignmentViewModel extends BaseViewModel{
     if(assignmentId != ""){
        routesAssignment = await RouteServices().getRouteTableDetails(assignmentId);
        selectedRoute= routesAssignment.routeName;
+       selectedEmployee = routesAssignment.employeeName;
 
     }
     setBusy(false);
@@ -76,11 +77,24 @@ class RouteAssignmentViewModel extends BaseViewModel{
     setBusy(false);
   }
 
+  Future<void> editRoute(BuildContext context,String assignmentId,Map<String, dynamic> payload) async {
+    setBusy(true);
+    bool res=false;
+    res = await RouteServices().editAssignRoute(context,assignmentId,payload);
+    if (res) {
+      if (context.mounted) {
+        setBusy(false);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }}
+    setBusy(false);
+  }
+
+
   Future<RouteMaster> getRouteDetails(String route_Id) async {
     return await RouteServices().getRouteDetails(route_Id);
 
   }
-
 
 
   String getRouteId(String name){

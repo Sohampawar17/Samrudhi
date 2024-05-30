@@ -8,6 +8,7 @@ import 'package:geolocation/screens/visit_screens/visit_list/visit_list_screen.d
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../model/add_visit_model.dart';
@@ -28,6 +29,8 @@ class AddVisitViewModel extends BaseViewModel{
   CountdownTimer? countdownTimer;
   int countdownSeconds = 0; // Initial countdown seconds
   bool isTimerRunning = false;
+  static const String timerStartKey = 'timer_start';
+  static const String timerElapsedKey = 'timer_elapsed';
 
   initialise(BuildContext context, String visitId) async {
     setBusy(true);
@@ -38,10 +41,52 @@ class AddVisitViewModel extends BaseViewModel{
       visitdata =await AddVisitServices().getVisit(visitId) ?? AddVisitModel();
       descriptoncontroller.text=visitdata.description ?? "";
     }
+   await restoreTimerState();
+
+    // Listen to app lifecycle changes
+    SystemChannels.lifecycle.setMessageHandler((msg) async {
+      print("msg $msg");
+      if (msg == AppLifecycleState.paused.toString()) {
+        if (isTimerRunning) {
+          await saveTimerState();
+          countdownTimer?.pause(countdownSeconds);
+        }
+      }
+
+      if (msg == AppLifecycleState.resumed.toString()) {
+        if (isTimerRunning) {
+          await restoreTimerState();
+          countdownTimer?.resume();
+        }
+      }
+      return Future(() => null);
+    });
     setBusy(false);
   }
 
+  Future<void> restoreTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final timerStart = prefs.getInt(timerStartKey);
+    final timerElapsed = prefs.getInt(timerElapsedKey);
+
+    if (timerStart != null && timerElapsed != null) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final elapsed = (now - timerStart) ~/ 1000 + timerElapsed;
+      countdownSeconds = elapsed;
+
+        startTimer(countdownSeconds);
+
+      notifyListeners();
+    }
+  }
+
   void initTimerOperation(BuildContext context) {
+    // Initialize timer callbacks
+    startTimer(countdownSeconds);
+  }
+
+
+  void startTimer(int countdownseconds) {
     // Initialize timer callbacks
     countdownTimer = CountdownTimer(
       seconds: countdownSeconds,
@@ -57,37 +102,33 @@ class AddVisitViewModel extends BaseViewModel{
       },
     );
 
-    // Listen to app lifecycle changes
-    SystemChannels.lifecycle.setMessageHandler((msg) {
-      // On AppLifecycleState: paused
-      if (msg == AppLifecycleState.paused.toString()) {
-        if (isTimerRunning) {
-          // Pause the timer
-          countdownTimer?.pause(countdownSeconds);
-        }
-      }
-
-      // On AppLifecycleState: resumed
-      if (msg == AppLifecycleState.resumed.toString()) {
-        if (isTimerRunning) {
-          // Resume the timer
-          countdownTimer?.resume();
-        }
-      }
-      return Future(() => null);
-    });
-
     // Start the timer
     isTimerRunning = true;
     countdownTimer?.start();
 
     // Handle any view-specific logic
-    onSavePressed(context);
+  //  onSavePressed();
   }
+
+  Future<void> saveTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    await prefs.setInt(timerStartKey, now);
+    await prefs.setInt(timerElapsedKey, countdownSeconds);
+  }
+
+  Future<void> clearTimerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(timerStartKey);
+    await prefs.remove(timerElapsedKey);
+  }
+
 
   void stopTimer() {
     isTimerRunning = false;
     countdownTimer?.stop();
+    clearTimerState();
     // Notify listeners about changes
     notifyListeners();
   }
@@ -100,7 +141,7 @@ class AddVisitViewModel extends BaseViewModel{
   }
 
 
-  void onSavePressed(BuildContext context) async {
+  void onSavePressed() async {
    // setBusy(true);
     if (formKey.currentState!.validate()) {
 
