@@ -38,14 +38,14 @@ class RouteApprovalViewModel extends BaseViewModel{
       status=status.toSet().toList();
 
     }else{
-      routes = await RouteServices().getPlannedRoutes("Pending");
+      routes = await RouteServices().getAllRoutes();
     }
     setBusy(false);
     notifyListeners();
   }
 
   Future<void> refresh() async {
-    routes= await RouteServices().getPlannedRoutes("Pending");
+    routes= await RouteServices().getAllRoutes();
     notifyListeners();
   }
 

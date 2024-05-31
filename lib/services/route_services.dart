@@ -258,6 +258,46 @@ class RouteServices {
     return routes;
   }
 
+  Future<List<RouteMasterData>> getAllRoutes() async {
+    List<RouteMasterData> routes = [];
+    var url = await geturl();
+    var token = await getTocken();
+
+    try {
+      var dio = Dio();
+
+      var response = await dio.request(
+          '$url/api/method/mobile.mobile_env.route.get_route_master',
+          options: Options(
+            method: 'GET',
+            headers: {'Authorization': token},
+
+          )
+        //queryParameters: {'fields': '["route_name","name","workflow_state"]', "filters": jsonEncode([["workflow_state", "=", state]])},
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        print(jsonData.toString());
+        routes = List.from(jsonData["data"]
+            .map<RouteMasterData>((data) => RouteMasterData.fromJson(data))
+            .toList());
+
+        return routes;
+      } else {
+        return routes;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity: ToastGravity.BOTTOM,
+        msg: 'Error: ${e.response?.data["message"].toString()} ',
+        textColor: const Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e);
+
+    }
+    return routes;
+  }
+
 
   Future<RouteMaster> getRouteDetails(String name) async {
    RouteMaster routes = RouteMaster();
