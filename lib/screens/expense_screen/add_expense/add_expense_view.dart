@@ -25,11 +25,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         viewModelBuilder: () => AddExpenseViewModel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=>Scaffold(
-
+backgroundColor: Colors.white,
           appBar:AppBar(title:  const Text('Create Expense',style: TextStyle(fontSize: 18),),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-               IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
-            ],),
+           ),
           body: fullScreenLoader(
             loader: model.isBusy,context: context,
             child: SingleChildScrollView(
@@ -82,24 +80,19 @@ CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense typ
                       const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.amountcontroller, labelText: 'Amount', hintText: 'Enter the amount',validator: model.validateamount,onChanged: model.setamount,keyboardtype: TextInputType.number,),
                       const SizedBox(height: 10,),
-                      ElevatedButton.icon(onPressed:  () { model.selectPdf(ImageSource.gallery); }, icon: Icon(Icons.upload_file), label: Text("Upload Documents",style: TextStyle(color: Colors.white),),   style: ButtonStyle(
-        padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
-       backgroundColor: MaterialStateProperty.all(Colors.blue),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)
-            )),
-        overlayColor:
-            MaterialStateProperty.all(Colors.white),
-      ),),
 
-//                       ElevatedButton.icon(
-//                         onPressed: () {
-// model.selectPdf(ImageSource.gallery);
-//                         },
-//                         icon: Icon(Icons.upload),
-//                         label: Text('Upload Document'),
-//                       ),
+
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          elevation: 1,
+                        ),
+                        onPressed: () {
+model.selectPdf(ImageSource.gallery);
+                        },
+                        icon: Icon(Icons.upload,color: Colors.white,),
+                        label: Text('Upload Document',style: TextStyle(color: Colors.white,),),
+                      ),
                       const SizedBox(height: 10,),
                   model.attachment.isNotEmpty
                       ? SizedBox(height: getHeight(context)/5,

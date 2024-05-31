@@ -19,7 +19,6 @@ class ExpenseScreen extends StatelessWidget {
         builder: (context, model, child)=> Scaffold(
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('My Expenses'),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),
             bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
               padding: const EdgeInsets.all(8),
               color: Colors.white,
@@ -167,7 +166,7 @@ class ExpenseScreen extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: AutoSizeText("${model.expenselist[index].expenseType.toString()} Expense",  textAlign:
+                      child: AutoSizeText("${model.expenselist[index].expenseType.toString()}",  textAlign:
                       TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,

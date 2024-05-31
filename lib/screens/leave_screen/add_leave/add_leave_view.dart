@@ -26,9 +26,7 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
         builder: (context, model, child)=>Scaffold(
 
           appBar:AppBar(title:  const Text('Create Leave',style: TextStyle(fontSize: 18),),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-               IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
-            ],),
+           ),
           body: fullScreenLoader(
             loader: model.isBusy,context: context,
             child: SingleChildScrollView(

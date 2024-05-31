@@ -32,18 +32,7 @@ class _AddQuotationViewState extends State<AddQuotationView> {
           title: model.isEdit == true
               ? Text(model.quotationdata.name ?? "")
               : const Text('Create Quotation'),
-          leading: IconButton.outlined(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          actions: [IconButton.outlined(
-            onPressed: () {
-              model.onSavePressed(context);
-            },
-            icon: const Icon(Icons.check),
-          ),],
+
         ),
         body: fullScreenLoader(
           loader: model.isBusy,
