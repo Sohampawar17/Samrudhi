@@ -60,7 +60,7 @@ class AddLeaveServices{
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(msg: "Leave created successfully");
+        Fluttertoast.showToast(msg: response.data['message'].toString());
         return true;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO Order!");
@@ -82,7 +82,7 @@ class AddLeaveServices{
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Leave Application/$id',
+        '$baseurl/api/method/mobile.mobile_env.app.get_leave_application?id=$id',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -105,6 +105,43 @@ class AddLeaveServices{
       Logger().e(e.response?.data['message'].toString());
     }
     return null;
+  }
+
+
+  Future<bool> changeWorkflow(String? id,String? action) async {
+    baseurl =  await geturl();
+
+    var data={
+      "reference_doctype":"Leave Application",
+      "reference_name":id,
+      "action":action
+
+    };
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.app_utils.update_workflow_state',
+        options: Options(
+          method: 'POST',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+
+        Fluttertoast.showToast(msg: response.data["message"].toString());
+        return true;
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO update Order!");
+        return false;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e);
+
+    }
+    return false;
   }
 
 }

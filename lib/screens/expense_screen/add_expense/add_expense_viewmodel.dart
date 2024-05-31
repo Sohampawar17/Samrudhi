@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants.dart';
 import '../../../model/expense_model.dart';
-import '../../../router.router.dart';
+
 import '../../../services/add_expense_services.dart';
 
 
@@ -23,10 +23,20 @@ class AddExpenseViewModel extends BaseViewModel{
   final formKey = GlobalKey<FormState>();
   List<String> expensetype=[""];
 List<Attachments> attachment=[];
-
-  initialise(BuildContext context) async {
+bool isEdit=false;
+  initialise(BuildContext context,String id) async {
     setBusy(true);
     expensetype=await AddExpenseServices().fetExpenseType();
+
+    if(id!=""){
+      isEdit=true;
+      expensedata=await AddExpenseServices().getExpense(id) ?? ExpenseData();
+      descriptoncontroller.text=expensedata.expenseDescription ?? "";
+      amountcontroller.text=expensedata.amount.toString();
+      datecontroller.text=expensedata.expenseDate ?? "";
+
+    }
+
     setBusy(false);
   }
 

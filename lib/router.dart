@@ -8,6 +8,7 @@ import 'package:geolocation/screens/customer_screen/add_customer/add_customer_vi
 import 'package:geolocation/screens/customer_screen/customer_list/customer_list_screen.dart';
 import 'package:geolocation/screens/expense_screen/add_expense/add_expense_view.dart';
 import 'package:geolocation/screens/expense_screen/list_expense/list_expense_view.dart';
+import 'package:geolocation/screens/expense_screen/update_expense/update_expense_view.dart';
 import 'package:geolocation/screens/geolocation/geolocation_view.dart';
 import 'package:geolocation/screens/holiday_screen/holiday_view.dart';
 import 'package:geolocation/screens/home_screen/home_page.dart';
@@ -15,6 +16,7 @@ import 'package:geolocation/screens/lead_screen/add_lead_screen/add_lead_screen.
 import 'package:geolocation/screens/lead_screen/update_screen/update_screen.dart';
 import 'package:geolocation/screens/leave_screen/add_leave/add_leave_view.dart';
 import 'package:geolocation/screens/leave_screen/list_leave/list_leave_view.dart';
+import 'package:geolocation/screens/leave_screen/update_leave/update_leave_view.dart';
 import 'package:geolocation/screens/login/login_view.dart';
 import 'package:geolocation/screens/profile_screen/profile_screen.dart';
 import 'package:geolocation/screens/sales_force/assigned_routes/assigned_routes_view.dart';
@@ -82,7 +84,9 @@ import 'screens/lead_screen/lead_list/lead_screen.dart';
     MaterialRoute(page: AddVisitScreen),
     MaterialRoute(page: UpdateVisitScreen),
     MaterialRoute(page: CustomerReportScreen),
-    MaterialRoute(page: UpdateRouteAssignmentForm)
+    MaterialRoute(page: UpdateRouteAssignmentForm),
+    MaterialRoute(page: UpdateLeave),
+    MaterialRoute(page: UpdateExpense)
 
 
 

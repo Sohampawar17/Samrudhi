@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocation/model/expense_model.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../model/expenselist_model.dart';
+import '../../../router.router.dart';
 import '../../../services/list_expense_services.dart';
 
 
@@ -58,6 +60,15 @@ Color getColorForStatus(String status) {
       return Colors.black87; // Set a default color for unknown status
   }
 }
+
+
+void onRowClick(BuildContext context, Expenselist? leadList) {
+  Navigator.pushNamed(
+    context,
+    Routes.updateExpense,
+    arguments: UpdateExpenseArguments(updateId: leadList?.name.toString() ?? ""),
+  );
+}
   Future<List<Expenselist>> fetchHolidaysForCurrentYear() async {
     _selectedYear = DateTime.now().year.toInt();
     _selectedmonth=DateTime.now().month;
@@ -96,4 +107,5 @@ Color getColorForStatus(String status) {
     String monthName = DateFormat('MMMM').format(dateTime);
     return monthName;
   }
+
 }
