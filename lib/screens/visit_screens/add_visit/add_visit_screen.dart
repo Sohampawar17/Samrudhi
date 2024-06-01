@@ -147,6 +147,7 @@ class _AddVisitScreenState extends State<AddVisitScreen> {
           ),
           actions: <Widget>[
             TextButton(
+
               onPressed: () {
                 Navigator.of(context).pop();
               },

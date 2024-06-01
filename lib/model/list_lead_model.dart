@@ -4,13 +4,14 @@ class ListLeadModel {
   String? status;
   String? companyName;
   String? territory;
+  String? location;
 
   ListLeadModel(
       {this.name,
       this.leadName,
       this.status,
       this.companyName,
-      this.territory});
+      this.location});
 
   ListLeadModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -18,6 +19,7 @@ class ListLeadModel {
     status = json['status'];
     companyName = json['company_name'];
     territory = json['territory'];
+    location = json["custom_address"];
   }
 
   Map<String, dynamic> toJson() {

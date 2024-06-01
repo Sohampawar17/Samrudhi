@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocation/model/sub_complaint_model.dart';
 import 'package:geolocation/services/add_lead_services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_lead_model.dart';
+import '../../../services/geolocation_services.dart';
 
 class AddLeadViewModel extends BaseViewModel{
 
@@ -89,58 +93,78 @@ List<String> state=["01-Jammu and Kashmir",
 "96-Other Countries",
 "97-Other Territory"];
 
-  initialise(BuildContext context,String leadId) async {
+initialise(BuildContext context, String leadId) async {
     setBusy(true);
-    customerList=await AddLeadServices().fetchCustomer();
-    complaintTypeList=await AddLeadServices().fetchComplaintType();
-industrytype=await AddLeadServices().fetchindustrytype();
-territory= await AddLeadServices().fetchterritory();
-    subComplaintTypeList=await AddLeadServices().fetchSubComplaintType("");
-    visible=false;
-if(leadId != ""){
-  isEdit=true;
-  leaddata= await AddLeadServices().getlead(leadId) ?? AddLeadModel();
-  firstnamecontroller.text=leaddata.firstName ?? "";
-  lastnamecontroller.text=leaddata.lastName ?? "";
-  mobilenumbercontroller.text=leaddata.mobileNo ?? "";
-  emailcontroller.text=leaddata.emailId ?? "";
-  whatsappcontroller.text=leaddata.whatsappNo ?? "";
-  companynamecontroller.text=leaddata.companyName ?? "";
-  citycontroller.text=leaddata.city ?? "";
-  statecontroller.text=leaddata.state ?? "";
-departmentController.text=leaddata.customDepartment ?? "";
-  if(leaddata.requestType == "Customer Complaint"){
-    visible=true;
-  }
-  notifyListeners();
-}
+    customerList = await AddLeadServices().fetchCustomer();
+    complaintTypeList = await AddLeadServices().fetchComplaintType();
+    industrytype = await AddLeadServices().fetchindustrytype();
+    territory = await AddLeadServices().fetchterritory();
+    subComplaintTypeList = await AddLeadServices().fetchSubComplaintType("");
+    visible = false;
+    if (leadId != "") {
+      isEdit = true;
+      leaddata = await AddLeadServices().getlead(leadId) ?? AddLeadModel();
+      firstnamecontroller.text = leaddata.firstName ?? "";
+      lastnamecontroller.text = leaddata.lastName ?? "";
+      mobilenumbercontroller.text = leaddata.mobileNo ?? "";
+      emailcontroller.text = leaddata.emailId ?? "";
+      whatsappcontroller.text = leaddata.whatsappNo ?? "";
+      companynamecontroller.text = leaddata.companyName ?? "";
+      citycontroller.text = leaddata.city ?? "";
+      statecontroller.text = leaddata.state ?? "";
+      departmentController.text = leaddata.customDepartment ?? "";
+      if (leaddata.requestType == "Customer Complaint") {
+        visible = true;
+      }
+      notifyListeners();
+    }
     setBusy(false);
   }
 
   void onSavePressed(BuildContext context) async {
     setBusy(true);
     if (formKey.currentState!.validate()) {
-       leaddata.notes=notes;
-      bool res = false;
-      Logger().i(leaddata.toJson());
-    if(isEdit == true){
-  res = await AddLeadServices().updateOrder(leaddata);
-      if (res) {
-        if (context.mounted) {
-          setBusy(false);
-          Navigator.pop(context);
-        
-      }}
-    }else{
-      res = await AddLeadServices().addLead(leaddata);
-      if (res) {
-        if (context.mounted) {
-          setBusy(false);
-          Navigator.pop(context);
-        
-      }}}
+      GeolocationService geolocationService = GeolocationService();
+      try {
+        Position? position = await geolocationService.determinePosition();
+
+        if (position == null) {
+          return setBusy(false);
+        }
+
+        String formattedAddress = await geolocationService
+            .getAddressFromCoordinates(position.latitude, position.longitude) ??
+            "";
+        leaddata.notes = notes;
+        leaddata.latitude = position.latitude.toString();
+        leaddata.longitude = position.longitude.toString();
+        leaddata.location = formattedAddress;
+        bool res = false;
+        Logger().i(leaddata.toJson());
+        if (isEdit == true) {
+          res = await AddLeadServices().updateOrder(leaddata);
+          if (res) {
+            if (context.mounted) {
+              setBusy(false);
+              Navigator.pop(context);
+            }
+          }
+        } else {
+          res = await AddLeadServices().addLead(leaddata);
+          if (res) {
+            if (context.mounted) {
+              setBusy(false);
+              Navigator.pop(context);
+            }
+          }
+        }
+      } catch (e) {
+        Fluttertoast.showToast(msg: '$e');
+      } finally {
+        // setBusy(false);
+      }
+      setBusy(false);
     }
-  setBusy(false);
   }
 
 void setCustomer(String? customComplaintCustomer){

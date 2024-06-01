@@ -58,8 +58,8 @@ class _VisitScreenState extends State<VisitScreen> {
                           ],
                         ),
                         child: MaterialButton(
-                          onPressed: () => model.onRowClick(
-                              context, model.visitList[index]),
+                          onPressed: () =>{},
+                         //   model.onRowClick(context, model.visitList[index]),
 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

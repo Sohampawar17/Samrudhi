@@ -185,7 +185,19 @@ body: WillPopScope(
                                                       ),
                                                       
                                                     ],
+
                                                   ),
+                                                  const SizedBox(height: 10.0),
+                                                  Text(
+                                                     model.filterleadlist[index]
+                                                        .location
+                                                        ?.toString() ??
+                                                        "", style: const TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.normal,
+                                                  ),
+                                                  ),
+
                                                 ],
                                               ),
                                             ),

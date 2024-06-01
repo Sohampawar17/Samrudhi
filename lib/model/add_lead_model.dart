@@ -46,6 +46,9 @@ class AddLeadModel {
   int? blogSubscriber;
   String? doctype;
   List<Notes>? notes;
+  String? latitude;
+  String? longitude;
+  String? location;
 
   AddLeadModel(
       {this.name,
@@ -94,7 +97,12 @@ class AddLeadModel {
         this.unsubscribed,
         this.blogSubscriber,
         this.doctype,
-        this.notes});
+        this.notes,
+        this.latitude,
+        this.longitude,
+        this.location
+
+      });
 
   AddLeadModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -149,6 +157,9 @@ class AddLeadModel {
         notes!.add(new Notes.fromJson(v));
       });
     }
+    latitude = json['custom_latitude'].toString();
+    longitude = json ['custom_longitude'].toString();
+    location = json['custom_address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -202,6 +213,9 @@ class AddLeadModel {
     if (notes != null) {
       data['notes'] = notes!.map((v) => v.toJson()).toList();
     }
+    data['custom_address']= location;
+    data['custom_latitude']= latitude;
+    data['custom_longitude']=longitude;
     return data;
   }
 }

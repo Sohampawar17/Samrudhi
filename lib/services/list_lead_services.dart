@@ -12,7 +12,7 @@ class ListLeadServices{
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory"]',
+        '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory","custom_address"]',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},
@@ -42,7 +42,7 @@ class ListLeadServices{
 
        // Construct the base URL
        String apiUrl =
-           '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory"]';
+           '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory","custom_address"]';
 
        if(customerName.isNotEmpty && request.isNotEmpty){
          apiUrl += '&filters=[["lead_name", "=", "$customerName"],["request_type", "=", "$request"]]';
