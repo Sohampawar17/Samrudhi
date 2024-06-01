@@ -23,13 +23,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddExpenseViewModel>.reactive(
         viewModelBuilder: () => AddExpenseViewModel(),
-        onViewModelReady: (model) => model.initialise(context),
+        onViewModelReady: (model) => model.initialise(context,widget.expenseId),
         builder: (context, model, child)=>Scaffold(
-
-          appBar:AppBar(title:  const Text('Create Expense',style: TextStyle(fontSize: 18),),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-               IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
-            ],),
+backgroundColor: Colors.white,
+          appBar:AppBar(title:   Text( model.isEdit==true?"Update Expense":'Create Expense',style: TextStyle(fontSize: 18),),
+           ),
           body: fullScreenLoader(
             loader: model.isBusy,context: context,
             child: SingleChildScrollView(
@@ -76,30 +74,25 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                         onChanged: model.setdate,
                       ),
 const SizedBox(height: 10,),
-CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense type', onChanged: model.setexpensetype, labelText: 'Expense Type',validator: model.validateexpensetyepe,),
+CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense type', onChanged: model.setexpensetype, labelText: 'Expense Type',validator: model.validateexpensetyepe,value: model.expensedata.expenseType,),
                       const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.descriptoncontroller, labelText: 'Expense Description', hintText: 'Enter the Description',validator: model.validatedescription,onChanged: model.setdescription,),
                       const SizedBox(height: 10,),
                       CustomSmallTextFormField(controller: model.amountcontroller, labelText: 'Amount', hintText: 'Enter the amount',validator: model.validateamount,onChanged: model.setamount,keyboardtype: TextInputType.number,),
                       const SizedBox(height: 10,),
-                      ElevatedButton.icon(onPressed:  () { model.selectPdf(ImageSource.gallery); }, icon: Icon(Icons.upload_file), label: Text("Upload Documents",style: TextStyle(color: Colors.white),),   style: ButtonStyle(
-        padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 12)),
-       backgroundColor: MaterialStateProperty.all(Colors.blue),
-        shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)
-            )),
-        overlayColor:
-            MaterialStateProperty.all(Colors.white),
-      ),),
 
-//                       ElevatedButton.icon(
-//                         onPressed: () {
-// model.selectPdf(ImageSource.gallery);
-//                         },
-//                         icon: Icon(Icons.upload),
-//                         label: Text('Upload Document'),
-//                       ),
+
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          elevation: 1,
+                        ),
+                        onPressed: () {
+model.selectPdf(ImageSource.gallery);
+                        },
+                        icon: Icon(Icons.upload,color: Colors.white,),
+                        label: Text('Upload Document',style: TextStyle(color: Colors.white,),),
+                      ),
                       const SizedBox(height: 10,),
                   model.attachment.isNotEmpty
                       ? SizedBox(height: getHeight(context)/5,
@@ -129,7 +122,7 @@ onDeleted: () {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [Expanded(child: CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.red.shade500,)),
-                      SizedBox(width: 20,),    Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Expense', buttonColor: Colors.blueAccent,))
+                      SizedBox(width: 20,),    Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:model.isEdit==true?"Update Expense":'Create Expense', buttonColor: Colors.blueAccent,))
               ]
                       )
                     ],

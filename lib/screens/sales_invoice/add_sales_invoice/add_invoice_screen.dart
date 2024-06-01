@@ -30,18 +30,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
           title: model.isEdit == true
               ? Text(model.invoiceData.name ?? "")
               : const Text('Create Invoice'),
-          leading: IconButton.outlined(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          actions: [IconButton.outlined(
-            onPressed: () {
-              model.onSavePressed(context);
-            },
-            icon: const Icon(Icons.check),
-          ),],
+
         ),
         body: fullScreenLoader(
           loader: model.isBusy,

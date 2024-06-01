@@ -26,10 +26,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             'Change Password',
             style: TextStyle(fontSize: 18, ),
           ),
-          leading: IconButton.outlined(
-            onPressed: () =>  Navigator.pop(context),
-            icon:  const Icon(Icons.arrow_back, ),
-          ),
+
         ),
         body: fullScreenLoader(
           loader: model.isBusy,

@@ -19,7 +19,6 @@ class AttendanceScreen extends StatelessWidget {
           backgroundColor: Colors.grey.shade200,
           appBar: AppBar(title: const Text('Attendance'),
 
-            leading: IconButton.outlined(onPressed: ()=> Navigator.pop(context), icon: const Icon(Icons.arrow_back)),
 
             bottom:  PreferredSize(preferredSize: Size(20, 95), child:Container(
               padding: EdgeInsets.all(10),

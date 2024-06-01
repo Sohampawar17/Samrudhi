@@ -32,8 +32,8 @@ class AddExpenseServices{
         return false;
       }
     } on DioException catch (e) {
-      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString().split(":").elementAt(1).trim()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
-      Logger().e(e);
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e.response!.data["message"].toString());
     }
     return false;
   }
@@ -68,6 +68,73 @@ class AddExpenseServices{
       Logger().e(e);
       return [];
     }
+  }
+
+  Future<ExpenseData?> getExpense(String id) async {
+    baseurl =  await geturl();
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.app.get_expense_claim?id=$id',
+        options: Options(
+          method: 'GET',
+          headers: {'Authorization': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        Logger().i(ExpenseData.fromJson(response.data["data"]));
+        return ExpenseData.fromJson(response.data["data"]);
+      } else {
+
+        return null;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(toastLength: Toast.LENGTH_LONG,
+        msg: "${e.response?.data['message'].toString()}",
+        backgroundColor: Color(0xFFBA1A1A),
+        textColor: Color(0xFFFFFFFF),
+      );
+      Logger().e(e.response?.data['message'].toString());
+    }
+    return null;
+  }
+
+
+  Future<bool> changeWorkflow(String? id,String? action) async {
+    baseurl =  await geturl();
+
+    var data={
+      "reference_doctype":"Expense Claim",
+      "reference_name":id,
+      "action":action
+
+    };
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/method/mobile.mobile_env.app_utils.update_workflow_state',
+        options: Options(
+          method: 'POST',
+          headers: {'Authorization': await getTocken()},
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+
+        Fluttertoast.showToast(msg: response.data["message"].toString());
+        return true;
+      } else {
+        Fluttertoast.showToast(msg: "UNABLE TO update Order!");
+        return false;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Error: ${e.response!.data["message"].toString()} ',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+      Logger().e(e);
+
+    }
+    return false;
   }
 
   Future<Attachments?> uploadDocs(File? file) async {

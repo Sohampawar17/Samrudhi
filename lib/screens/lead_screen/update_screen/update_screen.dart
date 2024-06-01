@@ -25,7 +25,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
         builder: (context, model, child)=> Scaffold(
           appBar: AppBar(title:  Text(model.leaddata.name ?? "",style: const TextStyle(fontSize: 18),),
             actions: [IconButton(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.addLeadScreen,arguments: AddLeadScreenArguments(leadid: widget.updateId)), icon:const Icon(Icons.edit) ),],
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),),
+      ),
           body: fullScreenLoader(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

@@ -19,20 +19,20 @@ class AddLeaveViewModel extends BaseViewModel{
   AddLeaveModel leavedata =AddLeaveModel();
   final formKey = GlobalKey<FormState>();
   List<String> leavetype=[""];
-
+bool isEdit=false;
 bool isSwitched=false;
 
   initialise(BuildContext context,String id) async {
     setBusy(true);
     leavetype=await AddLeaveServices().getleavetype();
     if(id!=""){
+      isEdit=true;
       leavedata=await AddLeaveServices().getLeave(id) ?? AddLeaveModel();
       descriptoncontroller.text=leavedata.description ?? "";
       fromdatecontroller.text=leavedata.fromDate ?? "";
       todatecontroller.text=leavedata.toDate ?? "";
       halfdaycontroller.text=leavedata.halfDayDate ?? "";
       isSwitched=leavedata.halfDay == 1 ?true :false;
-
     }
 
     setBusy(false);

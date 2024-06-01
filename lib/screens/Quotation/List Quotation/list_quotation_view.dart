@@ -27,8 +27,7 @@ class ListQuotationScreen extends StatelessWidget {
                   _showBottomSheet(context,model);
                 },
               ),
-            ],
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),),
+            ],),
           body: WillPopScope(
             onWillPop: ()  async{
               Navigator.pop(context);

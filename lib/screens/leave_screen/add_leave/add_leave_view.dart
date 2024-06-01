@@ -5,7 +5,6 @@ import 'package:geolocation/widgets/drop_down.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:geolocation/widgets/text_button.dart';
 import 'package:stacked/stacked.dart';
-import '../../../router.router.dart';
 import '../../../widgets/customtextfield.dart';
 import 'add_leave_viewmodel.dart';
 
@@ -25,10 +24,8 @@ class _AddLeaveScreenState extends State<AddLeaveScreen> {
         onViewModelReady: (model) => model.initialise(context,widget.leaveId),
         builder: (context, model, child)=>Scaffold(
 
-          appBar:AppBar(title:  const Text('Create Leave',style: TextStyle(fontSize: 18),),
-            leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-               IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
-            ],),
+          appBar:AppBar(title:   Text(model.isEdit==true ?'Update Leave':'Create Leave',style: TextStyle(fontSize: 18),),
+           ),
           body: fullScreenLoader(
             loader: model.isBusy,context: context,
             child: SingleChildScrollView(
@@ -180,7 +177,7 @@ CustomDropdownButton2(items:model.leavetype, hintText: 'select the leave type', 
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [Expanded(child: CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.redAccent.shade400,)),
                           SizedBox(width: 20),
-                          Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:'Create Leave', buttonColor: Colors.blueAccent.shade400,))
+                          Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:model.isEdit ?'Update Leave':'Create Leave', buttonColor: Colors.blueAccent.shade400,))
               ]
                       )
                     ],

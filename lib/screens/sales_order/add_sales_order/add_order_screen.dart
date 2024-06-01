@@ -32,18 +32,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
           title: model.isEdit == true
               ? Text(model.orderdata.name ?? "")
               : const Text('Create Order'),
-          leading: IconButton.outlined(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          actions: [IconButton.outlined(
-            onPressed: () {
-              model.onSavePressed(context);
-            },
-            icon: const Icon(Icons.check),
-          ),],
+
         ),
         body: fullScreenLoader(
           loader: model.isBusy,

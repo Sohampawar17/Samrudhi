@@ -65,8 +65,8 @@ Color getColorForStatus(String status) {
 void onRowClick(BuildContext context, LeaveList? leadList) {
   Navigator.pushNamed(
     context,
-    Routes.addLeaveScreen,
-    arguments: AddLeaveScreenArguments(leaveId: leadList?.name.toString() ?? ""),
+    Routes.updateLeave,
+    arguments: UpdateLeaveArguments(UpdateId: leadList?.name.toString() ?? ""),
   );
 }
 

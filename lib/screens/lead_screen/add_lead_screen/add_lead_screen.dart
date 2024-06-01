@@ -26,9 +26,8 @@ class _AddLeadScreenState extends State<AddLeadScreen> {
       builder: (context, model, child)=>Scaffold(
        
       appBar:AppBar(title:  Text(model.isEdit ?model.leaddata.name.toString() :'Create Enquiry',style: const TextStyle(fontSize: 18),),
-leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),actions: [
-  IconButton.outlined(onPressed: ()=>model.onSavePressed(context), icon: const Icon(Icons.check))
-],),
+
+),
     body: fullScreenLoader(
       loader: model.isBusy,context: context,
       child: SingleChildScrollView(

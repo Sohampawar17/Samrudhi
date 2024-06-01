@@ -26,10 +26,7 @@ class ProfileScreen extends StatelessWidget {
             'My Profile',
             style: TextStyle(fontSize: 18, ),
           ),
-          leading: IconButton.outlined(
-            onPressed: () =>Navigator.pop(context),
-            icon:  Icon(Icons.arrow_back,),
-          ),
+
 
         ),
            body: fullScreenLoader(
