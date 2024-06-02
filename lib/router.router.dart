@@ -427,7 +427,11 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ItemScreenArguments>(nullOk: false);
       return _i43.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.ItemScreen(
-            key: args.key, warehouse: args.warehouse, items: args.items),
+            key: args.key,
+            warehouse: args.warehouse,
+            items: args.items,
+            customer: args.customer,
+            priceList: args.priceList),
         settings: data,
       );
     },
@@ -470,8 +474,11 @@ class StackedRouter extends _i1.RouterBase {
     _i14.QuotationItemScreen: (data) {
       final args = data.getArgs<QuotationItemScreenArguments>(nullOk: false);
       return _i43.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i14.QuotationItemScreen(key: args.key, items: args.items),
+        builder: (context) => _i14.QuotationItemScreen(
+            key: args.key,
+            items: args.items,
+            customer: args.customer,
+            priceList: args.priceList),
         settings: data,
       );
     },
@@ -541,7 +548,9 @@ class StackedRouter extends _i1.RouterBase {
         builder: (context) => _i24.InvoiceItemScreen(
             key: args.key,
             invoiceItems: args.invoiceItems,
-            warehouse: args.warehouse),
+            warehouse: args.warehouse,
+            customer: args.customer,
+            priceList: args.priceList),
         settings: data,
       );
     },
@@ -710,6 +719,8 @@ class ItemScreenArguments {
     this.key,
     required this.warehouse,
     required this.items,
+    required this.customer,
+    required this.priceList,
   });
 
   final _i43.Key? key;
@@ -718,9 +729,13 @@ class ItemScreenArguments {
 
   final List<_i44.Items> items;
 
+  final String customer;
+
+  final String priceList;
+
   @override
   String toString() {
-    return '{"key": "$key", "warehouse": "$warehouse", "items": "$items"}';
+    return '{"key": "$key", "warehouse": "$warehouse", "items": "$items", "customer": "$customer", "priceList": "$priceList"}';
   }
 
   @override
@@ -728,12 +743,18 @@ class ItemScreenArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.warehouse == warehouse &&
-        other.items == items;
+        other.items == items &&
+        other.customer == customer &&
+        other.priceList == priceList;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ warehouse.hashCode ^ items.hashCode;
+    return key.hashCode ^
+        warehouse.hashCode ^
+        items.hashCode ^
+        customer.hashCode ^
+        priceList.hashCode;
   }
 }
 
@@ -822,26 +843,38 @@ class QuotationItemScreenArguments {
   const QuotationItemScreenArguments({
     this.key,
     required this.items,
+    required this.customer,
+    required this.priceList,
   });
 
   final _i43.Key? key;
 
   final List<_i45.Items> items;
 
+  final String customer;
+
+  final String priceList;
+
   @override
   String toString() {
-    return '{"key": "$key", "items": "$items"}';
+    return '{"key": "$key", "items": "$items", "customer": "$customer", "priceList": "$priceList"}';
   }
 
   @override
   bool operator ==(covariant QuotationItemScreenArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.items == items;
+    return other.key == key &&
+        other.items == items &&
+        other.customer == customer &&
+        other.priceList == priceList;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ items.hashCode;
+    return key.hashCode ^
+        items.hashCode ^
+        customer.hashCode ^
+        priceList.hashCode;
   }
 }
 
@@ -931,6 +964,8 @@ class InvoiceItemScreenArguments {
     this.key,
     required this.invoiceItems,
     required this.warehouse,
+    required this.customer,
+    required this.priceList,
   });
 
   final _i43.Key? key;
@@ -939,9 +974,13 @@ class InvoiceItemScreenArguments {
 
   final String warehouse;
 
+  final String customer;
+
+  final String priceList;
+
   @override
   String toString() {
-    return '{"key": "$key", "invoiceItems": "$invoiceItems", "warehouse": "$warehouse"}';
+    return '{"key": "$key", "invoiceItems": "$invoiceItems", "warehouse": "$warehouse", "customer": "$customer", "priceList": "$priceList"}';
   }
 
   @override
@@ -949,12 +988,18 @@ class InvoiceItemScreenArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.invoiceItems == invoiceItems &&
-        other.warehouse == warehouse;
+        other.warehouse == warehouse &&
+        other.customer == customer &&
+        other.priceList == priceList;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ invoiceItems.hashCode ^ warehouse.hashCode;
+    return key.hashCode ^
+        invoiceItems.hashCode ^
+        warehouse.hashCode ^
+        customer.hashCode ^
+        priceList.hashCode;
   }
 }
 
@@ -1288,6 +1333,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
     _i43.Key? key,
     required String warehouse,
     required List<_i44.Items> items,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1295,8 +1342,12 @@ extension NavigatorStateExtension on _i47.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.itemScreen,
-        arguments:
-            ItemScreenArguments(key: key, warehouse: warehouse, items: items),
+        arguments: ItemScreenArguments(
+            key: key,
+            warehouse: warehouse,
+            items: items,
+            customer: customer,
+            priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1386,6 +1437,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
   Future<dynamic> navigateToQuotationItemScreen({
     _i43.Key? key,
     required List<_i45.Items> items,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1393,7 +1446,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.quotationItemScreen,
-        arguments: QuotationItemScreenArguments(key: key, items: items),
+        arguments: QuotationItemScreenArguments(
+            key: key, items: items, customer: customer, priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1539,6 +1593,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
     _i43.Key? key,
     required List<_i46.InvoiceItems> invoiceItems,
     required String warehouse,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1547,7 +1603,11 @@ extension NavigatorStateExtension on _i47.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.invoiceItemScreen,
         arguments: InvoiceItemScreenArguments(
-            key: key, invoiceItems: invoiceItems, warehouse: warehouse),
+            key: key,
+            invoiceItems: invoiceItems,
+            warehouse: warehouse,
+            customer: customer,
+            priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1924,6 +1984,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
     _i43.Key? key,
     required String warehouse,
     required List<_i44.Items> items,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1931,8 +1993,12 @@ extension NavigatorStateExtension on _i47.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.itemScreen,
-        arguments:
-            ItemScreenArguments(key: key, warehouse: warehouse, items: items),
+        arguments: ItemScreenArguments(
+            key: key,
+            warehouse: warehouse,
+            items: items,
+            customer: customer,
+            priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2022,6 +2088,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
   Future<dynamic> replaceWithQuotationItemScreen({
     _i43.Key? key,
     required List<_i45.Items> items,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2029,7 +2097,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.quotationItemScreen,
-        arguments: QuotationItemScreenArguments(key: key, items: items),
+        arguments: QuotationItemScreenArguments(
+            key: key, items: items, customer: customer, priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2175,6 +2244,8 @@ extension NavigatorStateExtension on _i47.NavigationService {
     _i43.Key? key,
     required List<_i46.InvoiceItems> invoiceItems,
     required String warehouse,
+    required String customer,
+    required String priceList,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2183,7 +2254,11 @@ extension NavigatorStateExtension on _i47.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.invoiceItemScreen,
         arguments: InvoiceItemScreenArguments(
-            key: key, invoiceItems: invoiceItems, warehouse: warehouse),
+            key: key,
+            invoiceItems: invoiceItems,
+            warehouse: warehouse,
+            customer: customer,
+            priceList: priceList),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -45,7 +45,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
               child: Column(mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomDropdownButton2(value: model.orderdata.customer,prefixIcon: Icons.person_2,items: model.searchcutomer, hintText: 'Select the customer', labelText: 'Customer', onChanged:  model.setcustomer,),
+                  CustomDropdownButton2(value: model.orderdata.customer,prefixIcon: Icons.person_2,items: model.getTerritoryNames(), hintText: 'Select the customer', labelText: 'Customer', onChanged:  model.setcustomer,),
 // CustomModelDropdown<SearchCustomerList>(
 //   items: model.cutomer,
 //   hintText: 'select Customer',
@@ -141,7 +141,7 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                           Routes.itemScreen,
                           arguments: ItemScreenArguments(
                               warehouse: model.orderdata.setWarehouse ?? "",
-                              items: model.selectedItems),
+                              items: model.selectedItems, customer: model.orderdata.customer ?? "", priceList: model.orderdata.sellingPriceList ??''),
                         ) as List<Items>?;
                         if (SelectedItems != null) {
                           model.selectedItems.clear();

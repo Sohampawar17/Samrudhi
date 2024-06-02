@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/model/customer_model.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
 import '../model/add_order_model.dart';
@@ -10,7 +11,7 @@ import '../model/order_details_model.dart';
 import '../model/search_order_model.dart';
 
 class AddOrderServices {
-  Future<List<String>> fetchcustomer() async {
+  Future<List<Customer>> fetchcustomer() async {
     baseurl =  await geturl();
     try {
       var dio = Dio();
@@ -23,14 +24,11 @@ class AddOrderServices {
       );
 
       if (response.statusCode == 200) {
-        var jsonData = json.encode(response.data);
-        Map<String, dynamic> jsonDataMap = json.decode(jsonData);
-        List<dynamic> dataList = jsonDataMap["data"];
-        Logger().i(dataList);
-        List<String> namesList =
-            dataList.map((item) => item["name"].toString()).toList();
-            Logger().i(namesList.length);
-        return namesList;
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<Customer> caneList = List.from(jsonData['data'])
+            .map<Customer>((data) => Customer.fromJson(data))
+            .toList();
+        return caneList;
       } else {
         Fluttertoast.showToast(msg: "Unable to fetch Customer");
         return [];

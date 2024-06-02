@@ -11,9 +11,10 @@ import 'items_model.dart';
 
 
 class QuotationItemScreen extends StatelessWidget {
-
+  final String customer;
+  final String priceList;
   final List<Items> items;
-  const QuotationItemScreen({super.key, required this.items});
+  const QuotationItemScreen({super.key, required this.items, required this.customer, required this.priceList});
 
   @override
   Widget build(BuildContext context) {

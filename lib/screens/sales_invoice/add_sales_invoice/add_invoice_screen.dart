@@ -132,7 +132,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                           context,
                           Routes.invoiceItemScreen,
                           arguments: InvoiceItemScreenArguments(
-                              invoiceItems: model.selectedItems, warehouse: model.invoiceData.setWarehouse ?? '' ),
+                              invoiceItems: model.selectedItems, warehouse: model.invoiceData.setWarehouse ?? '', customer: model.invoiceData.customer ?? "", priceList: model.invoiceData.sellingPriceList ?? "" ),
                         ) as List<InvoiceItems>?;
                         if (SelectedItems != null) {
                           model.selectedItems.clear();

@@ -192,10 +192,10 @@ class _HomePageState extends State<HomePage> {
                                         buildButton("Sales Orders", 'assets/images/cargo.png', () {
                                           Navigator.pushNamed(context, Routes.listOrderScreen);
                                         },model),
-                                        if(model.isFormAvailableForDoctype("sales Invoice"))
-                                        buildButton("Sales Invoice", 'assets/images/bill.png', () {
-                                          Navigator.pushNamed(context, Routes.listInvoiceScreen);
-                                        },model),
+                                        // if(model.isFormAvailableForDoctype("sales Invoice"))
+                                        // buildButton("Sales Invoice", 'assets/images/bill.png', () {
+                                        //   Navigator.pushNamed(context, Routes.listInvoiceScreen);
+                                        // },model),
                                         if(model.isFormAvailableForDoctype("Attendance"))
                                         buildButton("Holidays", 'assets/images/calendar.png', () {
                                           Navigator.pushNamed(context, Routes.holidayScreen);

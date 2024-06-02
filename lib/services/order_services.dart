@@ -85,4 +85,35 @@ Logger().i(apiUrl);
     }
   }
 
+  Future<List<String>> fetchcustomer() async {
+    baseurl =  await geturl();
+    try {
+      var dio = Dio();
+      var response = await dio.request(
+        '$baseurl/api/resource/Customer?order_by=creation desc&fields=["customer_name"]',
+        options: Options(
+          method: 'GET',
+          headers: {'Authorization': await getTocken()},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonData = json.encode(response.data);
+        Map<String, dynamic> jsonDataMap = json.decode(jsonData);
+        List<dynamic> dataList = jsonDataMap["data"];
+        Logger().i(dataList);
+        List<String> namesList =
+        dataList.map((item) => item["customer_name"].toString()).toList();
+        return namesList;
+      } else {
+        Fluttertoast.showToast(msg: "Unable to fetch Customer");
+        return [];
+      }
+    } catch (e) {
+      Logger().e(e);
+      Fluttertoast.showToast(msg: "Unauthorized Customer!");
+      return [];
+    }
+  }
+
 }

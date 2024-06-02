@@ -13,7 +13,7 @@ class HolidayScreen extends StatelessWidget {
         viewModelBuilder: () => Holidayviewmodel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=> Scaffold(
-backgroundColor: Colors.grey.shade200,
+backgroundColor: Colors.white,
           appBar: AppBar(title: const Text('Holiday'),
 
           bottom:  PreferredSize(preferredSize: const Size(20, 75), child:Container(
@@ -66,23 +66,34 @@ backgroundColor: Colors.grey.shade200,
                       ? Expanded(
                     child: ListView.separated(
                         itemBuilder: (builder, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            height: 55,
-                            child:  ListTile(
-                              leading: Image.asset('assets/images/beach-chair.png',scale: 20,),
-                              title: AutoSizeText(model.holidaylist[index].description ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  AutoSizeText(model.holidaylist[index].date ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  AutoSizeText(model.holidaylist[index].day ?? "",style: const TextStyle(fontWeight: FontWeight.w300),),
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5), // Customize the shadow color and opacity
+                                    // spreadRadius: 5,
+                                    blurRadius: 7,
+                                    // offset: const Offset(0, 3), // Customize the shadow offset
+                                  ),
                                 ],
                               ),
-                            )
+                              height: 55,
+                              child:  ListTile(
+                                leading: Image.asset('assets/images/beach-chair.png',scale: 20,),
+                                title: AutoSizeText(model.holidaylist[index].description ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
+                                trailing: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    AutoSizeText(model.holidaylist[index].date ?? "",style: const TextStyle(fontWeight: FontWeight.bold),),
+                                    AutoSizeText(model.holidaylist[index].day ?? "",style: const TextStyle(fontWeight: FontWeight.w300),),
+                                  ],
+                                ),
+                              )
+                            ),
                           );
                         },
                         separatorBuilder: (context, builder) {

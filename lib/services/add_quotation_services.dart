@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/screens/Quotation/Add%20Quotation/add_quotation_viewmodel.dart';
 import 'package:logger/logger.dart';
 import '../constants.dart';
 import '../model/addquotation_model.dart';
@@ -72,7 +73,7 @@ class AddQuotationServices {
     }
   }
 
-  Future<List<String>> getcustomer(String quotaionto) async {
+  Future<List<Party>> getcustomer(String quotaionto) async {
     baseurl =  await geturl();
     var data = {'doctype': quotaionto};
     try {
@@ -87,13 +88,11 @@ class AddQuotationServices {
       );
 
       if (response.statusCode == 200) {
-        var jsonData = json.encode(response.data);
-        Map<String, dynamic> jsonDataMap = json.decode(jsonData);
-        List<dynamic> dataList = jsonDataMap["data"];
-        Logger().i(dataList);
-        List<String> namesList =
-        dataList.map((item) => item["name"].toString()).toList();
-        return namesList;
+        Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
+        List<Party> caneList = List.from(jsonData['data'])
+            .map<Party>((data) => Party.fromJson(data))
+            .toList();
+        return caneList;
       } else {
         Fluttertoast.showToast(msg: "UNABLE TO get notes!");
         return [];

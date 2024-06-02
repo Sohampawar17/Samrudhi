@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/widgets/customtextfield.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
@@ -10,9 +11,11 @@ import 'add_item_model.dart';
 
 class ItemScreen extends StatelessWidget {
   final String warehouse;
+  final String customer;
+  final String priceList;
   final List<Items> items;
 
-  const ItemScreen({super.key, required this.warehouse, required this.items});
+  const ItemScreen({super.key, required this.warehouse, required this.items, required this.customer, required this.priceList});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,7 @@ class ItemScreen extends StatelessWidget {
       viewModelBuilder: () => ItemListModel(),
       onViewModelReady: (model) => model.initialise(context, warehouse, items),
       builder: (context, model, child) => Scaffold(
+        backgroundColor: Colors.white,
           appBar: AppBar(
             title: const Text('Select Items'),
           ),
@@ -32,7 +36,7 @@ class ItemScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomSmallTextFormField(controller: model.searchController, labelText: 'Search', hintText: 'Type here to search',onChanged: model.searchItems,),
+                  CustomSmallTextFormField(controller: model.searchController, labelText: 'Search by item name', hintText: 'Type here to search',onChanged: model.searchItems,),
                   const SizedBox(height: 15),
                   ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
@@ -58,17 +62,31 @@ class ItemScreen extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Product Image
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child:CachedNetworkImage(
-                          imageUrl: '$baseurl${selectedItem.image}',
-                          width: 70, // Set width to twice the radius for a complete circle
-                          height: 70,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
-                          errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/image.png', scale: 5)),
-                        ),
+
+                      Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child:CachedNetworkImage(
+                              imageUrl: '$baseurl${selectedItem.image}',
+                              width: 70, // Set width to twice the radius for a complete circle
+                              height: 70,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                              errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/image.png', scale: 5)),
+                            ),
+                          ),
+                          AutoSizeText(
+                            'UOM:${selectedItem.uom}',
+                            style: const TextStyle(
+
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxFontSize:16.0,
+
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                       const SizedBox(width: 10),
                       // Product Details
@@ -87,18 +105,18 @@ class ItemScreen extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 AutoSizeText(
-                                  'Rate\n ${selectedItem.rate.toString()}',
+                                  'Rate: ${selectedItem.rate.toString()}',
                                   style: const TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(width: 40,),
                                 AutoSizeText(
-                                  'Actual Qty\n ${selectedItem.actualQty}',
+                                  'Actual Qty: ${selectedItem.actualQty}',
                                   style: const TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.w500),
@@ -114,6 +132,7 @@ class ItemScreen extends StatelessWidget {
 
                         children: [
                           Checkbox(value: model.isSelected(selectedItem),
+
                             onChanged: (bool? value) {
                               if (model.filteredItems.contains(selectedItem)) {
                                 model.toggleSelection(selectedItem);

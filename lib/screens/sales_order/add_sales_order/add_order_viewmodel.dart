@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/constants.dart';
+import 'package:geolocation/model/customer_model.dart';
 import 'package:geolocation/model/order_details_model.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -13,7 +14,7 @@ class AddOrderViewModel extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
   DateTime? selectedtransactionDate;
   DateTime? selecteddeliveryDate;
-  List<String> searchcutomer = [""];
+  List<Customer> searchcutomer = [];
   List<SearchCustomerList> cutomer = [];
   List<String> warehouse = [""];
   List<Items> selectedItems = [];
@@ -101,6 +102,15 @@ setBusy(false);
     }
   }
 
+  List<String> getTerritoryNames(){
+    if (searchcutomer.isEmpty) {
+      return [];
+    }
+    return searchcutomer
+        .where((item) => item.name != null && item.name!.isNotEmpty)
+        .map((item) => item.name.toString())
+        .toList();
+  }
 
  Future<void> onSubmitPressed(BuildContext context) async {
   if (orderStatus == 1) {
@@ -168,10 +178,8 @@ setBusy(false);
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-
     if (picked != null && picked != selecteddeliveryDate) {
       selecteddeliveryDate = picked;
-
       deliverydatecontroller.text = DateFormat('yyyy-MM-dd').format(picked);
       orderdata.deliveryDate = deliverydatecontroller.text;
     }
@@ -186,7 +194,9 @@ setBusy(false);
 
   void setcustomer(String? customer) {
     isSame=false;
-    orderdata.customer = customer;
+    var routeId = searchcutomer.firstWhere((details) => details.name == customer);
+    orderdata.customer = routeId.name;
+    orderdata.sellingPriceList=routeId.defaultPriceList;
     notifyListeners();
   }
 

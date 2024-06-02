@@ -77,10 +77,11 @@ class _CustomerListState extends State<CustomerList> {
                                                 AutoSizeText(
                                                   model.filterCustomerList[index].customerName ?? "",
                                                   style: const TextStyle(
-fontSize: 20,
+
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
                                                   ),
+                                                  minFontSize: 17,
                                                   maxLines: 2,
 
                                                 ),
@@ -92,11 +93,7 @@ fontSize: 20,
                                                 ),
                                               ],
                                             ),
-                                            const Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                              size: 40,
-                                            ),
+
                                           ],
                                         ),
                                         SizedBox(height: 15.0),

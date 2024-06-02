@@ -10,8 +10,10 @@ import 'add_item_model.dart';
 
 class InvoiceItemScreen extends StatelessWidget {
   final String warehouse;
+  final String customer;
+  final String priceList;
   final List<InvoiceItems> invoiceItems;
-  const InvoiceItemScreen({super.key, required this.invoiceItems, required this.warehouse});
+  const InvoiceItemScreen({super.key, required this.invoiceItems, required this.warehouse, required this.customer, required this.priceList});
 
   @override
   Widget build(BuildContext context) {

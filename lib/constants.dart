@@ -81,7 +81,9 @@ Future<String> geturl() async {
 void logout(BuildContext context) async {
   final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
   final SharedPreferences prefs = await prefs0;
-  prefs.clear();
+  prefs.remove("api_key");
+  prefs.remove("api_secret");
+  prefs.remove("url");
   if (context.mounted) {
     Navigator.popAndPushNamed(context, Routes.loginViewScreen);
   }

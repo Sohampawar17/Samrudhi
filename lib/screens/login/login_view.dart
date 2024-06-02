@@ -165,6 +165,16 @@ class _LoginViewScreenState extends State<LoginViewScreen> {
                               },
                               validator: (value) => model.validatePassword(value),
                             ),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  fillColor: MaterialStatePropertyAll(Colors.blueGrey),
+                                  value: model.rememberMe,
+                                  onChanged:model.changeRememberMe,
+                                ),
+                                const Text('Remember Me', style: const TextStyle(color: Colors.white,fontSize: 18))
+                              ],
+                            ),
                             const SizedBox(height: 36.0),
                             SizedBox(
                               height: 50,

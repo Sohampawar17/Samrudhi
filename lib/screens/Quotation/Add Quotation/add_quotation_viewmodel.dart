@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/addquotation_model.dart';
 import '../../../model/quotation_details_model.dart';
-import '../../../router.router.dart';
 import 'package:intl/intl.dart';
 import '../../../services/add_quotation_services.dart';
 
@@ -16,7 +15,7 @@ class AddQuotationModel extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
   DateTime? selectedtransactionDate;
   DateTime? selectedvalidtillDate;
-  List<String> searchcustomer = [""];
+  List<Party> searchcustomer = [];
   List<String> quotationto = ["Customer","Lead"];
   List<Items> selectedItems = [];
   List<Items> selectedItemsList = [];
@@ -72,6 +71,15 @@ quotationStatus=0;
     setBusy(false);
   }
 
+  List<String> getTerritoryNames(){
+    if (searchcustomer.isEmpty) {
+      return [];
+    }
+    return searchcustomer
+        .where((item) => item.partyName != null && item.partyName!.isNotEmpty)
+        .map((item) => item.partyName.toString())
+        .toList();
+  }
 
   void onSavePressed(BuildContext context) async {
      if (quotationStatus == 1) {
@@ -151,7 +159,6 @@ setBusy(false);
     setBusy(true);
     if (formKey.currentState!.validate()) {
       quotationdata.items = selectedItems;
-
       quotationdata.docstatus=2;
       bool res=false;
       Logger().i(quotationdata.toJson());
@@ -186,11 +193,6 @@ setBusy(false);
     }
   }
 
-
-
-
-  ///setvalues//
-
   void onvalidtillDobChanged(String value) {
     isSame=false;
     quotationdata.validTill = value;
@@ -199,7 +201,10 @@ setBusy(false);
 
   void setcustomer(String? customer) {
     isSame=false;
-    quotationdata.partyName = customer;
+    var routeId = searchcustomer.firstWhere((details) => details.partyName == customer);
+    quotationdata.partyName = routeId.name;
+    quotationdata.customerName=routeId.partyName;
+    quotationdata.sellingPriceList=routeId.defaultPriceList;
     notifyListeners();
   }
   void setquotationto(String? quotationTo) async {
@@ -368,3 +373,26 @@ setBusy(false);
     super.dispose();
   }
 }
+
+class Party {
+  String? name;
+  String? partyName;
+  String? defaultPriceList;
+
+  Party({this.name, this.partyName, this.defaultPriceList});
+
+  Party.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    partyName = json['party_name'];
+    defaultPriceList = json['default_price_list'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['party_name'] = this.partyName;
+    data['default_price_list'] = this.defaultPriceList;
+    return data;
+  }
+}
+

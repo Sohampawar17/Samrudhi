@@ -1,8 +1,10 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/constants.dart';
 import 'package:geolocation/services/login_services.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../router.router.dart';
@@ -17,7 +19,14 @@ class LoginViewModel extends BaseViewModel {
   bool obscurePassword = true;
   bool isLoading = false;
   bool isDemoLoading = false;
-  initialise() {}
+  initialise() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    rememberMe = prefs.getBool('rememberMe') ?? false;
+    if (rememberMe) {
+      usernameController.text = prefs.getString('username') ?? '';
+      passwordController.text = prefs.getString('password') ?? '';
+    }
+  }
 
   void loginwithUsernamePassword(BuildContext context) async {
     isLoading = true;
@@ -34,15 +43,19 @@ class LoginViewModel extends BaseViewModel {
       }
     } else {
       Logger().i('invalid credential');
-    //   Fluttertoast.showToast(
-    //       msg: "Invalid Credentials",
-    //       toastLength: Toast.LENGTH_LONG,
-    //       backgroundColor: Colors.white,
-    //       textColor: Colors.black,
-    //       fontSize: 16.0);
+      Fluttertoast.showToast(
+          msg: "Invalid Credentials",
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 16.0);
     }
   }
-
+  bool rememberMe = false;
+  void changeRememberMe(bool? value) {
+    rememberMe = value ?? false;
+    notifyListeners();
+  }
   void loginWithDemoUser(BuildContext context) async {
     isDemoLoading = true;
     notifyListeners();
@@ -53,17 +66,28 @@ class LoginViewModel extends BaseViewModel {
     isDemoLoading = false;
     notifyListeners();
     if (res) {
+      if (rememberMe) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', usernameController.text);
+        await prefs.setString('password', passwordController.text);
+        await prefs.setBool('rememberMe', true);
+      } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('username');
+        await prefs.remove('password');
+        await prefs.setBool('rememberMe', false);
+      }
       if (context.mounted) {
         Navigator.popAndPushNamed(context, Routes.homePage);
       }
     } else {
       Logger().i('invalid credential');
-      //   Fluttertoast.showToast(
-      //       msg: "Invalid Credentials",
-      //       toastLength: Toast.LENGTH_LONG,
-      //       backgroundColor: Colors.white,
-      //       textColor: Colors.black,
-      //       fontSize: 16.0);
+        Fluttertoast.showToast(
+            msg: "Invalid Credentials",
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 16.0);
     }
   }
 

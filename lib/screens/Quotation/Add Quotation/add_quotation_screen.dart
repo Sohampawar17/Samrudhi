@@ -45,25 +45,43 @@ class _AddQuotationViewState extends State<AddQuotationView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
-                  CustomDropdownButton2(
+                  DropdownButtonFormField<String>(
+                    isExpanded: true,
                     value: model.quotationdata.quotationTo,
-                    prefixIcon: Icons.person_2,
-                    items: model.quotationto,
-                    hintText: 'Select Quotation To',
-                    labelText: 'Quotation To',
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.card_membership),
+                      labelText: 'Quotation To',
+                      hintText: 'Enter the Quotation To',
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide:
+                          const BorderSide(color: Colors.blue, width: 2)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide:
+                          const BorderSide(color: Colors.grey, width: 2)),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: Colors.black45, width: 2)),
+                    ),
+                    items: model.quotationto.map((val) {
+                      return DropdownMenuItem<String>(
+                        value: val,
+                        child: AutoSizeText(val),
+                      );
+                    }).toList(),
                     onChanged: model.setquotationto,
 
                   ),
+
                   const SizedBox(
                     height: 15,
                   ),
                   CustomDropdownButton2(
                     value: model.quotationdata.partyName,
                     prefixIcon: Icons.person_2,
-                    items: model.searchcustomer,
+                    items: model.getTerritoryNames(),
                     hintText: 'Select the customer',
-
                     labelText: model.customerLabel,
                     onChanged: model.setcustomer,
                     validator: model.validateQuotationTo,
@@ -71,12 +89,12 @@ class _AddQuotationViewState extends State<AddQuotationView> {
                   const SizedBox(
                     height: 15,
                   ),
-if(model.isEdit==true)
-                  CustomSmallTextFormField(prefixIcon: Icons.person_pin,controller: model.customernamecontroller,labelText:'Party Name' ,hintText: 'Enter the Party'),
-                  if(model.isEdit==true)
+                  CustomSmallTextFormField(prefixIcon: Icons.person,readOnly: true,controller: TextEditingController(text: model.quotationdata.customerName ?? ""), labelText: 'Party Name', hintText: 'Enter the party name'),
+
                   const SizedBox(
                     height: 15,
                   ),
+
                   Row(
                     children: [
                       Expanded(
@@ -160,7 +178,7 @@ if(model.isEdit==true)
                       final SelectedItems = await Navigator.pushNamed(
                         context,
                         Routes.quotationItemScreen,
-                        arguments: QuotationItemScreenArguments(items: model.selectedItems),
+                        arguments: QuotationItemScreenArguments(items: model.selectedItems, customer: model.quotationdata.partyName ?? "", priceList: model.quotationdata.sellingPriceList ?? ""),
                       ) as List<Items>?;
 
                       if (SelectedItems != null) {

@@ -15,7 +15,7 @@ class ListOrderModel extends BaseViewModel {
   initialise(BuildContext context) async {
     setBusy(true);
     orderlist = await OrderServices().fetchsalesorder();
-    searchcutomer = await AddOrderServices().fetchcustomer();
+    searchcutomer = await OrderServices().fetchcustomer();
    filterorderlist=orderlist;
 
     setBusy(false);
