@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:geolocation/model/list_lead_model.dart';
 import 'package:geolocation/services/list_lead_services.dart';
@@ -62,12 +64,20 @@ Color getColorForStatus(String status) {
 
 
  void onRowClick(BuildContext context, ListLeadModel? leadList) {
-    Navigator.pushNamed(
-      context,
-      Routes.updateLeadScreen,
-     arguments: UpdateLeadScreenArguments(updateId: leadList?.name.toString() ?? ""),
-    );
-  }
+     Navigator.pushNamed(
+       context,
+       Routes.updateLeadScreen,
+       arguments: UpdateLeadScreenArguments(updateId: leadList?.name.toString() ?? ""),
+     );
+   }
+
+void navigateToVisitScreen(BuildContext context, ListLeadModel? leadModel) {
+  Navigator.pushNamed(
+    context,
+    Routes.addVisitScreen,
+    arguments: AddVisitScreenArguments( leadModel: leadModel!),
+  );
+}
 
 String? custm;
 

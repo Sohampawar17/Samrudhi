@@ -13,26 +13,51 @@ class UpdateLeadModel extends BaseViewModel{
   final CallsAndMessagesService service = CallsAndMessagesService();
 String? note;
 TextEditingController controller=TextEditingController();
-List<String> status=["Not Interested",
-  "Call Back",
-  "Converted For Demo",
-  "Details Shared",
-  "Ringing",
-  "Call Back",
-  "Busy",
-  "Switch Off"];
+TextEditingController descriptonController=TextEditingController();
 
+  List<String> enquiryTypes=["Enquiry", "Interested","Not Interested"];
+
+  var leadName;
   AddLeadModel leaddata =AddLeadModel();
-bool res=false;
-List<NotesList> notes=[];
+  bool res=false;
+  List<NotesList> notes=[];
   initialise(BuildContext context,String leadId) async {
     setBusy(true);
     if(leadId !=""){
- leaddata= await AddLeadServices().getlead(leadId) ?? AddLeadModel();
- notes=await UpdateLeadServices().getnotes(leadId);
- Logger().i(notes.length);
- notifyListeners();
+      leaddata= await AddLeadServices().getlead(leadId) ?? AddLeadModel();
+      notes=await UpdateLeadServices().getnotes(leadId);
+
+      Logger().i(notes.length);
+      notifyListeners();
     }
+    setBusy(false);
+  }
+
+  Color getColorForStatus(String status) {
+    switch (status) {
+      case 'Enquiry':
+        return Colors.blueGrey; // Light Blue Grey for Lead
+    // Light Green for Interested
+      case 'Interested':
+        return Colors.green;
+      case 'Not Interested':
+        return Colors.red;  // Dark Grey for Converted
+      // Red for Do Not Contact
+      default:
+        return Colors.grey; // Default Grey for unknown status
+    }
+  }
+
+  Future<void> changeState(BuildContext context,String? enquiryType,String? reason) async {
+    setBusy(true);
+    leaddata.customEnquiryStatus = enquiryType;
+    leaddata.customReason = reason;
+    bool res = false;
+    res =  await AddLeadServices().updateOrder(leaddata);
+    if (res) {
+      initialise(context,leaddata.name.toString());
+    }
+    notifyListeners();
     setBusy(false);
   }
 
@@ -61,7 +86,7 @@ void deletenote(String? lead,int? index)async{
  res=await UpdateLeadServices().deletenotes(lead, index);
  if(res){
   notes=await UpdateLeadServices().getnotes(lead);
-  
+
  }
 }
  notifyListeners();
@@ -80,10 +105,10 @@ notifyListeners();
 }
 
 
-void changestatus(String? lead,String? type)async{
-  if(lead!.isNotEmpty && type!.isNotEmpty){
-  await UpdateLeadServices().changestatus(lead,type);
-  leaddata.customCallStatus=type;}
-  notifyListeners();
-}
+  void updateEnquiryType(String enquiryType,String reason)async{
+    leaddata.customEnquiryStatus = enquiryType;
+    leaddata.customReason = reason;
+    await AddLeadServices().updateOrder(leaddata);
+
+  }
 }

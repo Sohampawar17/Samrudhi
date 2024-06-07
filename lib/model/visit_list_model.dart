@@ -1,6 +1,8 @@
 class VisitListModel {
   String? name;
+  String? visitor;
   String? customerName;
+  String? enquiry;
   String? date;
   String? startTime;
   String? endTime;
@@ -11,6 +13,8 @@ class VisitListModel {
 
   VisitListModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    visitor = json["visitor"];
+    enquiry = json["enquiry"];
     customerName = json['customer_name'];
     date = json['date'];
     startTime = json['start_time'];
@@ -22,6 +26,8 @@ class VisitListModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['name'] = name;
+    data['visitor']= visitor;
+    data["enquiry"]= enquiry;
     data['customer_name'] = customerName;
     data['date'] = date;
     data['start_time'] = startTime;

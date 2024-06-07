@@ -11,7 +11,10 @@ import '../../../widgets/text_button.dart';
 import 'customer_list_viewmodel.dart';
 
 class CustomerList extends StatefulWidget {
-  const CustomerList({super.key});
+  final bool showAppBar;
+
+  const CustomerList({super.key, this.showAppBar = true});
+
 
   @override
   State<CustomerList> createState() => _CustomerListState();
@@ -23,10 +26,10 @@ class _CustomerListState extends State<CustomerList> {
     return ViewModelBuilder<CustomerListViewModel>.reactive(  viewModelBuilder: () => CustomerListViewModel(),
         onViewModelReady: (model) => model.initialise(context),
         builder: (context, model, child)=>Scaffold(
-          appBar: AppBar(title: const Text('Customer List'),centerTitle: true,
+          appBar: widget.showAppBar? AppBar(title: const Text('Customer List'),centerTitle: true,
           actions: [
             IconButton(onPressed: ()=>_showBottomSheet(context,model), icon: Icon(Icons.filter_list_rounded))
-          ],),
+          ],):null,
           body:  WillPopScope(
             onWillPop: ()  async{
               Navigator.pop(context);
@@ -38,6 +41,54 @@ class _CustomerListState extends State<CustomerList> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
+                      Column(
+                        children: [
+                          CustomDropdownButton2(
+                            value: model.custm,
+                            prefixIcon: Icons.person_2,
+                            items: model.customerShowList,
+                            hintText: 'Select the Customer',
+                            labelText: 'Customer',
+                            onChanged: model.setcustomer,
+                          ),
+                          const SizedBox(height: 10.0),
+                          CustomDropdownButton2(
+                            value: model.territory,
+                            prefixIcon: Icons.my_location,
+                            items: model.territoryList,
+                            hintText: 'Select the Territory',
+                            labelText: 'Territory',
+                            onChanged: model.setqterritory,
+                          ),
+
+                          const SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CtextButton(
+                                onPressed: () {
+                                  model.clearfilter();
+
+                                },
+                                text: 'Clear Filter',
+                                buttonColor: Colors.black54,
+
+                              ),
+                              CtextButton(
+                                onPressed: () {
+                                  model.setfilter(model.territory ?? "",
+                                      model.custm ?? "");
+
+                                },
+                                text: 'Apply Filter',
+                                buttonColor: Colors.blueAccent.shade400,
+
+                              ),
+
+                            ],
+                          ),
+                        ],
+                      ),
                       model.filterCustomerList.isNotEmpty
                           ? Expanded(
                         child: ListView.separated(
@@ -68,6 +119,7 @@ class _CustomerListState extends State<CustomerList> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
+
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [

@@ -92,14 +92,14 @@ class CustomerVisitViewModel extends BaseViewModel{
         .map((item) => item.employeeName.toString())
         .toList();
   }
-
-  void onRowClick(BuildContext context, VisitListModel? visitList) {
-    Navigator.pushNamed(
-      context,
-      Routes.addVisitScreen,
-      arguments: AddVisitScreenArguments(VisitId: visitList?.name ?? ""),
-    );
-  }
+  //
+  // void onRowClick(BuildContext context, VisitListModel? visitList) {
+  //   Navigator.pushNamed(
+  //     context,
+  //     Routes.addVisitScreen,
+  //     arguments: AddVisitScreenArguments(VisitId: visitList?.name ?? ""),
+  //   );
+  // }
 
   getCoordinates(List<ActualRoute> location) async {
     List listOfPoints = [];

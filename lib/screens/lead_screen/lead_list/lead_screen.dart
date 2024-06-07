@@ -9,7 +9,10 @@ import '../../../widgets/drop_down.dart';
 import '../../../widgets/text_button.dart';
 
 class LeadListScreen extends StatefulWidget {
-  const LeadListScreen({super.key});
+  final bool showAppBar;
+
+  const LeadListScreen({super.key, this.showAppBar = true});
+
 
   @override
   State<LeadListScreen> createState() => _LeadListScreenState();
@@ -23,7 +26,7 @@ class _LeadListScreenState extends State<LeadListScreen> {
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child)=> Scaffold(
         backgroundColor: Colors.grey.shade200,
-appBar: AppBar(title: const Text('Enquiry'),
+appBar: widget.showAppBar? AppBar(title: const Text('Enquiry'),
   actions: [
     IconButton(
       icon: const Icon(Icons.filter_list),
@@ -32,7 +35,7 @@ appBar: AppBar(title: const Text('Enquiry'),
       },
     ),
   ],
-leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),),
+leading: IconButton.outlined(onPressed: ()=>Navigator.pop(context), icon: const Icon(Icons.arrow_back)),):null,
 body: WillPopScope(
   onWillPop: ()  async{
     Navigator.pop(context);
@@ -42,6 +45,57 @@ body: WillPopScope(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
+                        Column(
+                          children: [
+                            CustomDropdownButton2(
+                              value: model.custm,
+                              prefixIcon: Icons.person_2,
+                              items: model.customerlist,
+                              hintText: 'Select the Lead Name',
+                              labelText: 'Lead Name',
+                              onChanged: model.setcustomer,
+                            ),
+                            const SizedBox(height: 10.0),
+                            CustomDropdownButton2(
+                              value: model.request,
+                              prefixIcon: Icons.request_page,
+                              items: model.requestType,
+                              hintText: 'Select the Request Type',
+                              labelText: 'Request Type',
+                              onChanged: model.setRequest,
+                            ),
+
+                            const SizedBox(height: 10.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                CtextButton(
+                                  onPressed: () {
+                                    model.clearfilter();
+                                    // Navigator.pop(
+                                    //     context); // Close the bottom sheet
+                                  },
+                                  text: 'Clear Filter',
+                                  buttonColor: Colors.black54,
+
+                                ),
+                                CtextButton(
+                                  onPressed: () {
+                                    model.setfilter(
+                                        model.custm ?? "",model.request ?? "");
+                                   // Navigator.pop(context);
+                                  },
+                                  text: 'Apply Filter',
+                                  buttonColor: Colors.blueAccent.shade400,
+
+                                ),
+
+                              ],
+                            ),
+
+                            const SizedBox(height: 10.0)
+                          ],
+                        ),
                         model.filterleadlist.isNotEmpty
                             ? Expanded(
                                 child: RefreshIndicator(
@@ -64,7 +118,8 @@ body: WillPopScope(
                                         ],
                                       ),
                                           child: MaterialButton(
-                                          onPressed: ()=>model.onRowClick(context, model.filterleadlist[index]),
+                                          onPressed: ()=>widget.showAppBar?model.onRowClick(context, model.filterleadlist[index]):model.navigateToVisitScreen(context, model.filterleadlist[index]
+                                          ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(15.0),
                                               child: Column(
@@ -104,7 +159,7 @@ body: WillPopScope(
                                                         ],
                                                       ),
                                                       Card(
-                                                        
+
                                                         color: model.getColorForStatus(model.filterleadlist[index]
                                                             .status ??
                                                             ""),
@@ -115,7 +170,7 @@ body: WillPopScope(
                                                                   20.0),
                                                           // Set border color and width
                                                         ),
-                                                       
+
                                                         // Make the inside of the card hollow
                                                         child: Padding(
                                                           padding:
@@ -138,7 +193,7 @@ body: WillPopScope(
                                                       ),
                                                     ],
                                                   ),
-                                                  const SizedBox(height: 15.0),
+                                                  const SizedBox(height: 10.0),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -151,7 +206,7 @@ body: WillPopScope(
                                                         children: [
                                                           const Text(
                                                             'Company Name',
-  
+
                                                           ),
                                                           Text(
                                                             model.filterleadlist[index]
@@ -170,7 +225,7 @@ body: WillPopScope(
                                                         children: [
                                                           const Text(
                                                             'Territory',
-  
+
                                                           ),
                                                           Text(
                                                             model.filterleadlist[index]
@@ -183,7 +238,7 @@ body: WillPopScope(
                                                           ),
                                                         ],
                                                       ),
-                                                      
+
                                                     ],
 
                                                   ),
@@ -201,7 +256,6 @@ body: WillPopScope(
                                                 ],
                                               ),
                                             ),
-                                            
                                           ),
                                         );
                                       },

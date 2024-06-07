@@ -26,8 +26,8 @@ class VisitViewModel extends BaseViewModel{
   void onRowClick(BuildContext context, VisitListModel? visitList) {
     Navigator.pushNamed(
       context,
-      Routes.addVisitScreen,
-      arguments: AddVisitScreenArguments(VisitId: visitList?.name ?? ""),
+      Routes.updateVisitScreen,
+      arguments: UpdateVisitScreenArguments(updateId: visitList?.name ?? ""),
     );
   }
 

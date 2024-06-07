@@ -217,6 +217,8 @@ class UpdateCustomerViewModel extends BaseViewModel{
         String formattedAddress =
             await geolocationService.getAddressFromCoordinates(
                 position.latitude, position.longitude) ?? "";
+
+        visitdata.visitor = "Customer";
         visitdata.customer = customerData.name;
         visitdata.customerName = customerData.customerName;
         visitdata.visitType = selectedVisitType;
@@ -225,12 +227,12 @@ class UpdateCustomerViewModel extends BaseViewModel{
         visitdata.location = formattedAddress;
         visitdata.startLatitude = position.latitude.toString();
         visitdata.startLongitude = position.longitude.toString();
-        visitdata.location = formattedAddress;
+        visitdata.startLocation = formattedAddress;
         visitdata.startTime =formatTime();
 
         visitId = await AddVisitServices().addVisit(visitdata);
         await prefs.setString(visitIdKey,visitId);
-        if(visitId.isNotEmpty || visitId != null){
+        if(visitId.isNotEmpty){
           startTimer(countdownSeconds);
         }else{
           Fluttertoast.showToast(msg: 'Failed to upload data. Timer can not be started');
@@ -264,7 +266,7 @@ class UpdateCustomerViewModel extends BaseViewModel{
       visitId = prefs.getString(visitIdKey)!;
     }
     if(visitId.isNotEmpty) {
-      print(visitId);
+
       setBusy(true);
         Logger().i(visitdata.toJson());
         //bool res = false;
@@ -286,10 +288,10 @@ class UpdateCustomerViewModel extends BaseViewModel{
 
           String formattedAddress =
               await geolocationService.getAddressFromCoordinates(position.latitude, position.longitude) ?? "";
-
+          visitdata.visitor = "Customer";
           visitdata.latitude = position.latitude.toString();
           visitdata.longitude = position.longitude.toString();
-          visitdata.location = formattedAddress;
+          visitdata.endLocation = formattedAddress;
           visitdata.endTime = formatTime();
           visitdata.endLatitude = position.latitude.toString();
           visitdata.endLongitude = position.longitude.toString();

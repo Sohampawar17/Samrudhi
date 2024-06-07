@@ -58,8 +58,7 @@ class _VisitScreenState extends State<VisitScreen> {
                           ],
                         ),
                         child: MaterialButton(
-                          onPressed: () =>{},
-                         //   model.onRowClick(context, model.visitList[index]),
+                          onPressed: () => model.onRowClick(context, model.visitList[index]),
 
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,9 +109,9 @@ class _VisitScreenState extends State<VisitScreen> {
                                   FontWeight.w400,
                                 ),),
                               const SizedBox(height: 10),
-                              Text( "Customer Name", style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w800)),
+                              Text(model.visitList[index].visitor == "Customer" ? "Customer Name":"Enquiry Name", style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w800)),
 
-                              Text(model.visitList[index].customerName.toString(), style: const TextStyle(fontSize: 15)),
+                              Text( model.visitList[index].visitor == "Customer"?model.visitList[index].customerName.toString() : model.visitList[index].enquiry.toString(), style: const TextStyle(fontSize: 15)),
                             ],
                           ),
                         ),
@@ -134,7 +133,7 @@ class _VisitScreenState extends State<VisitScreen> {
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
-            onPressed: ()=>Navigator.pushNamed(context, Routes.customerList),
+            onPressed: ()=>Navigator.pushNamed(context, Routes.selectVisitScreen),
             label: const Text('Create Visit'),),
         ));
   }

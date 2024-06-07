@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/lead_screen/update_screen/update_viewmodel.dart';
 import 'package:geolocation/widgets/customtextfield.dart';
+import 'package:geolocation/widgets/drop_down.dart';
 
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
@@ -42,13 +43,69 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildInfoItem('Requested Type', model.leaddata.customCustomRequestType ?? ""),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                children: <Widget>[
+
+                                  _buildInfoItem('Requested Type', model.leaddata.customCustomRequestType ?? ""),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                                    decoration: BoxDecoration(
+
+                                      color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()).withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            model.leaddata.customEnquiryStatus ?? "",
+                                            style: TextStyle(
+
+                                              color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          PopupMenuButton<String>(
+                                            icon: Icon(Icons.arrow_drop_down, color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString())),
+                                            itemBuilder: (BuildContext context) {
+                                              return model.enquiryTypes.map<PopupMenuItem<String>>((String item) {
+                                                return PopupMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(item),
+                                                );
+                                              }).toList();
+                                            },
+                                            onSelected: (String value) {
+
+                                                setState(() {
+                                                  model.leaddata.customEnquiryStatus = value;
+                                                  if(value == "Not Interested"){
+                                                    showAlertDialog(context, model);
+                                                  }else if(value == "Interested"){
+                                                    model.updateEnquiryType(value, "");
+                                                  }
+                                                });
+
+
+                                            },
+                                          ),]
+                                    ),
+                                  )
+                                  // _buildDropdown('Enquiry Status', model),
+
+                                ]
+                            ),
+                            if(model.leaddata.customReason !="")
+                            _buildInfoItem('Reason', model.leaddata.customReason ?? ""),
                             _buildInfoItem('Lead Owner', model.leaddata.leadOwner ?? ""),
                             _buildInfoItem('Name', model.leaddata.leadName ?? ""),
                             _buildInfoItem('Email', model.leaddata.emailId ??""),
                             _buildInfoItem('Mobile', model.leaddata.mobileNo ?? ""),
                             _buildInfoItem('Territory', model.leaddata.territory ?? ""),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -257,6 +314,85 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
       ),
     );
   }
+
+
+  // Widget _buildDropdown(String label, UpdateLeadModel updateLeadModel) {
+  //   return Padding(
+  //     padding: EdgeInsets.symmetric(vertical: 8.0),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           label,
+  //           style: TextStyle(
+  //             color: Colors.grey[600],
+  //             fontSize: 14,
+  //           ),
+  //         ),
+  //         SizedBox(height: 4),
+  //         DropdownButton<String>(
+  //           value: updateLeadModel.selectedEnquiryType,
+  //           hint: Text('Select an option'),
+  //           items: updateLeadModel.enquiryTypes.map((String option) {
+  //             return DropdownMenuItem<String>(
+  //               value: option,
+  //               child: Text(option),
+  //             );
+  //           }).toList(),
+  //           onChanged: (String? newValue) {
+  //             setState(() {
+  //               updateLeadModel.selectedEnquiryType = newValue!;
+  //               if(newValue == "Not Interested"){
+  //                 showAlertDialog(context, updateLeadModel);
+  //               }else{
+  //                 updateLeadModel.updateEnquiryType(newValue, "");
+  //               }
+  //             });
+  //
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  void showAlertDialog(BuildContext context,UpdateLeadModel updateLeadModel) {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Reason'),
+          content: TextField(
+            controller: updateLeadModel.descriptonController,
+            maxLines: 2,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+              hintText: 'Enter your reason',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                updateLeadModel.updateEnquiryType("Not Interested", updateLeadModel.descriptonController.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
   Widget _buildContactButton({required String image, required Function onPressed}) {
     return InkWell(

@@ -146,6 +146,7 @@ class AddLeadServices{
       );
 
       if (response.statusCode == 200) {
+        print(response.data);
         Logger().i(AddLeadModel.fromJson(response.data["data"]));
         return AddLeadModel.fromJson(response.data["data"]);
       } else {

@@ -11,36 +11,54 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../model/add_lead_model.dart';
 import '../../../model/add_visit_model.dart';
+import '../../../model/notes_list.dart';
+import '../../../services/add_lead_services.dart';
 import '../../../services/add_visit_services.dart';
 import '../../../services/geolocation_services.dart';
+import '../../../services/update_lead_services.dart';
 import '../../../utility/countdown_timer.dart';
 
 class AddVisitViewModel extends BaseViewModel{
-  TextEditingController descriptoncontroller=TextEditingController();
+  TextEditingController descriptonController=TextEditingController();
 
-  AddVisitModel visitdata =AddVisitModel();
+  AddVisitModel visitData =AddVisitModel();
   final formKey = GlobalKey<FormState>();
   List<String> visitType=[""];
   List<String> customer=[""];
   bool isEdit = false;
   String visitId = "";
+  late SharedPreferences prefs;
+
 
   CountdownTimer? countdownTimer;
   int countdownSeconds = 0; // Initial countdown seconds
   bool isTimerRunning = false;
   static const String timerStartKey = 'timer_start';
   static const String timerElapsedKey = 'timer_elapsed';
+  static const String enquiryKey = 'enquiryKey';
+  static const String visitTypeKey = 'visitTypeKey';
+  static const String visitIdKey = 'visitIdKey';
+  String selectedVisitType = "";
 
-  initialise(BuildContext context, String visitId) async {
+  AddLeadModel leadData =AddLeadModel();
+  bool res=false;
+  List<NotesList> notes=[];
+
+  initialise(BuildContext context, String leadId) async {
     setBusy(true);
+    prefs = await SharedPreferences.getInstance();
     visitType=await AddVisitServices().fetchVisitType();
-    customer=await AddVisitServices().fetchcustomer();
-    if(visitId!=""){
-      isEdit = true;
-      visitdata =await AddVisitServices().getVisit(visitId) ?? AddVisitModel();
-      descriptoncontroller.text=visitdata.description ?? "";
-    }
+    leadData= await AddLeadServices().getlead(leadId) ?? AddLeadModel();
+    notes=await UpdateLeadServices().getnotes(leadId);
+
+   // customer=await AddVisitServices().fetchcustomer();
+   //  if(visitId!=""){
+   //    isEdit = true;
+   //    visitdata =await AddVisitServices().getVisit(visitId) ?? AddVisitModel();
+   //    descriptoncontroller.text=visitdata.description ?? "";
+   //  }
    await restoreTimerState();
 
     // Listen to app lifecycle changes
@@ -68,17 +86,24 @@ class AddVisitViewModel extends BaseViewModel{
     final prefs = await SharedPreferences.getInstance();
     final timerStart = prefs.getInt(timerStartKey);
     final timerElapsed = prefs.getInt(timerElapsedKey);
+    final leadId = prefs.getString(enquiryKey);
+    final visitTypeString = prefs.getString(visitTypeKey);
 
-    if (timerStart != null && timerElapsed != null) {
+    if (timerStart != null && timerElapsed != null   && leadId == leadData.name) {
       final now = DateTime.now().millisecondsSinceEpoch;
       final elapsed = (now - timerStart) ~/ 1000 + timerElapsed;
       countdownSeconds = elapsed;
-
-        startTimer(countdownSeconds);
+      selectedVisitType = visitTypeString!;
+      startTimer(countdownSeconds);
 
       notifyListeners();
     }
   }
+  void setVisitType(String visitType){
+    this.selectedVisitType =visitType;
+    notifyListeners();
+  }
+
 
   void initTimerOperation(BuildContext context) {
     // Initialize timer callbacks
@@ -116,12 +141,16 @@ class AddVisitViewModel extends BaseViewModel{
 
     await prefs.setInt(timerStartKey, now);
     await prefs.setInt(timerElapsedKey, countdownSeconds);
+    await prefs.setString(enquiryKey, leadData.name!);
+    await prefs.setString(visitTypeKey,selectedVisitType!);
   }
 
   Future<void> clearTimerState() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(timerStartKey);
     await prefs.remove(timerElapsedKey);
+    await prefs.remove(enquiryKey);
+    await prefs.remove(visitTypeKey);
   }
 
 
@@ -142,10 +171,7 @@ class AddVisitViewModel extends BaseViewModel{
 
 
   void onSavePressed() async {
-   // setBusy(true);
-    if (formKey.currentState!.validate()) {
-
-      //bool res = false;
+      Fluttertoast.showToast(msg: 'Fetching location. Wait for few seconds..');
       GeolocationService geolocationService = GeolocationService();
       try {
         Position? position = await geolocationService.determinePosition();
@@ -165,24 +191,30 @@ class AddVisitViewModel extends BaseViewModel{
             await geolocationService.getAddressFromCoordinates(
                 position.latitude, position.longitude) ??
                 "";
-        visitdata.latitude = position.latitude.toString();
-        visitdata.longitude = position.longitude.toString();
-        visitdata.location = formattedAddress;
-        visitdata.startLatitude = position.latitude.toString();
-        visitdata.startLongitude = position.longitude.toString();
-        visitdata.location = formattedAddress;
-        visitdata.startTime =formatTime();
-
-       visitId = await AddVisitServices().addVisit(visitdata);
-        Logger().i(visitdata.toJson());
+        visitData.visitor = "Enquiry";
+        visitData.enquiry = leadData.leadName;
+        visitData.visitType = selectedVisitType;
+        visitData.enquiryName= "${leadData.firstName} ${leadData.leadName}";
+        visitData.requestType= leadData.customCustomRequestType;
+        visitData.startLocation = formattedAddress;
+        visitData.startLatitude = position.latitude.toString();
+        visitData.startLongitude = position.longitude.toString();
+        visitData.startLocation = formattedAddress;
+        visitData.startTime =formatTime();
+        visitId = await AddVisitServices().addVisit(visitData);
+        await prefs.setString(visitIdKey,visitId);
+        if(visitId.isNotEmpty){
+          startTimer(countdownSeconds);
+        }else{
+          Fluttertoast.showToast(msg: 'Failed to upload data. Timer can not be started');
+        }
+        Logger().i(visitData.toJson());
       } catch (e) {
         Fluttertoast.showToast(msg: '$e');
       } finally {
        // setBusy(false);
       }
 
-    }
-    //setBusy(false);
   }
 
   String formatTimer(int seconds) {
@@ -200,12 +232,12 @@ class AddVisitViewModel extends BaseViewModel{
 
 
   void onVisitSubmit(BuildContext context) async {
+    if(visitId.isEmpty) {
+      visitId = prefs.getString(visitIdKey)!;
+    }
      if(visitId.isNotEmpty) {
-       print(visitId);
        setBusy(true);
-       if (formKey.currentState!.validate()) {
-         Logger().i(visitdata.toJson());
-         //bool res = false;
+
          GeolocationService geolocationService = GeolocationService();
          try {
            Position? position = await geolocationService.determinePosition();
@@ -226,15 +258,18 @@ class AddVisitViewModel extends BaseViewModel{
                await geolocationService.getAddressFromCoordinates(
                    position.latitude, position.longitude) ??
                    "";
-           visitdata.latitude = position.latitude.toString();
-           visitdata.longitude = position.longitude.toString();
-           visitdata.location = formattedAddress;
-           visitdata.endTime = formatTime();
-           visitdata.endLatitude = position.latitude.toString();
-           visitdata.endLongitude = position.longitude.toString();
-           visitdata.description = descriptoncontroller.text;
-           visitdata.name = visitId;
-           await AddVisitServices().addVisit(visitdata);
+
+           visitData.latitude = position.latitude.toString();
+           visitData.longitude = position.longitude.toString();
+           visitData.endLocation = formattedAddress;
+           visitData.visitType = selectedVisitType;
+           visitData.endTime = formatTime();
+           visitData.endLatitude = position.latitude.toString();
+           visitData.endLongitude = position.longitude.toString();
+           visitData.description = descriptonController.text;
+           visitData.name = visitId;
+           await AddVisitServices().addVisit(visitData);
+           await prefs.remove(visitIdKey);
          //  Navigator.popUntil(context, ModalRoute.withName(Routes.visitScreen));
          } catch (e) {
            Fluttertoast.showToast(msg: '$e');
@@ -243,10 +278,7 @@ class AddVisitViewModel extends BaseViewModel{
          }
        }
        setBusy(false);
-     }else{
-       Fluttertoast.showToast(msg: 'Existing details are not available.');
 
-     }
   }
 
   String formatTime(){
@@ -263,19 +295,19 @@ class AddVisitViewModel extends BaseViewModel{
 
 
   void setcustomer(String? expenseDate){
-    visitdata.customer =expenseDate;
+    visitData.customer =expenseDate;
     notifyListeners();
   }
 
   void setdescription(String expenseDescription){
-    descriptoncontroller.text=expenseDescription;
-    visitdata.description =descriptoncontroller.text;
+    descriptonController.text=expenseDescription;
+    visitData.description =descriptonController.text;
     notifyListeners();
   }
 
 
   void seteleavetype(String? expenseType){
-    visitdata.visitType =expenseType;
+    visitData.visitType =expenseType;
     notifyListeners();
   }
 
@@ -310,7 +342,7 @@ class AddVisitViewModel extends BaseViewModel{
   ///dispose controllers
   @override
   void dispose() {
-    descriptoncontroller.dispose();
+    descriptonController.dispose();
     super.dispose();
   }
 }

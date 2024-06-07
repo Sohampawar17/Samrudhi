@@ -49,6 +49,8 @@ class AddLeadModel {
   String? latitude;
   String? longitude;
   String? location;
+  String? customEnquiryStatus;
+  String? customReason;
 
   AddLeadModel(
       {this.name,
@@ -100,7 +102,9 @@ class AddLeadModel {
         this.notes,
         this.latitude,
         this.longitude,
-        this.location
+        this.location,
+        this.customEnquiryStatus,
+        this.customReason
 
       });
 
@@ -160,6 +164,8 @@ class AddLeadModel {
     latitude = json['custom_latitude'].toString();
     longitude = json ['custom_longitude'].toString();
     location = json['custom_address'];
+    customEnquiryStatus = json ["custom_enquiry_status"];
+    customReason = json["custom_reason"];
   }
 
   Map<String, dynamic> toJson() {
@@ -216,6 +222,8 @@ class AddLeadModel {
     data['custom_address']= location;
     data['custom_latitude']= latitude;
     data['custom_longitude']=longitude;
+    data['custom_enquiry_status'] = customEnquiryStatus;
+    data['custom_reason']= customReason;
     return data;
   }
 }
