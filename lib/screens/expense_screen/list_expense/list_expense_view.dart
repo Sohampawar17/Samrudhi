@@ -95,10 +95,8 @@ class ExpenseScreen extends StatelessWidget {
             ),
             ),
           ),
-          body: WillPopScope(
-            onWillPop: ()  async{
-              Navigator.pop(context);
-                  return true; },
+          body: RefreshIndicator(
+            onRefresh: ()=> model.refresh(context),
             child: fullScreenLoader(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -120,7 +118,7 @@ class ExpenseScreen extends StatelessWidget {
                         ],
                       ),
                       child: const Row(
-            
+
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Icon(Icons.drafts,color: Colors.grey,)
@@ -289,7 +287,7 @@ class ExpenseScreen extends StatelessWidget {
                 height: 100,
                 child: const Center(child: Text('No attendance found for this year and month')),
                 )
-            
+
                 ],
                 ),
               ),

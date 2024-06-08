@@ -20,6 +20,7 @@ class LoginViewModel extends BaseViewModel {
   bool isLoading = false;
   bool isDemoLoading = false;
   initialise() async {
+    rememberMe=true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     rememberMe = prefs.getBool('rememberMe') ?? false;
     if (rememberMe) {

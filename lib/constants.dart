@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geolocation/model/customer_visit_model.dart';
 import 'package:geolocation/router.router.dart';
-import 'package:latlong2/latlong.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/get_teritorry_details.dart';
@@ -13,12 +13,10 @@ getHeight(context) => (MediaQuery.of(context).size.height);
 getWidth(context) => (MediaQuery.of(context).size.width);
 const kAadharpdf = "AadharCard";
 String baseurl = geturl.toString();
-// https://demomilkunion.erpdata.in/
 String apiaddLocation = '$baseurl/api/resource/Employee Location';
 String apisalesorder =
     '$baseurl/api/resource/Sales Order?fields=["name","customer_name","transaction_date","grand_total","status","total_qty"]';
 String apiUploadFilePost = '$baseurl/api/method/upload_file';
-
 const String apiurl =
     'https://api.openrouteservice.org/v2/directions/driving-car';
 const String apiKey =
