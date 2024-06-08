@@ -41,6 +41,10 @@ List<LeaveList> get takenlist => _takenleavelist;
 
     return filteredLeaves;
   }
+Future<void> refresh(BuildContext context) async {
+  initialise(context);
+  notifyListeners();
+}
 
 
 Color getColorForStatus(String status) {

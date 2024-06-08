@@ -94,10 +94,8 @@ class ListLeaveScreen extends StatelessWidget {
             ),
             ),
           ),
-          body: WillPopScope(
-            onWillPop: ()  async{
-              Navigator.pop(context);
-                  return true; },
+          body: RefreshIndicator(
+            onRefresh: ()=> model.refresh(context),
             child: fullScreenLoader(
               child: SingleChildScrollView(
                 // controller: ScrollController(keepScrollOffset: false),
@@ -114,7 +112,7 @@ class ListLeaveScreen extends StatelessWidget {
                       model.leavelist.isNotEmpty
                           ? ListView.separated(
                              controller: ScrollController(keepScrollOffset: false),
-               
+
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (builder, index) {
@@ -207,7 +205,7 @@ class ListLeaveScreen extends StatelessWidget {
                       model.takenlist.isNotEmpty
                           ? ListView.separated(
                              controller: ScrollController(keepScrollOffset: false),
-               
+
                 physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (builder, index) {
@@ -298,8 +296,8 @@ class ListLeaveScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            
-            
+
+
                 loader: model.isBusy,
               context: context,
             ),

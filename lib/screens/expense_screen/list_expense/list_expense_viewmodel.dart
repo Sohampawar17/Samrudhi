@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:geolocation/model/expense_model.dart';
+
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
@@ -27,6 +27,11 @@ String? monthname;
     notifyListeners();
     setBusy(false);
   }
+
+Future<void> refresh(BuildContext context) async {
+initialise(context);
+  notifyListeners();
+}
 
 IconData getIconForStatus(String status) {
   switch (status) {

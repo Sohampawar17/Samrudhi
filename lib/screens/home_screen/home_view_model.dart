@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/constants.dart';
 import 'package:geolocation/model/dashboard.dart';
@@ -9,9 +10,10 @@ import 'package:geolocation/model/emp_data.dart';
 import 'package:geolocation/services/home_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
-import '../../router.router.dart';
+
 import '../../services/geolocation_services.dart';
 import '../../services/platform_repository.dart';
 import '../location_tracking/tracking_service.dart';
@@ -63,6 +65,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> initialize(BuildContext context) async {
     prefs = await SharedPreferences.getInstance();
+    requestLocationPermission(context);
     setBusy(true);
     _cachedDashboard = _loadCachedData();
     employeeData= await HomeServices().getEmpName() ?? EmpData();
@@ -89,6 +92,126 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+
+  Future<void> requestLocationPermission(BuildContext context) async {
+    PermissionStatus status = await Permission.locationAlways.request();
+
+    if (status.isGranted) {
+      print('Location permission granted.');
+      // Your location-based feature implementation
+    } else if (status.isDenied) {
+      print('Location permission denied.');
+      if (context.mounted) _showPermissionDeniedDialog(context);
+    } else if (status.isPermanentlyDenied) {
+      print('Location permission permanently denied.');
+      if (context.mounted) _showPermissionPermanentlyDeniedDialog(context);
+    }
+  }
+
+  void _showPermissionDeniedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Row(
+            children: [
+              Icon(Icons.warning, color: Colors.red),
+              SizedBox(width: 10),
+              Text('Permission Denied', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+          content: const Text(
+            'The app needs location permission to function properly. Please grant the permission.',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text('Retry'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                requestLocationPermission(context);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+
+                backgroundColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPermissionPermanentlyDeniedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Row(
+            children: [
+              Icon(Icons.warning, color: Colors.red),
+              SizedBox(width: 10),
+              Text('Permission Permanently Denied', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+          content: const Text(
+            'Location permission has been permanently denied. Please enable it in the app settings.',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text('Open Settings'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   DashBoard _loadCachedData() {
     final cachedDashboardString = prefs.getString('cached_dashboard');
     if (cachedDashboardString != null) {
@@ -109,14 +232,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> handleLogout(BuildContext context) async {
     if (_cachedDashboard.company == "") {
-      final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
-      final SharedPreferences prefs = await prefs0;
-      prefs.clear();
-      if (context.mounted) {
-        setBusy(false);
-        Navigator.pushNamed(context, Routes.loginViewScreen);
-        Logger().i('logged out success');
-      }
+     logout(context);
     }
   }
 
