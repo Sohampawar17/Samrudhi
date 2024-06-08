@@ -1,7 +1,9 @@
 package com.example.geolocation
 
 import android.content.Intent
+import android.os.Build
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
@@ -22,8 +24,9 @@ class MainActivity: FlutterActivity() {
             when (call.method) {
                 "startTracking" -> {
                     val token: String? = call.argument("token")
+                    val url: String? = call.argument("url")
                     print(token)
-                    startTrackingService(token!!)
+                    startTrackingService(token!!,url!!)
                     result.success(null)
                 }
                 "stopTracking" -> {
@@ -39,11 +42,13 @@ class MainActivity: FlutterActivity() {
     }
 
 
-    private fun startTrackingService(token: String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun startTrackingService(token: String, url:String) {
 
         val intent = Intent(this, LocationTrackingService::class.java)
         print(token)
         intent.putExtra("token", token)
+        intent.putExtra("url", url)
         startForegroundService(intent)
 
     }

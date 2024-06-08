@@ -46,6 +46,7 @@ class LocationTrackingService : Service() {
     private val NOTIFICATION_ID = 12345
     private val CHANNEL_ID = "LocationTrackingChannel"
     private var token = ""
+    private var url = ""
     private lateinit var geocoder: Geocoder
 
     override fun onCreate() {
@@ -63,6 +64,7 @@ class LocationTrackingService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
             token = intent.getStringExtra("token").toString()
+            url = intent.getStringExtra("url").toString()
         }
         return Service.START_STICKY
 
@@ -109,14 +111,15 @@ class LocationTrackingService : Service() {
 
     @SuppressLint("HardwareIds")
     fun uploadLocationToServer(location: Location) {
-        val url = "http://devsamruddhi.erpdata.in/api/method/mobile.mobile_env.location.user_location"
+        val url = "$url/api/method/mobile.mobile_env.location.user_location"
+        println(url)
         val mId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         // Create JSON object with location data
         val jsonLocation = JSONObject()
-        jsonLocation.put("latitude", location.latitude)
         jsonLocation.put("longitude", location.longitude)
-        jsonLocation.put("device_id", mId)
+        jsonLocation.put("latitude", location.latitude)
 
+        jsonLocation.put("device_id", mId)
         // Create HTTP request body with JSON data
         val body =
             jsonLocation.toString().toRequestBody("application/json".toMediaTypeOrNull())
@@ -146,7 +149,7 @@ class LocationTrackingService : Service() {
                     println("Location data uploaded successfully")
                 } else {
                     // Handle server error
-                    println("Server error: ${response.code}")
+                    println("Server error: ${response.message}")
                 }
             }
         })

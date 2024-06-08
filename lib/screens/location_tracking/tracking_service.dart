@@ -7,7 +7,11 @@ class TrackingService {
   static Future<void> startTracking() async {
     try {
       var token = await getTocken();
-      await platform.invokeMethod('startTracking', {'token': token});
+      var url = await geturl();
+      await platform.invokeMethod('startTracking', {
+        'token': token,
+        'url': url,
+      });
 
     } on PlatformException catch (e) {
       print("Failed to start tracking: '${e.message}'.");
