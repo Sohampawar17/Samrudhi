@@ -19,6 +19,7 @@ import 'package:geolocation/screens/leave_screen/list_leave/list_leave_view.dart
 import 'package:geolocation/screens/leave_screen/update_leave/update_leave_view.dart';
 import 'package:geolocation/screens/login/login_view.dart';
 import 'package:geolocation/screens/profile_screen/profile_screen.dart';
+import 'package:geolocation/screens/registration/registration_screen.dart';
 import 'package:geolocation/screens/sales_force/assigned_routes/assigned_routes_view.dart';
 import 'package:geolocation/screens/sales_force/assigned_routes/maps_screen.dart';
 
@@ -88,9 +89,8 @@ import 'screens/lead_screen/lead_list/lead_screen.dart';
     MaterialRoute(page: UpdateRouteAssignmentForm),
     MaterialRoute(page: UpdateLeave),
     MaterialRoute(page: UpdateExpense),
-    MaterialRoute(page: SelectVisitScreen)
-
-
+    MaterialRoute(page: SelectVisitScreen),
+    MaterialRoute(page: RegistrationScreen)
 
     // DetailedFarmerScreen
   ],

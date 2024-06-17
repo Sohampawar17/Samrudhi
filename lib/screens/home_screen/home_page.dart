@@ -184,12 +184,16 @@ class _HomePageState extends State<HomePage> {
                                         buildButton("Enquiry", 'assets/images/recruitment.png', () {
                                           Navigator.pushNamed(context, Routes.leadListScreen);
                                         },model),
+                                        if(model.isFormAvailableForDoctype("Visit"))
+                                          buildButton("Registrations", 'assets/images/registration-form.png', () {
+                                            Navigator.pushNamed(context, Routes.registrationScreen);
+                                          },model),
                                         if(model.isFormAvailableForDoctype("Quotation"))
-                                        buildButton("Quotation", 'assets/images/quotation.png', () {
+                                        buildButton("Quotations", 'assets/images/quotation.png', () {
                                           Navigator.pushNamed(context, Routes.listQuotationScreen);
                                         },model),
                                         if(model.isFormAvailableForDoctype("Sales Order"))
-                                        buildButton("Sales Orders", 'assets/images/cargo.png', () {
+                                        buildButton("Orders", 'assets/images/cargo.png', () {
                                           Navigator.pushNamed(context, Routes.listOrderScreen);
                                         },model),
                                         // if(model.isFormAvailableForDoctype("sales Invoice"))
@@ -224,6 +228,7 @@ class _HomePageState extends State<HomePage> {
                                           buildButton("Visit Report", 'assets/images/visit.png', () {
                                             Navigator.pushNamed(context, Routes.customerReportScreen);
                                           },model),
+
                                       ],
                                     ),
                                   ),
