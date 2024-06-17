@@ -29,7 +29,7 @@ class CheckinServices {
       if (response.statusCode == 200) {
         final SharedPreferences preferences = await _prefs;
         String name = response.data['data']['name'].toString();
-        Fluttertoast.showToast(msg: "location Added Successfully");
+        Fluttertoast.showToast(msg: "Location Added Successfully");
         preferences.setString('locationid', name);
 
         return true;

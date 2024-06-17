@@ -1,4 +1,3 @@
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -16,7 +15,6 @@ class Geolocation extends StatelessWidget {
       viewModelBuilder: () => GeolocationViewModel(),
       onViewModelReady: (model) => model.initialise(context),
       builder: (context, model, child) => Scaffold(
-        backgroundColor: Colors.grey,
         appBar: AppBar(
           title: const AutoSizeText('Route details'),
           centerTitle: true,
@@ -25,169 +23,101 @@ class Geolocation extends StatelessWidget {
           child: Column(
 
             children: [
-              const SizedBox(height: 10,),
-              // Expanded(
-              //   flex: 1,
-              //   child: Container(
-              //     padding: const EdgeInsets.all(8),
-              //
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       borderRadius: BorderRadius.circular(18),
-              //       boxShadow: const [
-              //         BoxShadow(
-              //           color: Colors.grey,
-              //           blurRadius: 3,
-              //           offset: Offset(0, 2),
-              //         ),
-              //       ],
-              //     ),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //
-              //         Text(
-              //           'Name: ${model.geolocationdata.user ?? ""}',
-              //         ),
-              //         Text(
-              //           'Date:  ${model.geolocationdata.date}',
-              //         ),
-              //         // Text(
-              //         //   'Distance: ${model.geolocationdata.distance ?? 0.0}',
-              //         // ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+              Card(
+                color: Colors.purple.shade50,
+                elevation: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+
+                      Text(
+                        'User: ${model.geolocationdata.user ?? ""}',
+                      ),
+                      Text(
+                        'Date:  ${model.geolocationdata.date ?? ""}',
+                      ),
+                      Text(
+                        'Distance(Km):  ${model.geolocationdata.distance ?? ""}',
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
               Expanded(
                 flex: 8,
                 child: model.locations.isNotEmpty
                     ? FlutterMap(
-                        options: MapOptions(
-                            center: LatLng(
-                                double.parse(
-                                    model.locations[0].latitude ?? "0.0"),
-                                double.parse(
-                                    model.locations[0].longitude ?? "0.0")),
+                  options: MapOptions(
+                      center: LatLng(
+                          double.parse(
+                              model.locations[0].latitude ?? "0.0"),
+                          double.parse(
+                              model.locations[0].longitude ?? "0.0")),
 
-                            onMapReady: () => model.onMapReady),
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName:
-                                'dev.fleaflet.flutter_map.example',
-                            // Plenty of other options available!
-                          ),
-                          MarkerLayer(
-                            markers: model.locations.asMap().entries.map((entry) {
-                              final int index = entry.key;
-                              final LatLng latLng = LatLng(
-                                double.parse(entry.value.latitude ?? ""),
-                                double.parse(entry.value.longitude ?? ""),
-                              );
+                      onMapReady: () => model.onMapReady),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName:
+                      'dev.fleaflet.flutter_map.example',
+                      // Plenty of other options available!
+                    ),
+                    MarkerLayer(
+                      markers: model.locations.asMap().entries.map((entry) {
+                        final int index = entry.key;
+                        final LatLng latLng = LatLng(
+                          double.parse(entry.value.latitude ?? ""),
+                          double.parse(entry.value.longitude ?? ""),
+                        );
 
-                              return Marker(
-                                point: latLng,
-                                builder: (ctx) {
-                                  return Stack(
-                                    children: [
-                                      const Icon(Icons.location_on, size: 50),
-                                      Positioned(
-                                        left: 5,
-                                        top: 0,
-                                        right: 0,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: Text(
-                                            (index + 1).toString(),
-                                            // Display the marker number
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                        return Marker(
+
+                          point: latLng,
+                          builder: (ctx) {
+                            return const Stack(
+                              children: [
+                                Icon(Icons.location_on, size: 50,color: Colors.red),
+
+                              ],
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    PolylineLayer(
+                      polylineCulling: true,
+                      polylines: [
+                        // Polyline(
+                        //
+                        //     points:
+                        //     // model.points,
+                        //     model.locations.map((e) {
+                        //       return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
+                        //     }).toList(),
+                        //     color: Colors.blueAccent,
+                        //     strokeWidth: 8),
+                        if(model.points.isNotEmpty)
+                        Polyline(
+                            points:
+                            // model.points,
+                            model.points.map((e) {
+                              return LatLng(e.latitude, e.longitude);
                             }).toList(),
-                          ),
-                          MarkerLayer(
-                            markers: model.parsedLocationTables.asMap().entries.map((entry) {
-                              final int index = entry.key;
-                              final LatLng latLng = LatLng(
-                                double.parse(entry.value.latitude ?? ""),
-                                double.parse(entry.value.longitude ?? ""),
-                              );
-
-                              return Marker(
-                                point: latLng,
-                                builder: (ctx) {
-                                  return Stack(
-                                    children: [
-                                      const Icon(Icons.location_on, size: 50),
-                                      Positioned(
-                                        left: 5,
-                                        top: 0,
-                                        right: 0,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                            BorderRadius.circular(20),
-                                          ),
-                                          child: Text(
-                                            (index + 1).toString(),
-                                            // Display the marker number
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }).toList(),
-                          ),
-                          PolylineLayer(
-                            polylineCulling: true,
-                            polylines: [
-                              Polyline(
-                                  points:
-                                   // model.points,
-                                  model.locations.map((e) {
-                                    return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
-                                  }).toList(),
-                                  color: Colors.blueAccent,
-                                  strokeWidth: 12),
-                             // Polyline(
-                             //      points:
-                             //       // model.points,
-                             //      model.parsedLocationTables.map((e) {
-                             //        return LatLng(double.parse(e.latitude ?? ""), double.parse(e.longitude ?? ""));
-                             //      }).toList(),
-                             //      color: Colors.red,
-                             //      strokeWidth: 5),
-                            ],
-                          ),
-                        ],
-                      )
+                            color: Colors.blue,
+                            strokeWidth: 5),
+                      ],
+                    ),
+                  ],
+                )
                     : Container(
-                        child: const Center(
-                            child: Text('To see your location please checkin')),
-                      ),
+                  child: const Center(
+                      child: Text('To see your location please check in')),
+                ),
               ),
 
             ],

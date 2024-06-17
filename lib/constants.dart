@@ -81,6 +81,7 @@ void logout(BuildContext context) async {
   final SharedPreferences prefs = await prefs0;
   prefs.remove("api_key");
   prefs.remove("api_secret");
+  prefs.remove("cached_dashboard");
   prefs.remove("url");
   if (context.mounted) {
     Navigator.popAndPushNamed(context, Routes.loginViewScreen);
