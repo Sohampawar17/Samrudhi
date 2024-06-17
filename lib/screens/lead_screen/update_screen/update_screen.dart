@@ -1,13 +1,9 @@
-
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/lead_screen/update_screen/update_viewmodel.dart';
-import 'package:geolocation/widgets/customtextfield.dart';
-import 'package:geolocation/widgets/drop_down.dart';
-
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
-
 
 class UpdateLeadScreen extends StatefulWidget {
   final String updateId;
@@ -38,117 +34,235 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                     Card(
                       elevation: 1,
                       color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child:Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                                children: <Widget>[
-
-                                  _buildInfoItem('Requested Type', model.leaddata.customCustomRequestType ?? ""),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                                    decoration: BoxDecoration(
-
-                                      color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()).withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            model.leaddata.customEnquiryStatus ?? "",
-                                            style: TextStyle(
-
-                                              color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          PopupMenuButton<String>(
-                                            icon: Icon(Icons.arrow_drop_down, color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString())),
-                                            itemBuilder: (BuildContext context) {
-                                              return model.enquiryTypes.map<PopupMenuItem<String>>((String item) {
-                                                return PopupMenuItem<String>(
-                                                  value: item,
-                                                  child: Text(item),
-                                                );
-                                              }).toList();
-                                            },
-                                            onSelected: (String value) {
-
-                                                setState(() {
-                                                  model.leaddata.customEnquiryStatus = value;
-                                                  if(value == "Not Interested"){
-                                                    showAlertDialog(context, model);
-                                                  }else if(value == "Interested"){
-                                                    model.updateEnquiryType(value, "");
-                                                  }
-                                                });
-
-
-                                            },
-                                          ),]
-                                    ),
-                                  )
-                                  // _buildDropdown('Enquiry Status', model),
-
-                                ]
-                            ),
-                            if(model.leaddata.customReason !="")
-                            _buildInfoItem('Reason', model.leaddata.customReason ?? ""),
-                            _buildInfoItem('Lead Owner', model.leaddata.leadOwner ?? ""),
-                            _buildInfoItem('Name', model.leaddata.leadName ?? ""),
-                            _buildInfoItem('Email', model.leaddata.emailId ??""),
-                            _buildInfoItem('Mobile', model.leaddata.mobileNo ?? ""),
-                            _buildInfoItem('Territory', model.leaddata.territory ?? ""),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _buildContactButton(
-                                  image: 'assets/images/whatsapp.png',
-                                  onPressed: () => model.whatsapp(model.leaddata.mobileNo ?? ""),
-                                ),
-                                _buildContactButton(
-                                  image: 'assets/images/telephone.png',
-                                  onPressed: () => model.service.call(model.leaddata.mobileNo ?? ""),
-                                ),
-                                _buildContactButton(
-                                  image: 'assets/images/comments.png',
-                                  onPressed: () => model.service.sendSms(model.leaddata.mobileNo ?? ""),
-                                ),
-                                _buildContactButton(
-                                  image: 'assets/images/gmail.png',
-                                  onPressed: () => model.service.sendEmail(model.leaddata.emailId ?? ""),
+                                buildItemColumn(  additionalText: model.leaddata.customCustomRequestType ?? "", labelText: 'Requested Type'),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                                  decoration: BoxDecoration(
+
+                                    color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()).withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          model.leaddata.customEnquiryStatus ?? "",
+                                          style: TextStyle(
+
+                                            color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        PopupMenuButton<String>(
+                                          icon: Icon(Icons.arrow_drop_down, color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString())),
+                                          itemBuilder: (BuildContext context) {
+                                            return model.enquiryTypes.map<PopupMenuItem<String>>((String item) {
+                                              return PopupMenuItem<String>(
+                                                value: item,
+                                                child: Text(item),
+                                              );
+                                            }).toList();
+                                          },
+                                          onSelected: (String value) {
+
+                                            setState(() {
+                                              model.leaddata.customEnquiryStatus = value;
+                                              if(value == "Not Interested"){
+                                                showAlertDialog(context, model);
+                                              }else if(value == "Interested"){
+                                                model.updateEnquiryType(value, "");
+                                              }
+                                            });
+
+
+                                          },
+                                        ),]
+                                  ),
                                 ),
                               ],
+                            ),
+                            if(model.leaddata.customEnquiryStatus =="Not Interested")
+                            const SizedBox(height: 10,),
+                            if(model.leaddata.customEnquiryStatus =="Not Interested")
+                              buildItemColumn(labelText: 'Reason for Not Interested',additionalText:  model.leaddata.customReason ?? ""),
+                            const SizedBox(height: 10,),
+                            buildItemColumn(labelText:'Lead Owner',additionalText: '${model.leaddata.leadOwner}'),],
+                        ),
+                      ) ,
+                    ),
+
+                    Card(
+                      elevation: 1,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Align(alignment:Alignment.topLeft,
+                                child: buildItemColumn(labelText:'Name',additionalText: '${model.leaddata.leadName}')),
+                            const SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(child: buildItemColumn(labelText:'Email',additionalText: '${model.leaddata.emailId}'),),
+                                Expanded(
+                                  child:buildItemColumn(labelText:'Mobile',additionalText: '${model.leaddata.mobileNo}'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10,),
+                            Align(alignment:Alignment.topLeft,
+                                child: buildItemColumn(labelText:'Territory',additionalText: '${model.leaddata.territory}')),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Card(
+                      elevation: 1,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Organisation Name',additionalText: '${model.leaddata.companyName}')),
+                            const SizedBox(height: 10,),
+                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Industry type',additionalText: '${model.leaddata.industry}')),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                    Card(
+                      elevation: 1,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    model.whatsapp(model.leaddata.mobileNo ??"");
+                                  },
+                                  child: CircleAvatar(
+                                    child: Image.asset(
+                                      'assets/images/whatsapp.png',scale: 5,),
+                                  )),
+                            ),
+
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    model.service.call(model.leaddata.mobileNo ??"");
+                                  },
+                                  child: CircleAvatar(
+                                    child: Image.asset(
+                                      'assets/images/telephone.png',scale: 5,),
+                                  )),
+                            ),
+
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    model.service.sendSms(model.leaddata.mobileNo ?? "");
+                                  },
+                                  child: CircleAvatar(
+                                    child: Image.asset(
+                                      'assets/images/comments.png',scale: 5,),
+                                  )),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    model.service.sendEmail(model.leaddata.emailId ??"");
+                                  },
+                                  child: CircleAvatar(
+                                    child: Image.asset(
+                                      'assets/images/gmail.png',scale: 5,),
+                                  )),
                             ),
                           ],
                         ),
                       ),
                     ),
 
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text('Notes',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)),
+                        Expanded(
+                          child: Container(
+                            height: 1, // Height of the divider
+                            color: Colors.blueAccent, // Color of the divider
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Activity',
+                          style: TextStyle(color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1, // Height of the divider
+                            color: Colors.blueAccent, // Color of the divider
+                          ),
+                        ),
+
                       ],
                     ),
-                    //  Center(child: const Text('----------------------------  Notes  -----------------------------',style: TextStyle(fontWeight: FontWeight.bold),)),
-                    CustomSmallTextFormField(
-                      controller: model.controller, hintText: 'Add your notes here',
-                      labelText: 'Add Notes',
-                      suffixicon: IconButton.filled(color: Colors.blue,style: const ButtonStyle(),
-                        onPressed: () {model.addnote(widget.updateId,model.controller.text);
-                        }, // Implement edit functionality
-                        icon: const Icon(Icons.send_rounded,color: Colors.white,),
-                      ), ),
+                    const SizedBox(height: 10,),
+                    TextFormField(
+                      controller: model.controller,
+                      decoration: InputDecoration(
+                        hintText: 'Add the note Here.....',
+                        hintStyle: const TextStyle(fontSize: 15),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: Colors.blue, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: const BorderSide(color: Colors.black45, width: 2),
+                        ),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: TextButton(
+                            onPressed: () {
+                              if (model.controller.text.isNotEmpty) {
+                                model.addnote(widget.updateId,model.controller.text);
+                              }
+                            },
+                            child: const Text(
+                              'Send',
+                              style: TextStyle(fontSize: 14.0, color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(), itemCount: model.notes.length, itemBuilder: (context, index) {final noteData = model.notes[index];
@@ -157,9 +271,10 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                         color: Colors.red.shade400,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: Alignment.centerLeft,
-                        child: const Icon(
-                          Icons.delete_forever_outlined,
-                          color: Colors.white,size: 40,
+                        child: const Text(
+                         'Remove',
+                          style: TextStyle( color: Colors.white,fontSize: 20),
+                          // color: Colors.white,size: 40,
                         ),
                       ),
                       confirmDismiss: (direction) async {
@@ -289,72 +404,15 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
         ));
   }
 
-  Widget _buildInfoItem(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 14,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            value,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
+  Widget buildItemColumn( {required String additionalText, required String labelText}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AutoSizeText(labelText,style: const TextStyle(fontWeight: FontWeight.w400),minFontSize: 15,),
+        AutoSizeText(additionalText,style: const TextStyle(fontWeight: FontWeight.bold),maxFontSize: 20,),
+      ],
     );
   }
-
-
-  // Widget _buildDropdown(String label, UpdateLeadModel updateLeadModel) {
-  //   return Padding(
-  //     padding: EdgeInsets.symmetric(vertical: 8.0),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Text(
-  //           label,
-  //           style: TextStyle(
-  //             color: Colors.grey[600],
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //         SizedBox(height: 4),
-  //         DropdownButton<String>(
-  //           value: updateLeadModel.selectedEnquiryType,
-  //           hint: Text('Select an option'),
-  //           items: updateLeadModel.enquiryTypes.map((String option) {
-  //             return DropdownMenuItem<String>(
-  //               value: option,
-  //               child: Text(option),
-  //             );
-  //           }).toList(),
-  //           onChanged: (String? newValue) {
-  //             setState(() {
-  //               updateLeadModel.selectedEnquiryType = newValue!;
-  //               if(newValue == "Not Interested"){
-  //                 showAlertDialog(context, updateLeadModel);
-  //               }else{
-  //                 updateLeadModel.updateEnquiryType(newValue, "");
-  //               }
-  //             });
-  //
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   void showAlertDialog(BuildContext context,UpdateLeadModel updateLeadModel) {
     showDialog(
@@ -394,15 +452,6 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
 
 
 
-  Widget _buildContactButton({required String image, required Function onPressed}) {
-    return InkWell(
-      onTap: onPressed as void Function()?,
-      borderRadius: BorderRadius.circular(30),
-      child: Image.asset(
-        image,
-        scale: 8,
-      ),
-    );
-  }
+
 
 }

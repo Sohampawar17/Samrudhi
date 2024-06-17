@@ -1,7 +1,7 @@
 class ListLeadModel {
   String? name;
   String? leadName;
-  String? status;
+  String? customEnquiryStatus;
   String? companyName;
   String? territory;
   String? location;
@@ -9,14 +9,14 @@ class ListLeadModel {
   ListLeadModel(
       {this.name,
       this.leadName,
-      this.status,
+      this.customEnquiryStatus,
       this.companyName,
       this.location});
 
   ListLeadModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     leadName = json['lead_name'];
-    status = json['status'];
+    customEnquiryStatus = json ["custom_enquiry_status"];;
     companyName = json['company_name'];
     territory = json['territory'];
     location = json["custom_address"];
@@ -26,7 +26,7 @@ class ListLeadModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = name;
     data['lead_name'] = leadName;
-    data['status'] = status;
+    data["custom_enquiry_status"] = customEnquiryStatus;
     data['company_name'] = companyName;
     data['territory'] = territory;
     return data;
