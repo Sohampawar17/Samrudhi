@@ -12,7 +12,7 @@ class ListLeadServices{
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","status","company_name","territory","custom_address","request_type"]',
+        '$baseurl/api/resource/Lead?order_by=creation desc&fields=["name","lead_name","custom_enquiry_status","company_name","territory","custom_address","request_type"]',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},

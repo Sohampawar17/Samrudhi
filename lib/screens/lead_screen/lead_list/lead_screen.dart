@@ -161,7 +161,7 @@ body: WillPopScope(
                                                       Card(
 
                                                         color: model.getColorForStatus(model.filterleadlist[index]
-                                                            .status ??
+                                                            .customEnquiryStatus ??
                                                             ""),
                                                         shape:
                                                             RoundedRectangleBorder(
@@ -178,8 +178,7 @@ body: WillPopScope(
                                                                   10.0),
                                                           child: AutoSizeText(
                                                             model.filterleadlist[index]
-                                                                    .status ??
-                                                                "",
+                                                                    .customEnquiryStatus ?? "",
                                                                 minFontSize: 8,
                                                             textAlign:
                                                                 TextAlign.center,
