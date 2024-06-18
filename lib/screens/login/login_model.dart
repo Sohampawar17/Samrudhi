@@ -12,13 +12,14 @@ import '../../router.router.dart';
 class LoginViewModel extends BaseViewModel {
   final formGlobalKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController urlController = TextEditingController()..text = 'http://devsamruddhi.erpdata.in/';
+  TextEditingController urlController = TextEditingController()..text = 'http://devsamruddhi.erpdata.in';
   TextEditingController passwordController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
   bool obscurePassword = true;
   bool isLoading = false;
   bool isDemoLoading = false;
+
   initialise() async {
     rememberMe=true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -58,40 +59,7 @@ class LoginViewModel extends BaseViewModel {
     rememberMe = value ?? false;
     notifyListeners();
   }
-  void loginWithDemoUser(BuildContext context) async {
-    isDemoLoading = true;
-    notifyListeners();
-    baseurl="https://mobilecrm.erpdata.in";
-    String username = 'demo@erpdata.in';
-    String password = 'admin@123';
-    bool res = await LoginServices().login(baseurl,username, password);
-    isDemoLoading = false;
-    notifyListeners();
-    if (res) {
-      if (rememberMe) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('username', usernameController.text);
-        await prefs.setString('password', passwordController.text);
-        await prefs.setBool('rememberMe', true);
-      } else {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.remove('username');
-        await prefs.remove('password');
-        await prefs.setBool('rememberMe', false);
-      }
-      if (context.mounted) {
-        Navigator.popAndPushNamed(context, Routes.homePage);
-      }
-    } else {
-      Logger().i('invalid credential');
-        Fluttertoast.showToast(
-            msg: "Invalid Credentials",
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-            fontSize: 16.0);
-    }
-  }
+
 
   String? validateUsername(username) {
     if (username.toString().isEmpty) {

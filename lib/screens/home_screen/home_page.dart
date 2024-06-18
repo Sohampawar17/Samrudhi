@@ -39,8 +39,6 @@ class _HomePageState extends State<HomePage> {
                 (model.dashboard.email!=null?model.dashboard.email.toString() :model.employeeData.email.toString()), (model.dashboard.employeeImage!=null?model.dashboard.employeeImage.toString() :model.employeeData.employeeImage.toString())),
                 body: WillPopScope(
                   onWillPop: showExitPopup,
-
-
                     child: RefreshIndicator(
                       onRefresh: () =>model.onRefresh(context),
                       child: SafeArea(

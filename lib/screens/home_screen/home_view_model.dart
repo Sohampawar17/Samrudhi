@@ -101,116 +101,14 @@ class HomeViewModel extends BaseViewModel {
       // Your location-based feature implementation
     } else if (status.isDenied) {
       print('Location permission denied.');
-      if (context.mounted) _showPermissionDeniedDialog(context);
+      openAppSettings();
     } else if (status.isPermanentlyDenied) {
       print('Location permission permanently denied.');
-      if (context.mounted) _showPermissionPermanentlyDeniedDialog(context);
+      openAppSettings();
     }
   }
 
-  void _showPermissionDeniedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: const Row(
-            children: [
-              Icon(Icons.warning, color: Colors.red),
-              SizedBox(width: 10),
-              Text('Permission Denied', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-          content: const Text(
-            'The app needs location permission to function properly. Please grant the permission.',
-            style: TextStyle(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
 
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Retry'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                requestLocationPermission(context);
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-
-                backgroundColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showPermissionPermanentlyDeniedDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: const Row(
-            children: [
-              Icon(Icons.warning, color: Colors.red),
-              SizedBox(width: 10),
-              Text('Permission Permanently Denied', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-          content: const Text(
-            'Location permission has been permanently denied. Please enable it in the app settings.',
-            style: TextStyle(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Open Settings'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                openAppSettings();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.grey,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   DashBoard _loadCachedData() {
     final cachedDashboardString = prefs.getString('cached_dashboard');
@@ -252,6 +150,8 @@ class HomeViewModel extends BaseViewModel {
         Logger().i(res);
         if (res) {
           dashboard = await HomeServices().dashboard() ?? DashBoard();
+          _saveDataToCache(dashboard);
+          Logger().i(_loadCachedData().toJson());
          setBusy(false);
         }
       } else {

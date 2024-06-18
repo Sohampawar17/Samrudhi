@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/screens/lead_screen/update_screen/update_viewmodel.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
@@ -20,6 +21,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
         viewModelBuilder: () => UpdateLeadModel(),
         onViewModelReady: (model) => model.initialise(context,widget.updateId),
         builder: (context, model, child)=> Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(title:  Text(model.leaddata.name ?? "",style: const TextStyle(fontSize: 18),),
             actions: [IconButton(onPressed: ()=>Navigator.popAndPushNamed(context, Routes.addLeadScreen,arguments: AddLeadScreenArguments(leadid: widget.updateId)), icon:const Icon(Icons.edit) ),],
       ),
@@ -32,7 +34,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Card(
-                      elevation: 1,
+                      elevation: 3.5,
                       color: Colors.white,
                       child:Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -102,7 +104,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                     ),
 
                     Card(
-                      elevation: 1,
+                      elevation: 3.5,
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -129,7 +131,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                     ),
 
                     Card(
-                      elevation: 1,
+                      elevation: 3.5,
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -144,7 +146,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                       ),
                     ),
                     Card(
-                      elevation: 1,
+                      elevation: 3.5,
                       color: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
@@ -263,7 +265,13 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    ListView.builder(
+                    model.notes.isNotEmpty
+                        ? ListView.separated(
+                      separatorBuilder: (context, builder) {
+                        return const SizedBox(
+                          height: 5,
+                        );
+                      },
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(), itemCount: model.notes.length, itemBuilder: (context, index) {final noteData = model.notes[index];
                     return Dismissible(
@@ -314,82 +322,39 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                       //         },
                       direction: DismissDirection.startToEnd,
                       key: Key(index.toString()),
-                      child: Card(
-                        elevation: 1,
-                        color: Colors.white,
-                        child: Container(
-                          margin: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipOval(
-                                // Set background color for the avatar
-                                child: Image.network(
-                                  noteData.image ??"",
-                                  fit: BoxFit.cover,
-                                  height: 30,
-                                  width: 30,
-                                  loadingBuilder: (BuildContext context, Widget child,
-                                      ImageChunkEvent? loadingProgress) {
-                                    if (loadingProgress == null) {
-                                      // Image is done loading
-                                      return child;
-                                    } else {
-                                      // Image is still loading
-                                      return const Center(
-                                          child: CircularProgressIndicator(color: Colors.blueAccent));
-                                    }
-                                  },
-                                  errorBuilder:
-                                      (BuildContext context, Object error, StackTrace? stackTrace) {
-                                    // Handle the error by displaying a broken image icon
-                                    return  Center(
-                                        child: Image.asset('assets/images/profile.png',scale: 8,));
-                                  },
-                                ),
-                              ),
-                              const SizedBox(width: 8.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(12.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                      child: Text(
-                                        noteData.note ?? "",
-                                        style: const TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4.0),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          noteData.commented ?? "",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                        Text(
-                                          noteData.addedOn ?? "",
-                                          style: const TextStyle(fontSize: 12.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                      child:ListTile(
+                        leading: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: noteData.image ??"",
+                            width: 40,
+                            matchTextDirection: true,
+                            height: 40,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                            errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
                           ),
                         ),
+                        title: Text(
+                          noteData.note ?? "",
+
+                        ),
+                        subtitle: Text("${noteData.commented ?? ""} | ${noteData.addedOn ?? ""}",style: const TextStyle(fontWeight: FontWeight.bold),),
                       ),
                     );
                     },
+                    ) : Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: const Text(
+                          'There is no any notes!',
+                          textDirection: TextDirection.ltr,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
 
 
