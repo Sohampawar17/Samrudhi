@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_lead_model.dart';
+import '../../../router.router.dart';
 import '../../../services/geolocation_services.dart';
 
 class AddLeadViewModel extends BaseViewModel{
@@ -166,6 +167,11 @@ initialise(BuildContext context, String leadId) async {
       }
       setBusy(false);
     }
+    else{
+      setBusy(false);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill the mandatory fields')));
+    }
   }
 
 void setCustomer(String? customComplaintCustomer){
@@ -234,13 +240,16 @@ void setterritory(String? territory){
   notifyListeners();
 }
 
-void setRequestType(String? requestType){
+void setRequestType(String? requestType,BuildContext context){
   leaddata.customCustomRequestType =requestType;
   Logger().i(requestType);
   if(leaddata.customCustomRequestType == "Customer Complaint"){
     visible=true;
   }else{
     visible=false;
+  }
+  if(leaddata.customCustomRequestType == "Enquiry for retailer"){
+    Navigator.pushNamed(context, Routes.addRetailerScreen,arguments: AddRetailerScreenArguments(retailerId: ""));
   }
   notifyListeners();
 }

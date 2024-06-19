@@ -1,13 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocation/screens/lead_screen/add_lead_screen/add_lead_viewmodel.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:geolocation/widgets/text_button.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:stacked/stacked.dart';
-import '../../../widgets/customtextfield.dart';
-import '../../../widgets/drop_down.dart';
+import '../../../../widgets/customtextfield.dart';
+import '../../../../widgets/drop_down.dart';
 import 'add_retailer_view_model.dart';
 
 class AddRetailerScreen extends StatefulWidget {
@@ -23,10 +20,10 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddRetailerViewModel>.reactive(
         viewModelBuilder: () => AddRetailerViewModel(),
-        onViewModelReady: (model) => model.initialise(context,""),
+        onViewModelReady: (model) => model.initialise(context,widget.retailerId),
         builder: (context, model, child)=>Scaffold(
-
-          appBar:AppBar(title:  Text('Register Retailer',style: const TextStyle(fontSize: 18),),
+backgroundColor: Colors.white,
+          appBar:AppBar(title:  Text(model.isEdit==true ? widget.retailerId :'Register Retailer',style: const TextStyle(fontSize: 18),),
 
           ),
           body: fullScreenLoader(
@@ -56,14 +53,36 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
                         // validator: model.validateString,
                       ),
                       const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.phone,
-                        controller: model.mobileNoController,
-                        labelText: 'Mobile No',
-                        hintText: 'Enter the mobile number',
-                        onChanged: model.setMobileNo,
-                        validator: model.validateString,
+                      Row(
+                        children: [
+                          Expanded(
+                            child:  CustomSmallTextFormField(
+                              length: 10,
+                              prefixIcon: Icons.phone,
+                              controller: model.mobileNoController,
+                              labelText: 'Mobile No',
+                              hintText: 'Enter the mobile number',
+                              onChanged: model.setMobileNo,
+                              validator: model.validateMobileNumber,
+                              keyboardtype: TextInputType.phone,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: CustomSmallTextFormField(
+                              length: 10,
+                              prefixIcon: Icons.phone,
+                              controller: model.whatsAppNoController,
+                              labelText: 'WhatsApp No',
+                              hintText: 'Enter the WhatsApp number',
+                              onChanged: model.setWhatsappNo,
+                              validator: model.validateWhatsappNumber,
+                              keyboardtype: TextInputType.phone,
+                            ),
+                          ),
+                        ],
                       ),
+
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
                         prefixIcon: Icons.email,
@@ -71,17 +90,10 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
                         labelText: 'Email',
                         hintText: 'Enter the email',
                         onChanged: model.setEmail,
-                       // validator: model.validateString,
+                       validator: model.validateEmail,
+                        keyboardtype: TextInputType.emailAddress,
                       ),
-                      const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.phone,
-                        controller: model.whatsAppNoController,
-                        labelText: 'WhatsApp No',
-                        hintText: 'Enter the WhatsApp number',
-                        onChanged: model.setWhatsappNo,
-                        //validator: model.validateString,
-                      ),
+
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
                         prefixIcon: Icons.home,
@@ -91,6 +103,9 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
                         onChanged: model.setBuildingNameOfTheController,
                        // validator: model.validateString,
                       ),
+                      const SizedBox(height: 15),
+                      CustomDropdownButton2(labelText: 'Territory',value: model.retailerModel.territorry,prefixIcon:Icons.location_on,searchInnerWidgetHeight: 35,items:model.territory, hintText: 'select territory', onChanged: model.setterritory,),
+
                       const SizedBox(height: 15),
                       Row(
                         children: [
@@ -134,79 +149,71 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
                           Expanded(
                             child: CustomSmallTextFormField(
                               prefixIcon: Icons.location_on,
-                              controller: model.tehsilController,
-                              labelText: 'Tehsil',
-                              hintText: 'Enter the tehsil',
-                              onChanged: model.setTehsil,
-                              validator: model.validateString,
+                              controller: model.landmarkController,
+                              labelText: 'Landmark',
+                              hintText: 'Enter the landmark',
+                              onChanged: model.setLandmark,
+                              // validator: model.validateString,
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Expanded(
+                            child:  CustomSmallTextFormField(
+                              prefixIcon: Icons.location_on,
+                              controller: model.cityController,
+                              labelText: 'City/Town',
+                              hintText: 'Enter the city/town',
+                              onChanged: model.setCity,
+                              validator: model.validateString,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: CustomSmallTextFormField(
+                              prefixIcon: Icons.location_on,
+                              controller: model.districtController,
+                              labelText: 'District',
+                              hintText: 'Enter the district',
+                              onChanged: model.setDistrict,
+                              //validator: model.validateString,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
 
+
+                  CustomDropdownButton2(labelText: 'State',value:model.retailerModel.state..toString,items:model.state, hintText: 'select state', onChanged: model.setState,),
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
-                        prefixIcon: Icons.location_on,
-                        controller: model.landmarkController,
-                        labelText: 'Landmark',
-                        hintText: 'Enter the landmark',
-                        onChanged: model.setLandmark,
-                        validator: model.validateString,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.location_on,
-                        controller: model.stateController,
-                        labelText: 'State',
-                        hintText: 'Enter the state',
-                        onChanged: model.setState,
-                        validator: model.validateString,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.location_on,
-                        controller: model.cityController,
-                        labelText: 'City/Town',
-                        hintText: 'Enter the city/town',
-                        onChanged: model.setCity,
-                        validator: model.validateString,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.location_on,
-                        controller: model.districtController,
-                        labelText: 'District',
-                        hintText: 'Enter the district',
-                        onChanged: model.setDistrict,
-                        //validator: model.validateString,
-                      ),
-                      const SizedBox(height: 15),
-                      CustomSmallTextFormField(
+                        length: 6,
                         prefixIcon: Icons.location_on,
                         controller: model.pincodeController,
                         labelText: 'Pin Code',
                         hintText: 'Enter the pin code',
                         onChanged: model.setPincode,
                         validator: model.validateString,
+                        keyboardtype: TextInputType.number,
                       ),
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
+                        length: 10,
                         prefixIcon: Icons.account_balance,
                         controller: model.panController,
                         labelText: 'PAN',
                         hintText: 'Enter the PAN',
                         onChanged: model.setPan,
+                       keyboardtype: TextInputType.number,
                        // validator: model.validateString,
                       ),
                       const SizedBox(height: 15),
-                      CustomSmallTextFormField(
-                        prefixIcon: Icons.business,
-                        controller: model.typeOfShopController,
-                        labelText: 'Type of Shop',
-                        hintText: 'Enter the type of shop',
-                        onChanged: model.setTypeOfShop,
-                       // validator: model.validateString,
-                      ),
+                      CustomDropdownButton2(prefixIcon: Icons.factory_sharp,labelText: 'Type of Shop',value:model.retailerModel.typeOfShop,items:model.industrytype, hintText: 'select Type of Shop', onChanged: model.setTypeOfShop,),
+
+
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
                         prefixIcon: Icons.business,
@@ -227,15 +234,33 @@ class _AddRetailerScreenState extends State<AddRetailerScreen> {
                       ),
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
+                        length: 12,
                         prefixIcon: Icons.document_scanner,
                         controller: model.aadharNoController,
                         labelText: 'Aadhar No',
                         hintText: 'Enter the Aadhar number',
                         onChanged: model.setAadharNo,
+                       keyboardtype: TextInputType.number,
                        // validator: model.validateString,
                       ),
-                      const SizedBox(height: 15),
 
+                      CdropDown(dropdownButton: DropdownButtonFormField<String>(
+                        isExpanded: true,
+                        value: model.retailerModel.weeklyOff,
+                        decoration: const InputDecoration(
+                          labelText: 'Weekly off*',
+                        ),
+                        hint:
+                        const Text('Select Is off'),
+                        items: model.days.map((val) {
+                          return DropdownMenuItem<String>(
+                            value: val,
+                            child: AutoSizeText(val),
+                          );
+                        }).toList(),
+                        onChanged: (value) {model.setweeklyoff(value);},
+
+                      ),),
                       const SizedBox(height: 25,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

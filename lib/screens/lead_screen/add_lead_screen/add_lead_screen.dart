@@ -50,7 +50,7 @@ class _AddLeadScreenState extends State<AddLeadScreen> {
                       child: AutoSizeText(val),
                     );
                   }).toList(),
-                  onChanged: (value) {model.setRequestType(value);},
+                  onChanged: (value) {model.setRequestType(value,context);},
                   validator: model.validateRequestType,
                 ),),
 if(model.visible==true)

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocation/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../router.router.dart';
+
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
@@ -36,17 +38,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onTap: () async {
-                    var apiUrl = "$baseurl/retailer-distribution/new";
-                    Uri url = Uri.parse(apiUrl);
-                    // Convert Uri to String
-
-                    if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
-                    } else {
-                    throw 'Could not launch $url';
-                    }
-                  },
+                  onTap: () =>Navigator.pushNamed(context, Routes.retailerListScreen),
                 ),
               ),
               Card(

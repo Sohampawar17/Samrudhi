@@ -1,14 +1,18 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/services/retailer_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../model/retailer_model.dart';
-import '../../../services/geolocation_services.dart';
+import '../../../../model/retailer_model.dart';
+import '../../../../services/add_lead_services.dart';
+import '../../../../services/geolocation_services.dart';
 
 class AddRetailerViewModel extends BaseViewModel {
 
@@ -37,7 +41,48 @@ class AddRetailerViewModel extends BaseViewModel {
   TextEditingController assignedDistributorController = TextEditingController();
   TextEditingController aadharNoController = TextEditingController();
 
-  List<String> days=["",
+  List<String> state=[
+    "01-Jammu and Kashmir",
+    "02-Himachal Pradesh",
+    "03-Punjab",
+    "04-Chandigarh",
+    "05-Uttarakhand",
+    "06-Haryana",
+    "07-Delhi",
+    "08-Rajasthan",
+    "09-Uttar Pradesh",
+    "10-Bihar",
+    "11-Sikkim",
+    "12-Arunachal Pradesh",
+    "13-Nagaland",
+    "14-Manipur",
+    "15-Mizoram",
+    "16-Tripura",
+    "17-Meghalaya",
+    "18-Assam",
+    "19-West Bengal",
+    "20-Jharkhand",
+    "21-Odisha",
+    "22-Chhattisgarh",
+    "23-Madhya Pradesh",
+    "24-Gujarat",
+    "26-Dadra and Nagar Haveli and Daman and Diu",
+    "27-Maharashtra",
+    "29-Karnataka",
+    "30-Goa",
+    "31-Lakshadweep Islands",
+    "32-Kerala",
+    "33-Tamil Nadu",
+    "34-Puducherry",
+    "35-Andaman and Nicobar Islands",
+    "36-Telangana",
+    "37-Andhra Pradesh",
+    "38-Ladakh",
+    "96-Other Countries",
+    "97-Other Territory"
+  ];
+
+  List<String> days=[
     "Sunday",
     "Monday",
     "Tuesday",
@@ -46,6 +91,8 @@ class AddRetailerViewModel extends BaseViewModel {
     "Friday",
     "Saturday"
   ];
+  List<String> industrytype=[""];
+  List<String> territory=[""];
 
   String? validateString(String? value) {
     if (value == null || value.isEmpty) {
@@ -53,9 +100,66 @@ class AddRetailerViewModel extends BaseViewModel {
     }
     return null;
   }
+  String? validateMobileNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter mobile number';
+    }
+    if (value.replaceAll(" ", "").length != 10) {
+      return 'Mobile number should be exactly 10 digits';
+    }
+    // Additional validation rules can be added if needed.
+    return null;
+  }
 
-  initialise(BuildContext context, String s) {
+  String? validateEmail(String? value) {
 
+    // Regular expression for email validation
+    final RegExp emailRegExp = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    );
+    if (!emailRegExp.hasMatch(value!)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
+  }
+
+  String? validateWhatsappNumber(String? value) {
+
+    if (value?.replaceAll(" ", "").length != 10) {
+      return 'whatsapp number should be exactly 10 digits';
+    }
+    // Additional validation rules can be added if needed.
+    return null;
+  }
+
+  initialise(BuildContext context, String id) async {
+setBusy(true);
+industrytype = await AddLeadServices().fetchindustrytype();
+territory = await AddLeadServices().fetchterritory();
+if(id!=""){
+  isEdit=true;
+retailerModel=await RetailerServices().getId(id) ?? RetailerModel();
+shopNameController.text = retailerModel.nameOfTheShop ?? '';
+shopOwnerNameController.text = retailerModel.nameOfTheShopOwner ?? '';
+mobileNoController.text = retailerModel.mobileNo ?? '';
+whatsAppNoController.text = retailerModel.whatsappNo ?? '';
+emailController.text = retailerModel.email ?? '';
+nameOfTheBuildingController.text = retailerModel.nameOfTheBuilding ?? '';
+areaController.text = retailerModel.area ?? '';
+roadController.text = retailerModel.road ?? '';
+tehsilController.text = retailerModel.tehsil ?? '';
+landmarkController.text = retailerModel.landmark ?? '';
+stateController.text = retailerModel.state ?? '';
+cityController.text = retailerModel.citytown ?? '';
+districtController.text = retailerModel.district ?? '';
+pincodeController.text = retailerModel.pinCode ?? '';
+panController.text = retailerModel.pan ?? '';
+typeOfShopController.text = retailerModel.typeOfShop ?? '';
+gstController.text = retailerModel.gst ?? '';
+assignedDistributorController.text = retailerModel.assignedDistributor ?? '';
+aadharNoController.text = retailerModel.aadharNo ?? '';
+}
+setBusy(false);
 
   }
   void setShopName(String shopName){
@@ -115,15 +219,15 @@ class AddRetailerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setState(String state) {
-    stateController.text = state;
+  void setState(String? state) {
+
     retailerModel.state = state;
     notifyListeners();
   }
 
   void setCity(String city) {
     cityController.text = city;
-    retailerModel.cityTown = city;
+    retailerModel.citytown = city;
     notifyListeners();
   }
 
@@ -145,9 +249,12 @@ class AddRetailerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setTypeOfShop(String typeOfShop) {
-    typeOfShopController.text = typeOfShop;
+  void setTypeOfShop(String? typeOfShop) {
     retailerModel.typeOfShop = typeOfShop;
+    notifyListeners();
+  }
+  void setweeklyoff(String? weeklyOff) {
+    retailerModel.weeklyOff = weeklyOff;
     notifyListeners();
   }
 
@@ -157,25 +264,35 @@ class AddRetailerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setindustry(String? industry){
+    retailerModel.typeOfShop =industry;
+    notifyListeners();
+  }
+  void setterritory(String? territory){
+    retailerModel.territorry =territory;
+    notifyListeners();
+  }
+
   void setAssignedDistributor(String assignedDistributor) {
     assignedDistributorController.text = assignedDistributor;
-    retailerModel.nameOfTheShopOwner = assignedDistributor;
+    retailerModel.assignedDistributor = assignedDistributor;
     notifyListeners();
   }
 
   void setAadharNo(String aadharNo) {
     aadharNoController.text = aadharNo;
-    retailerModel.mobileNo = aadharNo;
+    retailerModel.aadharNo = aadharNo;
     notifyListeners();
   }
 
   void onSavePressed(BuildContext context) async {
-    Logger().i(retailerModel.toJson());
+
     setBusy(true);
 
     if (formKey.currentState!.validate()) {
       GeolocationService geolocationService = GeolocationService();
       try {
+
         Position? position = await geolocationService.determinePosition();
 
         if (position == null) {
@@ -190,7 +307,8 @@ class AddRetailerViewModel extends BaseViewModel {
         retailerModel.longitude = position.longitude.toString();
         retailerModel.address = formattedAddress;
         bool res = false;
-
+        print(json.encode(retailerModel.toJson()));
+        Logger().i(retailerModel.toJson());
         if (isEdit == true) {
           res = await RetailerServices().addRetailer(retailerModel);
           if (res) {
@@ -214,9 +332,37 @@ class AddRetailerViewModel extends BaseViewModel {
         // setBusy(false);
       }
       setBusy(false);
+    }else{
+      setBusy(false);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill the mandatory fields')));
     }
   }
 
+
+  @override
+  void dispose() {
+    shopNameController.dispose();
+    shopOwnerNameController.dispose();
+    mobileNoController.dispose();
+    whatsAppNoController.dispose();
+    emailController.dispose();
+    nameOfTheBuildingController.dispose();
+    areaController.dispose();
+    roadController.dispose();
+    tehsilController.dispose();
+    landmarkController.dispose();
+    stateController.dispose();
+    cityController.dispose();
+    districtController.dispose();
+    pincodeController.dispose();
+    panController.dispose();
+    typeOfShopController.dispose();
+    gstController.dispose();
+    assignedDistributorController.dispose();
+    aadharNoController.dispose();
+    super.dispose();
+  }
 
 
 
