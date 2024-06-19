@@ -26,7 +26,6 @@ class AddLeadServices{
       );
 
       if (response.statusCode == 200) {
-        String name=response.data['data']['name'];
         // afterSave(name);
         return true;
       } else {
@@ -40,7 +39,7 @@ class AddLeadServices{
     return false;
   }
 
-  Future<bool> updateOrder(AddLeadModel leaddetails) async {
+  Future<bool> updateLead(AddLeadModel leaddetails) async {
     baseurl =  await geturl();
 
     Logger().i(leaddetails.toString());
@@ -105,7 +104,7 @@ class AddLeadServices{
     try {
       var dio = Dio();
       var response = await dio.request(
-        '$baseurl/api/resource/Territory?limit_page_length=99',
+        '$baseurl/api/resource/Territory?limit_page_length=9999999',
         options: Options(
           method: 'GET',
           headers: {'Authorization': await getTocken()},

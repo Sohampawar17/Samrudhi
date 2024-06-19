@@ -5,7 +5,6 @@ import 'package:geolocation/widgets/full_screen_loader.dart';
 import 'package:geolocation/widgets/text_button.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../../widgets/customtextfield.dart';
 import '../../../widgets/drop_down.dart';
 
@@ -130,7 +129,7 @@ if(model.visible==true)
             const SizedBox(height: 15,),
                 if(model.visible==false)
                         Row(children: [
- Expanded(child:  CustomSmallTextFormField(prefixIcon: Icons.phone,controller:model.mobilenumbercontroller,labelText:'Mobile Number' ,hintText: 'Enter the your mobile number',onChanged: model.setmobilenumber,length: 10,keyboardtype: TextInputType.phone),
+ Expanded(child:  CustomSmallTextFormField(prefixIcon: Icons.phone,controller:model.mobilenumbercontroller,labelText:'Mobile Number' ,hintText: 'Enter the your mobile number',onChanged: model.setmobilenumber,length: 10,keyboardtype: TextInputType.phone,validator: model.validateMobileNumber,),
               ),
  const SizedBox(width: 15,),
    Expanded(child:  CustomSmallTextFormField(prefixIcon:Bootstrap.whatsapp,controller: model.whatsappcontroller,labelText:'WhatsApp Number' ,hintText: 'Enter your whatsapp number',onChanged: model.setwhatsapp,length: 10,keyboardtype: TextInputType.phone,),
@@ -165,7 +164,7 @@ if(model.visible==true)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [Expanded(child: CtextButton(onPressed: () => Navigator.of(context).pop(), text: 'Cancel', buttonColor: Colors.red.shade500,)),
-                           SizedBox(width: 20), Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:model.isEdit?'Update Enquiry' : 'Create Enquiry', buttonColor: Colors.blueAccent.shade400,))],
+                           const SizedBox(width: 20), Expanded(child: CtextButton(onPressed: ()=> model.onSavePressed(context), text:model.isEdit?'Update Enquiry' : 'Create Enquiry', buttonColor: Colors.blueAccent.shade400,))],
                           )
               ],
             ),

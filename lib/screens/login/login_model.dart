@@ -54,6 +54,7 @@ class LoginViewModel extends BaseViewModel {
           fontSize: 16.0);
     }
   }
+
   bool rememberMe = false;
   void changeRememberMe(bool? value) {
     rememberMe = value ?? false;

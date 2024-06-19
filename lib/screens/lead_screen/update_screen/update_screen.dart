@@ -58,7 +58,7 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          model.leaddata.customEnquiryStatus ?? "",
+                                          model.leaddata.customEnquiryStatus ?? "N/A",
                                           style: TextStyle(
 
                                             color: model.getColorForStatus(model.leaddata.customEnquiryStatus.toString()),
@@ -96,9 +96,9 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                             if(model.leaddata.customEnquiryStatus =="Not Interested")
                             const SizedBox(height: 10,),
                             if(model.leaddata.customEnquiryStatus =="Not Interested")
-                              buildItemColumn(labelText: 'Reason for Not Interested',additionalText:  model.leaddata.customReason ?? ""),
+                              buildItemColumn(labelText: 'Reason for Not Interested',additionalText:  model.leaddata.customReason ?? "N/A"),
                             const SizedBox(height: 10,),
-                            buildItemColumn(labelText:'Lead Owner',additionalText: '${model.leaddata.leadOwner}'),],
+                            buildItemColumn(labelText:'Lead Owner',additionalText: model.leaddata.leadOwner ?? "N/A"),],
                         ),
                       ) ,
                     ),
@@ -111,20 +111,30 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                         child: Column(
                           children: [
                             Align(alignment:Alignment.topLeft,
-                                child: buildItemColumn(labelText:'Name',additionalText: '${model.leaddata.leadName}')),
+                                child: buildItemColumn(labelText:'Name',additionalText: model.leaddata.leadName ?? "N/A")),
                             const SizedBox(height: 10,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Expanded(child: buildItemColumn(labelText:'Email',additionalText: '${model.leaddata.emailId}'),),
+                                Expanded(child: buildItemColumn(labelText:'Email',additionalText: model.leaddata.emailId ?? "N/A"),),
+                                const SizedBox(width: 10,),
                                 Expanded(
-                                  child:buildItemColumn(labelText:'Mobile',additionalText: '${model.leaddata.mobileNo}'),
+                                  child:buildItemColumn(labelText:'Mobile',additionalText: model.leaddata.mobileNo ?? "N/A"),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 10,),
-                            Align(alignment:Alignment.topLeft,
-                                child: buildItemColumn(labelText:'Territory',additionalText: '${model.leaddata.territory}')),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(child: buildItemColumn(labelText:'Territory',additionalText: model.leaddata.territory ?? "N/A")),
+                                const SizedBox(width: 10,),
+                                Expanded(
+                                  child:buildItemColumn(labelText:'Date',additionalText: model.leaddata.territory ?? "N/A"),
+                                ),
+                              ],
+                            ),
+
                           ],
                         ),
                       ),
@@ -137,9 +147,9 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                         padding: const EdgeInsets.all(8),
                         child: Column(
                           children: [
-                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Organisation Name',additionalText: '${model.leaddata.companyName}')),
+                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Company Name',additionalText: model.leaddata.companyName ?? "N/A")),
                             const SizedBox(height: 10,),
-                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Industry type',additionalText: '${model.leaddata.industry}')),
+                            Align(alignment:Alignment.topLeft,child: buildItemColumn(labelText:'Industry type',additionalText: model.leaddata.industry ?? "N/A")),
 
                           ],
                         ),
@@ -322,23 +332,27 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                       //         },
                       direction: DismissDirection.startToEnd,
                       key: Key(index.toString()),
-                      child:ListTile(
-                        leading: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: noteData.image ??"",
-                            width: 40,
-                            matchTextDirection: true,
-                            height: 40,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
-                            errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
+                      child:Card(
+                        elevation: 2,
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: noteData.image ??"",
+                              width: 40,
+                              matchTextDirection: true,
+                              height: 40,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(child: CircularProgressIndicator(color: Colors.blueAccent)),
+                              errorWidget: (context, url, error) => Center(child: Image.asset('assets/images/profile.png', scale: 5)),
+                            ),
                           ),
-                        ),
-                        title: Text(
-                          noteData.note ?? "",
+                          title: Text(
+                            noteData.note ?? "",
 
+                          ),
+                          subtitle: Text("${noteData.commented ?? ""} | ${noteData.addedOn ?? ""}",style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
-                        subtitle: Text("${noteData.commented ?? ""} | ${noteData.addedOn ?? ""}",style: const TextStyle(fontWeight: FontWeight.bold),),
                       ),
                     );
                     },

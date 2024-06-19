@@ -53,7 +53,7 @@ TextEditingController descriptonController=TextEditingController();
     leaddata.customEnquiryStatus = enquiryType;
     leaddata.customReason = reason;
     bool res = false;
-    res =  await AddLeadServices().updateOrder(leaddata);
+    res =  await AddLeadServices().updateLead(leaddata);
     if (res) {
       initialise(context,leaddata.name.toString());
     }
@@ -108,7 +108,7 @@ notifyListeners();
   void updateEnquiryType(String enquiryType,String reason)async{
     leaddata.customEnquiryStatus = enquiryType;
     leaddata.customReason = reason;
-    await AddLeadServices().updateOrder(leaddata);
+    await AddLeadServices().updateLead(leaddata);
 
   }
 }

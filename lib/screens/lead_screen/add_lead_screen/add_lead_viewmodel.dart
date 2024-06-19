@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocation/model/sub_complaint_model.dart';
 import 'package:geolocation/services/add_lead_services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -54,7 +53,8 @@ List<String> complaintStatus=["",
   "others"
 ];
 
-List<String> state=["01-Jammu and Kashmir",
+List<String> state=[
+  "01-Jammu and Kashmir",
 "02-Himachal Pradesh",
 "03-Punjab",
 "04-Chandigarh",
@@ -91,7 +91,8 @@ List<String> state=["01-Jammu and Kashmir",
 "37-Andhra Pradesh",
 "38-Ladakh",
 "96-Other Countries",
-"97-Other Territory"];
+"97-Other Territory"
+];
 
 initialise(BuildContext context, String leadId) async {
     setBusy(true);
@@ -142,7 +143,7 @@ initialise(BuildContext context, String leadId) async {
         bool res = false;
         Logger().i(leaddata.toJson());
         if (isEdit == true) {
-          res = await AddLeadServices().updateOrder(leaddata);
+          res = await AddLeadServices().updateLead(leaddata);
           if (res) {
             if (context.mounted) {
               setBusy(false);
@@ -293,12 +294,16 @@ String? validateRequestType(String? value) {
     }
     return null;
   }
-    String? validatemobile(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please Enter mobile number';
-    }
-    return null;
+String? validateMobileNumber(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter mobile number';
   }
+  if (value.replaceAll(" ", "").length != 10) {
+    return 'Mobile number should be exactly 10 digits';
+  }
+  // Additional validation rules can be added if needed.
+  return null;
+}
     String? validateemail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Enter  email address';

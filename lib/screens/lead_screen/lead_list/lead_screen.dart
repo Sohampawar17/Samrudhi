@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:geolocation/screens/lead_screen/lead_list/lead_viewmodel.dart';
 import 'package:geolocation/widgets/full_screen_loader.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import '../../../router.router.dart';
 import '../../../widgets/drop_down.dart';
@@ -136,7 +137,7 @@ body: fullScreenLoader(
                                                       children: [
                                                         Text(
                                                           model.filterleadlist[index]
-                                                                  .name ??
+                                                                  .leadName?.toUpperCase() ??
                                                               "",
                                                           style: const TextStyle(
                                                             fontSize: 14.0,
@@ -144,10 +145,8 @@ body: fullScreenLoader(
                                                                 FontWeight.bold,
                                                           ),
                                                         ),
-                                                        Text(
-                                                          model.filterleadlist[index]
-                                                                  .leadName?.toUpperCase() ??
-                                                              "",
+                                                        Text(DateFormat.yMMMEd().format(DateTime.parse(model.filterleadlist[index]
+                                                            .creation.toString())),
                                                           style: const TextStyle(
                                                             fontWeight: FontWeight.w300
                                                           ),
@@ -266,7 +265,7 @@ body: fullScreenLoader(
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: const BoxDecoration(color: Colors.white,borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: const Text('Sorry, you got nothing!',textDirection: TextDirection.ltr,style: TextStyle(fontWeight: FontWeight.w700),),),
+                          child: const Text('Sorry, you got nothing!',style: TextStyle(fontWeight: FontWeight.w700),),),
                       )
                     ],
                   ),
