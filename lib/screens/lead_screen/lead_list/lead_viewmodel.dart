@@ -31,7 +31,7 @@ List<String> requestType=[
 ];
 
 Future<void> refresh() async {
-  leadlist=await ListLeadServices().fetchleadlist();
+  filterleadlist=await ListLeadServices().fetchleadlist();
   notifyListeners();
 }
 

@@ -249,7 +249,7 @@ void setRequestType(String? requestType,BuildContext context){
     visible=false;
   }
   if(leaddata.customCustomRequestType == "Enquiry for retailer"){
-    Navigator.pushNamed(context, Routes.addRetailerScreen,arguments: AddRetailerScreenArguments(retailerId: ""));
+    Navigator.popAndPushNamed(context, Routes.addRetailerScreen,arguments: AddRetailerScreenArguments(retailerId: ""));
   }
   notifyListeners();
 }
