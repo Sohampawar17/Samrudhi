@@ -48,11 +48,21 @@ class LocationTrackingService : Service() {
     private var token = ""
     private var url = ""
     private lateinit var geocoder: Geocoder
+    private lateinit var serviceContext: Context
+    private lateinit var networkMonitor: NetworkMonitor
+    private var isNetworkAvailable = false
+    companion object {
+        const val ACTION_NETWORK_AVAILABLE = "network_available"
+        const val ACTION_NETWORK_LOST = "network_lost"
+    }
 
     override fun onCreate() {
         super.onCreate()
         //ServiceCompat.startForeground(0, notification, FOREGROUND_SERVICE_TYPE_LOCATION)
         geocoder = Geocoder(this, Locale.getDefault())
+        serviceContext = this
+        networkMonitor = NetworkMonitor(this)
+        networkMonitor.registerNetworkCallback()
         startForeground(NOTIFICATION_ID, createNotification())
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         startLocationUpdates()
@@ -65,7 +75,12 @@ class LocationTrackingService : Service() {
         if (intent != null) {
             token = intent.getStringExtra("token").toString()
             url = intent.getStringExtra("url").toString()
+        } else{
+            val sharedPreferencesHelper = SharedPreferencesHelper(this)
+            token= sharedPreferencesHelper.getToken().toString()
+            url =sharedPreferencesHelper.getUrl().toString()
         }
+
         return Service.START_STICKY
 
     }
@@ -93,7 +108,9 @@ class LocationTrackingService : Service() {
                 locationResult.lastLocation?.let { location ->
                     println(location.toString())
                     // Handle the received location (e.g., upload to server)
-                    uploadLocationToServer(location)
+                    if(Utility.isInternetConnected(serviceContext)){
+                        uploadLocationToServer(location)
+                    }
                     updateNotification(location)
                 }
             }
@@ -111,8 +128,8 @@ class LocationTrackingService : Service() {
 
     @SuppressLint("HardwareIds")
     fun uploadLocationToServer(location: Location) {
-        val url = "$url/api/method/mobile.mobile_env.location.user_location"
-        println(url)
+        val stringUrl = "$url/api/method/mobile.mobile_env.location.user_location"
+        println(stringUrl)
         val mId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         // Create JSON object with location data
         val jsonLocation = JSONObject()
@@ -126,7 +143,7 @@ class LocationTrackingService : Service() {
 
         // Create HTTP request
         val request = Request.Builder()
-            .url(url)
+            .url(stringUrl)
             .addHeader("Authorization", token)
             .post(body)
             .build()
@@ -143,13 +160,14 @@ class LocationTrackingService : Service() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                // Handle response from server
-                if (response.isSuccessful) {
-                    // Data uploaded successfully
-                    println("Location data uploaded successfully")
-                } else {
-                    // Handle server error
-                    println("Server error: ${response.message}")
+                response.use {
+                    if (response.isSuccessful) {
+                        // Data uploaded successfully
+                        println("Location data uploaded successfully")
+                    } else {
+                        // Handle server error
+                        println("Server error: ${response.message}")
+                    }
                 }
             }
         })
@@ -183,70 +201,71 @@ class LocationTrackingService : Service() {
         }
     }
 
-    fun uploadLocationToTrackerServer(location: Location) {
-        // val url = "http://65.109.234.11:8082/?id=442271&timestamp=1713345062&lat=18.5204&lon=73.8567&speed=0.0&bearing=0.0&altitude=509.1999816894531&accuracy=15.015999794006348&batt=100.0&charge=true"
-        val url = "http://65.109.234.11:8082/"
-        val m8Id = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        // Create JSON object with location data
-        val jsonLocation = JSONObject()
-        jsonLocation.put("latitude", location.latitude)
-        jsonLocation.put("longitude", location.longitude)
-        jsonLocation.put("deviceId", "442271")
-        jsonLocation.put("timestamp",System.currentTimeMillis())
-
-        val urlBuilder = url.toHttpUrlOrNull()?.newBuilder()
-        urlBuilder?.addQueryParameter("id", "353136")
-        urlBuilder?.addQueryParameter("timestamp", System.currentTimeMillis().toString())
-        urlBuilder?.addQueryParameter("lat", "28.2180")
-        urlBuilder?.addQueryParameter("lon","94.7278" )
-//        urlBuilder?.addQueryParameter("speed", "0.0")
-//        urlBuilder?.addQueryParameter("bearing", "0.0")
-//        urlBuilder?.addQueryParameter("altitude", "509.1999816894531")
-//        urlBuilder?.addQueryParameter("accuracy", "15.015999794006348")
-//        urlBuilder?.addQueryParameter("batt", "100.0")
-//        urlBuilder?.addQueryParameter("charge", "true")
-
-        val urlString = urlBuilder?.build().toString()
-        val emptyBody = "".toRequestBody(null)
-        kotlin.io.print(urlString)
-
-        // Create HTTP request body with JSON data
-        val body =
-            jsonLocation.toString().toRequestBody("application/json".toMediaTypeOrNull())
-
-        // Create HTTP request
-        val request = Request.Builder()
-            .url(urlString)
-            .post(emptyBody)
-            .build()
-
-        // Create OkHttpClient instance
-        val client = OkHttpClient()
-
-        // Send HTTP request asynchronously
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                // Handle failure to send data
-                e.printStackTrace()
-                println(e.message)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                // Handle response from server
-                if (response.isSuccessful) {
-                    // Data uploaded successfully
-                    println(response.body)
-                    println("Location data uploaded successfully")
-                } else {
-                    // Handle server error
-                    println("Server error: ${response.code}")
-                }
-            }
-        })
-    }
+//    fun uploadLocationToTrackerServer(location: Location) {
+//        // val url = "http://65.109.234.11:8082/?id=442271&timestamp=1713345062&lat=18.5204&lon=73.8567&speed=0.0&bearing=0.0&altitude=509.1999816894531&accuracy=15.015999794006348&batt=100.0&charge=true"
+//        val url = "http://65.109.234.11:8082/"
+//        val m8Id = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+//        // Create JSON object with location data
+//        val jsonLocation = JSONObject()
+//        jsonLocation.put("latitude", location.latitude)
+//        jsonLocation.put("longitude", location.longitude)
+//        jsonLocation.put("deviceId", "442271")
+//        jsonLocation.put("timestamp",System.currentTimeMillis())
+//
+//        val urlBuilder = url.toHttpUrlOrNull()?.newBuilder()
+//        urlBuilder?.addQueryParameter("id", "353136")
+//        urlBuilder?.addQueryParameter("timestamp", System.currentTimeMillis().toString())
+//        urlBuilder?.addQueryParameter("lat", "28.2180")
+//        urlBuilder?.addQueryParameter("lon","94.7278" )
+////        urlBuilder?.addQueryParameter("speed", "0.0")
+////        urlBuilder?.addQueryParameter("bearing", "0.0")
+////        urlBuilder?.addQueryParameter("altitude", "509.1999816894531")
+////        urlBuilder?.addQueryParameter("accuracy", "15.015999794006348")
+////        urlBuilder?.addQueryParameter("batt", "100.0")
+////        urlBuilder?.addQueryParameter("charge", "true")
+//
+//        val urlString = urlBuilder?.build().toString()
+//        val emptyBody = "".toRequestBody(null)
+//        kotlin.io.print(urlString)
+//
+//        // Create HTTP request body with JSON data
+//        val body =
+//            jsonLocation.toString().toRequestBody("application/json".toMediaTypeOrNull())
+//
+//        // Create HTTP request
+//        val request = Request.Builder()
+//            .url(urlString)
+//            .post(emptyBody)
+//            .build()
+//
+//        // Create OkHttpClient instance
+//        val client = OkHttpClient()
+//
+//        // Send HTTP request asynchronously
+//        client.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                // Handle failure to send data
+//                e.printStackTrace()
+//                println(e.message)
+//            }
+//
+//            override fun onResponse(call: Call, response: Response) {
+//                // Handle response from server
+//                if (response.isSuccessful) {
+//                    // Data uploaded successfully
+//                    println(response.body)
+//                    println("Location data uploaded successfully")
+//                } else {
+//                    // Handle server error
+//                    println("Server error: ${response.code}")
+//                }
+//            }
+//        })
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
+        networkMonitor.unregisterNetworkCallback()
         fusedLocationClient.flushLocations()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }

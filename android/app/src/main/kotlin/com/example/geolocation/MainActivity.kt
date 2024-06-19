@@ -2,6 +2,7 @@ package com.example.geolocation
 
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import io.flutter.embedding.android.FlutterActivity
@@ -13,7 +14,6 @@ class MainActivity: FlutterActivity() {
 
 
     private val channel = "tracking_service"
-
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -42,13 +42,17 @@ class MainActivity: FlutterActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun startTrackingService(token: String, url:String) {
 
+        val sharedPreferencesHelper = SharedPreferencesHelper(this)
+        sharedPreferencesHelper.saveToken(token)
+        sharedPreferencesHelper.saveUrl(url)
         val intent = Intent(this, LocationTrackingService::class.java)
         print(token)
         intent.putExtra("token", token)
         intent.putExtra("url", url)
+
         startForegroundService(intent)
 
     }
@@ -56,6 +60,10 @@ class MainActivity: FlutterActivity() {
     private fun stopTrackingService() {
         val intent = Intent(this, LocationTrackingService::class.java)
         stopService(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }

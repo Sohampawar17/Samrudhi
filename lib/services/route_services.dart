@@ -372,7 +372,7 @@ class RouteServices {
       var url = await geturl();
       var token = await getTocken();
       var response = await dio.request(
-        '$url/api/resource/Routes Assignment',
+        '$url/api/method/mobile.mobile_env.route.assign_route_if_no_leave',
         data: jsonEncode(payload),
         options: Options(
           method: 'POST',
@@ -381,9 +381,16 @@ class RouteServices {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Route is assigned successfully.',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
         print(response.data);
-        return true;
+        Fluttertoast.showToast(gravity: ToastGravity.BOTTOM, msg: response.data["message"]["message"].toString(),
+          textColor: const Color(0xFFFFFFFF),
+          backgroundColor: const Color(0xFFBA1A1A),);
+        if(response.data["status"] == "Success") {
+          return true;
+        }else{
+          return false;
+        }
+
       } else {
          return false;
       }
@@ -413,9 +420,8 @@ class RouteServices {
 
       if (response.statusCode == 200) {
        // Navigator.popAndPushNamed(context, Routes.routeApprovalScreen,arguments: RouteApprovalScreenArguments(routeId: routeName),);
-
-        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: 'Route is assigned successfully.',textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
-       // print(response.data);
+        Fluttertoast.showToast(gravity:ToastGravity.BOTTOM,msg: "Route updated successfully",textColor:const Color(0xFFFFFFFF),backgroundColor: const Color(0xFFBA1A1A),);
+        print(response.data);
         return true;
       } else {
         return false;
