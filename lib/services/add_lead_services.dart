@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import '../constants.dart';
 import '../model/add_lead_model.dart';
 import '../model/sub_complaint_model.dart';
+import '../model/territory_model.dart';
 
 class AddLeadServices{
     Future<bool> addLead(AddLeadModel lead) async {
@@ -130,9 +131,45 @@ class AddLeadServices{
     }
   }
 
+    Future<List<Territory>> fetchTerritoryDetails() async {
+      String baseurl = await geturl();
+      try {
+        var dio = Dio();
+        var response = await dio.request(
+          '$baseurl/api/resource/Territory/?fields=["name","custom_zone","custom_region","custom_area","custom_district","custom_tahsil","custom_state","custom_pin_code"]&limit=99999&filters=[["custom_area_called", "=", "End Node"]]',
+          options: Options(
+            method: 'GET',
+            headers: {'Authorization': await getTocken()},
+          )
+        );
 
-  
-  Future<AddLeadModel?> getlead(String id) async {
+        if (response.statusCode == 200) {
+          var jsonData = json.encode(response.data);
+          Map<String, dynamic> jsonDataMap = json.decode(jsonData);
+          List<dynamic> dataList = jsonDataMap["data"];
+          Logger().i(dataList);
+
+          // Parse the response to create a list of Territory objects
+          List<Territory> territoryList = dataList.map((item) {
+            return Territory.fromJson(item);
+          }).toList();
+
+          return territoryList;
+        } else {
+          Fluttertoast.showToast(msg: "Unable to fetch territory details");
+          return [];
+        }
+      } catch (e) {
+        Logger().e(e);
+        Fluttertoast.showToast(msg: "Unauthorized territory!");
+        return [];
+      }
+    }
+
+
+
+
+    Future<AddLeadModel?> getlead(String id) async {
     baseurl =  await geturl();
     try {
       var dio = Dio();

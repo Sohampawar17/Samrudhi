@@ -104,21 +104,19 @@ backgroundColor: Colors.white,
                        // validator: model.validateString,
                       ),
                       const SizedBox(height: 15),
-                      CustomDropdownButton2(labelText: 'Territory',value: model.retailerModel.territorry,prefixIcon:Icons.location_on,searchInnerWidgetHeight: 35,items:model.territory, hintText: 'select territory', onChanged: model.setterritory,),
-
-                      const SizedBox(height: 15),
                       Row(
                         children: [
                           Expanded(
                             child: CustomSmallTextFormField(
-                              prefixIcon: Icons.location_city,
-                              controller: model.areaController,
-                              labelText: 'Area',
-                              hintText: 'Enter the area',
-                              onChanged: model.setAreaController,
-                              //validator: model.validateString,
+                              prefixIcon: Icons.location_on,
+                              controller: model.landmarkController,
+                              labelText: 'Landmark',
+                              hintText: 'Enter the landmark',
+                              onChanged: model.setLandmark,
+                              // validator: model.validateString,
                             ),
                           ),
+
                           const SizedBox(width: 15),
                           Expanded(
                             child: CustomSmallTextFormField(
@@ -133,10 +131,20 @@ backgroundColor: Colors.white,
                         ],
                       ),
                       const SizedBox(height: 15),
+                      CustomDropdownButton2(labelText: 'City',value: model.retailerModel.citytown,prefixIcon:Icons.location_on,searchInnerWidgetHeight: 35,items:model.territories, hintText: 'Select city',
+                          onChanged:(newValue){
+                            model.setCity;
+                            model.setTerritory;
+                            model.getTerritoryDetails(newValue!);
+                      }
+                      ),
+
+                      const SizedBox(height: 15),
                       Row(
                         children: [
                           Expanded(
                             child: CustomSmallTextFormField(
+                              readOnly: true,
                               prefixIcon: Icons.location_on,
                               controller: model.tehsilController,
                               labelText: 'Tehsil',
@@ -148,42 +156,30 @@ backgroundColor: Colors.white,
                           const SizedBox(width: 15),
                           Expanded(
                             child: CustomSmallTextFormField(
-                              prefixIcon: Icons.location_on,
-                              controller: model.landmarkController,
-                              labelText: 'Landmark',
-                              hintText: 'Enter the landmark',
-                              onChanged: model.setLandmark,
-                              // validator: model.validateString,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Expanded(
-                            child:  CustomSmallTextFormField(
-                              prefixIcon: Icons.location_on,
-                              controller: model.cityController,
-                              labelText: 'City/Town',
-                              hintText: 'Enter the city/town',
-                              onChanged: model.setCity,
-                              validator: model.validateString,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          Expanded(
-                            child: CustomSmallTextFormField(
-                              prefixIcon: Icons.location_on,
-                              controller: model.districtController,
-                              labelText: 'District',
-                              hintText: 'Enter the district',
-                              onChanged: model.setDistrict,
+                              readOnly: true,
+                              prefixIcon: Icons.location_city,
+                              controller: model.areaController,
+                              labelText: 'Area',
+                              hintText: 'Enter the area',
+                              onChanged: model.setAreaController,
                               //validator: model.validateString,
                             ),
                           ),
+
                         ],
                       ),
+                      const SizedBox(height: 15),
+                       CustomSmallTextFormField(
+                          readOnly: true,
+                          prefixIcon: Icons.location_on,
+                          controller: model.districtController,
+                          labelText: 'District',
+                          hintText: 'Enter the district',
+                          onChanged: model.setDistrict,
+                          //validator: model.validateString,
+                        ),
+
+
                       const SizedBox(height: 15),
 
 
@@ -200,6 +196,34 @@ backgroundColor: Colors.white,
                         keyboardtype: TextInputType.number,
                       ),
                       const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomSmallTextFormField(
+                              readOnly: true,
+                              prefixIcon: Icons.location_city,
+                              controller: model.regionController,
+                              labelText: 'Region',
+                              hintText: 'Enter the region',
+                              onChanged: model.setRegion,
+                              //validator: model.validateString,
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: CustomSmallTextFormField(
+                              readOnly: true,
+                              prefixIcon: Icons.location_on,
+                              controller: model.zoneController,
+                              labelText: 'Zone',
+                              hintText: 'Enter the zone',
+                              onChanged: model.setZone,
+                              //validator: model.validateString,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
                       CustomSmallTextFormField(
                         length: 10,
                         prefixIcon: Icons.account_balance,
@@ -212,7 +236,6 @@ backgroundColor: Colors.white,
                       ),
                       const SizedBox(height: 15),
                       CustomDropdownButton2(prefixIcon: Icons.factory_sharp,labelText: 'Type of Shop',value:model.retailerModel.typeOfShop,items:model.industrytype, hintText: 'select Type of Shop', onChanged: model.setTypeOfShop,),
-
 
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(

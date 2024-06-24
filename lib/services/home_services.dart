@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocation/model/attendance_dashboard_model.dart';
 import 'package:geolocation/model/emp_data.dart';
@@ -149,7 +150,7 @@ class HomeServices {
    return null;
  }
 
- Future<List<String>> fetchRoles() async {
+ Future<List<String>> fetchRoles(BuildContext context) async {
    baseurl =  await geturl();
    try {
      var dio = Dio();
@@ -169,7 +170,11 @@ class HomeServices {
        dataList.map((item) => item.toString()).toList();
 
        return namesList;
-     } else {
+     } else if(response.statusCode == 401){
+       Fluttertoast.showToast(msg: "Unauthorized");
+       logout(context);
+      return [];
+     }else {
        Fluttertoast.showToast(msg: "Unable to fetch Customer");
        return [];
      }

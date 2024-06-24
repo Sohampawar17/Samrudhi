@@ -145,12 +145,11 @@ body: fullScreenLoader(
                                                                 FontWeight.bold,
                                                           ),
                                                         ),
-                                                        Text(DateFormat.yMMMEd().format(DateTime.parse(model.filterleadlist[index]
-                                                            .creation.toString())),
-                                                          style: const TextStyle(
-                                                            fontWeight: FontWeight.w300
-                                                          ),
-                                                        ),
+                                                        Text(
+                                                          model.filterleadlist[index].creation != null
+                                                              ? DateFormat.yMMMEd().format(DateTime.parse(model.filterleadlist[index].creation.toString()))
+                                                              : 'Date not available',
+                                                        )
                                                       ],
                                                     ),
                                                     Card(

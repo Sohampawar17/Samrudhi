@@ -45,12 +45,12 @@ class HomeViewModel extends BaseViewModel {
 
   DashBoard get cachedDashboard => _cachedDashboard;
 
-  Future<void> fetchDashboard() async {
+  Future<void> fetchDashboard(BuildContext context) async {
     try {
       final dashboard = await HomeServices().dashboard() ?? DashBoard();
       _cachedDashboard = dashboard;
       await _saveDataToCache(dashboard);
-      availableDoctypes = await _fetchAvailableDoctypes();
+      availableDoctypes = await _fetchAvailableDoctypes(context);
       if (dashboard.empName == null) {
         isHide = true;
       } else {
@@ -69,15 +69,15 @@ class HomeViewModel extends BaseViewModel {
     setBusy(true);
     _cachedDashboard = _loadCachedData();
     employeeData= await HomeServices().getEmpName() ?? EmpData();
-    availableDoctypes = await _fetchAvailableDoctypes();
+    availableDoctypes = await _fetchAvailableDoctypes(context);
     // Logger().i(_loadCachedData().toJson());
     // Logger().i(availableDoctypes.length);
     // if(availableDoctypes.isEmpty || availableDoctypes.length == 0){
     //   logout(context);
     // }
     if (_loadCachedData().company == null) {
-      await _fetchAvailableDoctypes();
-      await fetchDashboard();
+      await _fetchAvailableDoctypes(context);
+      await fetchDashboard(context);
     }
     if (_cachedDashboard.empName == null) {
       isHide = true;
@@ -119,8 +119,8 @@ class HomeViewModel extends BaseViewModel {
     return DashBoard();
   }
 
-  Future<List<String>> _fetchAvailableDoctypes() async {
-    return await HomeServices().fetchRoles();
+  Future<List<String>> _fetchAvailableDoctypes(BuildContext context) async {
+    return await HomeServices().fetchRoles(context);
   }
 
   Future<void> _saveDataToCache(DashBoard newDashboard) async {
@@ -182,7 +182,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> onRefresh(BuildContext context) async {
     setBusy(true);
-    await fetchDashboard();
+    await fetchDashboard(context);
     handleGreeting();
     await initialize(context);
     setBusy(false);

@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import '../../../model/add_lead_model.dart';
+import '../../../model/territory_model.dart';
 import '../../../router.router.dart';
 import '../../../services/geolocation_services.dart';
 
@@ -29,6 +30,7 @@ AddLeadModel leaddata =AddLeadModel();
 final formKey = GlobalKey<FormState>();
 List<String> industrytype=[""]; 
 List<String> territory=[""];
+List<Territory> territoryList=[];
 List<String> customerList=[""];
 List<String> complaintTypeList=[""];
 List<SubComplaint> subComplaintTypeList=[];
@@ -100,7 +102,8 @@ initialise(BuildContext context, String leadId) async {
     customerList = await AddLeadServices().fetchCustomer();
     complaintTypeList = await AddLeadServices().fetchComplaintType();
     industrytype = await AddLeadServices().fetchindustrytype();
-    territory = await AddLeadServices().fetchterritory();
+    territoryList = await AddLeadServices().fetchTerritoryDetails();
+    getTerritoryNames();
     subComplaintTypeList = await AddLeadServices().fetchSubComplaintType("");
     visible = false;
     if (leadId != "") {
@@ -123,7 +126,26 @@ initialise(BuildContext context, String leadId) async {
     setBusy(false);
   }
 
-  void onSavePressed(BuildContext context) async {
+  void getTerritoryDetails(String name) {
+    var territory = territoryList.firstWhere((details) => details.name == name);
+    setcity(territory.name);
+    setterritory(territory.name);
+    setstate(territory.state);
+
+  }
+void getTerritoryNames(){
+  if (territoryList.isEmpty) {
+    return ;
+  }
+  territory = territoryList
+      .where((item) => item.name.isNotEmpty)
+      .map((item) => item.name.toString())
+      .toList();
+  notifyListeners();
+}
+
+
+void onSavePressed(BuildContext context) async {
     setBusy(true);
     if (formKey.currentState!.validate()) {
       GeolocationService geolocationService = GeolocationService();
@@ -278,7 +300,7 @@ void setNote(String note){
 }
 
 void setstate(String? state){
-  // statecontroller.text=state;
+   statecontroller.text=state!;
   leaddata.state = state;
   notifyListeners();
 }

@@ -23,7 +23,7 @@ class _AddLeadScreenState extends State<AddLeadScreen> {
       viewModelBuilder: () => AddLeadViewModel(),
       onViewModelReady: (model) => model.initialise(context,widget.leadid),
       builder: (context, model, child)=>Scaffold(
-       
+
       appBar:AppBar(title:  Text(model.isEdit ?model.leaddata.name.toString() :'Create Enquiry',style: const TextStyle(fontSize: 18),),
 
 ),
@@ -119,7 +119,7 @@ if(model.visible==true)
  Expanded(child: CustomSmallTextFormField(prefixIcon: Icons.person,controller: model.firstnamecontroller,labelText:'First Name' ,hintText: 'Enter the first name',onChanged: model.setfirstname,validator: model.validatefirstname,)),
  const SizedBox(width: 15,),
    Expanded(child: CustomSmallTextFormField(prefixIcon: Icons.person,controller: model.lastnamecontroller,labelText:'Last Name' ,hintText: 'Enter the last name',onChanged: model.setlastname)),
-                
+
                 ],),
                 if(model.visible==false)
                            const SizedBox(height: 15,),
@@ -139,7 +139,10 @@ if(model.visible==true)
                 if(model.visible==false)
                           const SizedBox(height: 15,),
                 if(model.visible==false)
-                  CustomDropdownButton2(labelText: 'Territory',value: model.leaddata.territory,prefixIcon:Icons.location_on,searchInnerWidgetHeight: 35,items:model.territory, hintText: 'select territory', onChanged: model.setterritory,),
+                  CustomDropdownButton2(labelText: 'Territory',value: model.leaddata.territory,prefixIcon:Icons.location_on,searchInnerWidgetHeight: 35,items:model.territory, hintText: 'select territory',
+                      onChanged:(newValue){
+                        model.getTerritoryDetails(newValue!);
+                      }),
                 if(model.visible==false)
                             const SizedBox(height: 15,),
                 if(model.visible==false)
@@ -153,7 +156,7 @@ if(model.visible==true)
                 if(model.visible==false)
             Row(children: [
  Expanded(child: CustomSmallTextFormField(prefixIcon:Icons.location_on,controller: model.citycontroller,labelText:'City' ,hintText: 'Enter the City',onChanged: model.setcity,),
-                
+
               ),
  const SizedBox(width: 15,),
    Expanded(child:   CustomDropdownButton2(labelText: 'State',value:model.leaddata.state..toString,items:model.state, hintText: 'select state', onChanged: model.setstate,searchController: model.statecontroller,),

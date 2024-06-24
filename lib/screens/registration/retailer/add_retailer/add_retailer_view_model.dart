@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/model/territory_model.dart';
 import 'package:geolocation/services/retailer_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logger/logger.dart';
@@ -40,6 +41,9 @@ class AddRetailerViewModel extends BaseViewModel {
   TextEditingController gstController = TextEditingController();
   TextEditingController assignedDistributorController = TextEditingController();
   TextEditingController aadharNoController = TextEditingController();
+  TextEditingController regionController = TextEditingController();
+  TextEditingController zoneController = TextEditingController();
+
 
   List<String> state=[
     "01-Jammu and Kashmir",
@@ -92,7 +96,8 @@ class AddRetailerViewModel extends BaseViewModel {
     "Saturday"
   ];
   List<String> industrytype=[""];
-  List<String> territory=[""];
+   List<Territory> territoryList=[];
+  List<String> territories=[];
 
   String? validateString(String? value) {
     if (value == null || value.isEmpty) {
@@ -132,10 +137,11 @@ class AddRetailerViewModel extends BaseViewModel {
     return null;
   }
 
-  initialise(BuildContext context, String id) async {
+initialise(BuildContext context, String id) async {
 setBusy(true);
 industrytype = await AddLeadServices().fetchindustrytype();
-territory = await AddLeadServices().fetchterritory();
+territoryList = await AddLeadServices().fetchTerritoryDetails();
+getTerritoryNames();
 if(id!=""){
   isEdit=true;
 retailerModel=await RetailerServices().getId(id) ?? RetailerModel();
@@ -158,6 +164,8 @@ typeOfShopController.text = retailerModel.typeOfShop ?? '';
 gstController.text = retailerModel.gst ?? '';
 assignedDistributorController.text = retailerModel.assignedDistributor ?? '';
 aadharNoController.text = retailerModel.aadharNo ?? '';
+regionController.text = retailerModel.region ?? '';
+zoneController.text = retailerModel.zone ?? '';
 }
 setBusy(false);
 
@@ -237,6 +245,19 @@ setBusy(false);
     notifyListeners();
   }
 
+  void setRegion(String region) {
+    regionController.text = region;
+    retailerModel.region = region;
+    notifyListeners();
+  }
+
+  void setZone(String zone) {
+    zoneController.text = zone;
+    retailerModel.zone = zone;
+    notifyListeners();
+  }
+
+
   void setPincode(String pincode) {
     pincodeController.text = pincode;
     retailerModel.pinCode = pincode;
@@ -268,7 +289,7 @@ setBusy(false);
     retailerModel.typeOfShop =industry;
     notifyListeners();
   }
-  void setterritory(String? territory){
+  void setTerritory(String? territory){
     retailerModel.territorry =territory;
     notifyListeners();
   }
@@ -338,6 +359,31 @@ setBusy(false);
           SnackBar(content: Text('Please fill the mandatory fields')));
     }
   }
+
+  void getTerritoryNames(){
+    if (territoryList.isEmpty) {
+      return ;
+    }
+    territories = territoryList
+        .where((item) => item.name.isNotEmpty)
+        .map((item) => item.name.toString())
+        .toList();
+    notifyListeners();
+  }
+
+  void getTerritoryDetails(String name) {
+    var territory = territoryList.firstWhere((details) => details.name == name);
+    setAreaController(territory.area);
+    setTehsil(territory.tehsil);
+    setDistrict(territory.district);
+    setPincode(territory.pincode);
+    setState(territory.state);
+    setCity(territory.name);
+    setRegion(territory.region);
+    setZone(territory.zone);
+
+  }
+
 
 
   @override

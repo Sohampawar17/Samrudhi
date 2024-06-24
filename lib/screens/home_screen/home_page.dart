@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                                         buildButton("Enquiry", 'assets/images/recruitment.png', () {
                                           Navigator.pushNamed(context, Routes.leadListScreen);
                                         },model),
-                                        if(model.isFormAvailableForDoctype("Visit"))
+                                        if(model.isFormAvailableForDoctype("Lead"))
                                           buildButton("Registrations", 'assets/images/registration-form.png', () {
                                             Navigator.pushNamed(context, Routes.registrationScreen);
                                           },model),

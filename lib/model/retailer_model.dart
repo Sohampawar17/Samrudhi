@@ -26,6 +26,8 @@ class RetailerModel {
   String? latitude;
   String? longitude;
   String? address;
+  String? region;
+  String? zone;
 
   RetailerModel(
       {this.name,
@@ -54,7 +56,9 @@ class RetailerModel {
         this.enquiryReference,
         this.latitude,
         this.longitude,
-        this.address});
+        this.address,
+        this.region,
+        this.zone});
 
   RetailerModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -84,6 +88,8 @@ class RetailerModel {
     latitude = json['latitude'];
     longitude = json['longitude'];
     address = json['address'];
+    region = json['region'];
+    zone = json['zone'];
   }
 
   Map<String, dynamic> toJson() {
