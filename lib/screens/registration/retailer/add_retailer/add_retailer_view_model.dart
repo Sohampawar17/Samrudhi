@@ -309,8 +309,12 @@ setBusy(false);
   void onSavePressed(BuildContext context) async {
 
     setBusy(true);
+    if(pincodeController.text.isNotEmpty){
+      retailerModel.pinCode = pincodeController.text;
+    }
 
     if (formKey.currentState!.validate()) {
+
       GeolocationService geolocationService = GeolocationService();
       try {
 
@@ -381,6 +385,7 @@ setBusy(false);
     setCity(territory.name);
     setRegion(territory.region);
     setZone(territory.zone);
+    setTerritory(territory.name);
 
   }
 

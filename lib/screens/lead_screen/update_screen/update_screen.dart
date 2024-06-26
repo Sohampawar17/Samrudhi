@@ -129,9 +129,9 @@ class _UpdateLeadScreenState extends State<UpdateLeadScreen> {
                               children: [
                                 Expanded(child: buildItemColumn(labelText:'Territory',additionalText: model.leaddata.territory ?? "N/A")),
                                 const SizedBox(width: 10,),
-                                Expanded(
-                                  child:buildItemColumn(labelText:'Date',additionalText: model.leaddata.territory ?? "N/A"),
-                                ),
+                                // Expanded(
+                                //   child:buildItemColumn(labelText:'Date',additionalText: model.leaddata ?? "N/A"),
+                                // ),
                               ],
                             ),
 

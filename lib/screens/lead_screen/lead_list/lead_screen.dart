@@ -188,53 +188,45 @@ body: fullScreenLoader(
                                                 ),
                                                 const SizedBox(height: 10.0),
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text(
-                                                          'Company Name',
-
-                                                        ),
-                                                        Text(
-                                                          model.filterleadlist[index]
-                                                                  .companyName?.toUpperCase() ??
-                                                              "", style: const TextStyle(
-                                                          fontWeight:
-                                                          FontWeight.bold,
-                                                        ),
-                                                        ),
-                                                      ],
+                                                    Flexible(
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                            'Company Name',
+                                                          ),
+                                                          Text(
+                                                            model.filterleadlist[index].companyName?.toUpperCase() ?? "",
+                                                            style: const TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis, // This ensures that long text is truncated with an ellipsis
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text(
-                                                          'Territory',
-
-                                                        ),
-                                                        Text(
-                                                          model.filterleadlist[index]
-                                                                  .territory
-                                                                  ?.toString() ??
-                                                              "", style: const TextStyle(
-                                                          fontWeight:
-                                                          FontWeight.bold,
-                                                        ),
-                                                        ),
-                                                      ],
+                                                    Flexible(
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          const Text(
+                                                            'Territory',
+                                                          ),
+                                                          Text(
+                                                            model.filterleadlist[index].territory?.toString() ?? "",
+                                                            style: const TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis, // This ensures that long text is truncated with an ellipsis
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-
                                                   ],
-
                                                 ),
+
                                                 const SizedBox(height: 10.0),
                                                 Text(
                                                    model.filterleadlist[index]

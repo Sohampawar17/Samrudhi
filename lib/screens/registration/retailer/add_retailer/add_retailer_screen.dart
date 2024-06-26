@@ -187,7 +187,7 @@ backgroundColor: Colors.white,
                       const SizedBox(height: 15),
                       CustomSmallTextFormField(
                         length: 6,
-                        prefixIcon: Icons.location_on,
+                        prefixIcon: Icons.pin,
                         controller: model.pincodeController,
                         labelText: 'Pin Code',
                         hintText: 'Enter the pin code',
