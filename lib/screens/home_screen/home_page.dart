@@ -10,6 +10,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:stacked/stacked.dart';
 import '../../constants.dart';
 import '../../widgets/drawer.dart';
+import '../location_tracking/tracking_service.dart';
 import 'home_view_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -129,8 +130,14 @@ class _HomePageState extends State<HomePage> {
                             ),
                                   Center(
                                   child: OutlinedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       String logtype= model.dashboard.lastLogType=="IN" ? "OUT" :"IN";
+                                      if(model.dashboard.lastLogType == "IN"){
+                                        var runningService= await TrackingService.checkRunningService();
+                                        if(!runningService){
+                                          TrackingService.startTracking();
+                                        }
+                                      }
                                       Logger().i(logtype);
                                       model.employeeLog(logtype);
                                     },

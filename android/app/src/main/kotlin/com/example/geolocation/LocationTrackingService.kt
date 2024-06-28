@@ -2,6 +2,7 @@ package com.example.geolocation
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -19,6 +20,9 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import com.example.geolocation.db.LocationDao
+import com.example.geolocation.db.LocationDatabase
+import com.example.geolocation.db.LocationEntity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
@@ -26,9 +30,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -42,6 +48,7 @@ class LocationTrackingService : Service() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+    private lateinit var locationDatabase: LocationDatabase
     private val TAG = "LocationTrackingService"
     private val NOTIFICATION_ID = 12345
     private val CHANNEL_ID = "LocationTrackingChannel"
@@ -51,6 +58,8 @@ class LocationTrackingService : Service() {
     private lateinit var serviceContext: Context
     private lateinit var networkMonitor: NetworkMonitor
     private var isNetworkAvailable = false
+    private lateinit var sharedPreferencesHelper:SharedPreferencesHelper
+
     companion object {
         const val ACTION_NETWORK_AVAILABLE = "network_available"
         const val ACTION_NETWORK_LOST = "network_lost"
@@ -61,8 +70,10 @@ class LocationTrackingService : Service() {
         //ServiceCompat.startForeground(0, notification, FOREGROUND_SERVICE_TYPE_LOCATION)
         geocoder = Geocoder(this, Locale.getDefault())
         serviceContext = this
+        locationDatabase =LocationDatabase.getDatabase(context = applicationContext)
         networkMonitor = NetworkMonitor(this)
         networkMonitor.registerNetworkCallback()
+
         startForeground(NOTIFICATION_ID, createNotification())
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         startLocationUpdates()
@@ -72,14 +83,16 @@ class LocationTrackingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent != null) {
-            token = intent.getStringExtra("token").toString()
-            url = intent.getStringExtra("url").toString()
-        } else{
-            val sharedPreferencesHelper = SharedPreferencesHelper(this)
-            token= sharedPreferencesHelper.getToken().toString()
-            url =sharedPreferencesHelper.getUrl().toString()
-        }
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+        sharedPreferencesHelper.setServiceRunning(true)
+
+        // Extract token and URL from intent if present
+        val intentToken = intent?.getStringExtra("token")
+        val intentUrl = intent?.getStringExtra("url")
+
+        // Fallback to SharedPreferences if intent data is missing
+        token = intentToken?.takeIf { it.isNotEmpty() } ?: sharedPreferencesHelper.getToken().orEmpty()
+        url = intentUrl?.takeIf { it.isNotEmpty() } ?: sharedPreferencesHelper.getUrl().orEmpty()
 
         return Service.START_STICKY
 
@@ -91,11 +104,6 @@ class LocationTrackingService : Service() {
 
 
     private fun startLocationUpdates() {
-//        val locationRequest = LocationRequest.create().apply {
-//            interval = 1 * 60 * 1000 // 15 minutes in milliseconds
-//            fastestInterval = 1 * 60 * 1000 // 15 minutes in milliseconds
-//            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-//        }
         val locationRequest =  LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1*60*1000).apply {
             setIntervalMillis(1*60*1000)
             setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
@@ -110,6 +118,8 @@ class LocationTrackingService : Service() {
                     // Handle the received location (e.g., upload to server)
                     if(Utility.isInternetConnected(serviceContext)){
                         uploadLocationToServer(location)
+                    }else{
+                        saveLocationLocally(location)
                     }
                     updateNotification(location)
                 }
@@ -128,6 +138,9 @@ class LocationTrackingService : Service() {
 
     @SuppressLint("HardwareIds")
     fun uploadLocationToServer(location: Location) {
+        if(url.isEmpty() || url.isBlank() || url== null){
+            return
+        }
         val stringUrl = "$url/api/method/mobile.mobile_env.location.user_location"
         println(stringUrl)
         val mId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
@@ -172,6 +185,68 @@ class LocationTrackingService : Service() {
             }
         })
     }
+
+    @SuppressLint("HardwareIds")
+    private fun saveLocationLocally(location: Location) {
+        val mId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        val locationEntity = LocationEntity(
+            latitude = location.latitude,
+            longitude = location.longitude,
+            timestamp = System.currentTimeMillis(),
+            deviceId = mId
+        )
+        CoroutineScope(Dispatchers.IO).launch {
+            locationDatabase.locationDao().insert(locationEntity)
+        }
+
+    }
+
+    fun uploadSavedLocations() {
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+        if(sharedPreferencesHelper.getCheckedIn()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val savedLocations = locationDatabase.locationDao().getAll()
+                for (location in savedLocations) {
+                    val jsonLocation = JSONObject().apply {
+                        put("longitude", location.longitude)
+                        put("latitude", location.latitude)
+                        put("device_id", location.deviceId)
+                    }
+                    val body =
+                        jsonLocation.toString()
+                            .toRequestBody("application/json".toMediaTypeOrNull())
+
+                    val request = Request.Builder()
+                        .url("$url/api/method/mobile.mobile_env.location.user_location")
+                        .addHeader("Authorization", token)
+                        .post(body)
+                        .build()
+
+                    val client = OkHttpClient()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            e.printStackTrace()
+                            println(e.message)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            response.use {
+                                if (response.isSuccessful) {
+                                    println("Saved location data uploaded successfully");
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        locationDatabase.locationDao().deleteById(location.id)
+                                    }
+                                } else {
+                                    println("Server error: ${response.message}")
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+
 
     private fun updateNotification(location: Location?) {
         val notificationManager =
@@ -268,9 +343,13 @@ class LocationTrackingService : Service() {
         networkMonitor.unregisterNetworkCallback()
         fusedLocationClient.flushLocations()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+        CoroutineScope(Dispatchers.IO).launch {
+            locationDatabase.locationDao().deleteAll()
+        }
+        sharedPreferencesHelper.clearPreferences()
     }
 
-    private fun createNotification(): Notification {
+     fun createNotification(): Notification {
         createNotificationChannel()
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(

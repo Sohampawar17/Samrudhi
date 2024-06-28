@@ -25,4 +25,15 @@ class TrackingService {
       print("Failed to stop tracking: '${e.message}'.");
     }
   }
+
+  static Future<bool> checkRunningService() async {
+    try {
+     bool isRunning =  await platform.invokeMethod('isServiceRunning');
+     return isRunning;
+    } on PlatformException catch (e) {
+      print("Failed to stop tracking: '${e.message}'.");
+      return false;
+    }
+    return false;
+  }
 }

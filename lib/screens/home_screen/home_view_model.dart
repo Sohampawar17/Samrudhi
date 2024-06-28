@@ -131,6 +131,10 @@ class HomeViewModel extends BaseViewModel {
   Future<void> handleLogout(BuildContext context) async {
     if (_cachedDashboard.company == "") {
      logout(context);
+     var runningService= await TrackingService.checkRunningService();
+     if(runningService) {
+       TrackingService.stopTracking();
+     }
     }
   }
 

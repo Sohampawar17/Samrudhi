@@ -15,6 +15,7 @@ class MainActivity: FlutterActivity() {
 
     private val channel = "tracking_service"
 
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(
@@ -34,6 +35,12 @@ class MainActivity: FlutterActivity() {
                     stopTrackingService()
                     result.success(null)
                 }
+                "isServiceRunning" -> {
+                    // stopTrackingService()
+                    val sharedPreferencesHelper = SharedPreferencesHelper(this)
+                    val running = sharedPreferencesHelper.getServiceRunning()
+                    result.success(running)
+                }
                 else -> {
                     result.notImplemented()
                 }
@@ -44,10 +51,10 @@ class MainActivity: FlutterActivity() {
 
 
     private fun startTrackingService(token: String, url:String) {
-
         val sharedPreferencesHelper = SharedPreferencesHelper(this)
         sharedPreferencesHelper.saveToken(token)
         sharedPreferencesHelper.saveUrl(url)
+        sharedPreferencesHelper.saveCheckedIn(true)
         val intent = Intent(this, LocationTrackingService::class.java)
         print(token)
         intent.putExtra("token", token)
@@ -60,6 +67,7 @@ class MainActivity: FlutterActivity() {
     private fun stopTrackingService() {
         val intent = Intent(this, LocationTrackingService::class.java)
         stopService(intent)
+
     }
 
     override fun onDestroy() {

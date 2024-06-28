@@ -12,7 +12,7 @@ import '../../router.router.dart';
 class LoginViewModel extends BaseViewModel {
   final formGlobalKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
-  TextEditingController urlController = TextEditingController()..text = 'https://crm.samruddhi.com';
+  TextEditingController urlController = TextEditingController()..text = 'http://devsamruddhi.erpdata.in';
   TextEditingController passwordController = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
