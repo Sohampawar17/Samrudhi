@@ -25,7 +25,7 @@ class ExpenseServices{
           ),
 data: data
       );
-
+Logger().i(response.realUri.data);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonData = json.decode(json.encode(response.data));
         List<Expenselist> caneList = List.from(jsonData["data"])
@@ -37,6 +37,7 @@ data: data
         return [];
       }
     } on DioException catch (e) {
+      Logger().i(e.response);
       Fluttertoast.showToast(
         msg: "${e.response?.data['message'].toString()}",
         backgroundColor: Color(0xFFBA1A1A),

@@ -25,7 +25,7 @@ class _UpdateExpenseState extends State<UpdateExpense> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title:  Text(model.expensedata.name.toString()),
+              title:  Text(model.expensedata.name ?? ""),
               actions: [
                 model.expensedata.allowEdit==true
                     ? IconButton(
@@ -81,10 +81,10 @@ class _UpdateExpenseState extends State<UpdateExpense> {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                          Text(
+                          AutoSizeText(
                           model.expensedata.workflowState ?? "",
                             style: TextStyle(
-
+overflow: TextOverflow.ellipsis,
                               color: model.getColorForStatus(model.expensedata.workflowState.toString()),
                               fontWeight: FontWeight.bold,
                             ),
@@ -132,9 +132,7 @@ class _UpdateExpenseState extends State<UpdateExpense> {
                         labelText: 'Company',
                         additionalText: model.expensedata.company ?? ""),
                     const Divider(),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     buildItemColumn(
                         labelText: 'Expense Approver',
                         additionalText:
@@ -170,7 +168,8 @@ class _UpdateExpenseState extends State<UpdateExpense> {
                             model.expensedata.totalClaimedAmount?.toString() ?? "N/A"),
                         )
                       ],
-                    )
+                    ),
+                    const Divider(),
                   ],
                 ),
               ),

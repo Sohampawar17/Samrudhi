@@ -70,6 +70,7 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   flutter_background_service: ^5.0.5
   timelines_plus: ^1.0.2
+  firebase_messaging: ^15.0.2
 
 
 dev_dependencies:

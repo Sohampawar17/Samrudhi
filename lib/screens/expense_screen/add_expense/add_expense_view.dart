@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocation/constants.dart';
 import 'package:geolocation/widgets/drop_down.dart';
@@ -90,8 +89,8 @@ CustomDropdownButton2(items:model.expensetype, hintText: 'select the expense typ
                         onPressed: () {
 model.selectPdf(ImageSource.gallery);
                         },
-                        icon: Icon(Icons.upload,color: Colors.white,),
-                        label: Text('Upload Document',style: TextStyle(color: Colors.white,),),
+                        icon: const Icon(Icons.upload,color: Colors.white,),
+                        label: const Text('Upload Document',style: TextStyle(color: Colors.white,),),
                       ),
                       const SizedBox(height: 10,),
                   model.attachment.isNotEmpty

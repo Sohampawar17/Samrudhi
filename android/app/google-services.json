@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023767991815",
+    "project_id": "samruddhi-d7838",
+    "storage_bucket": "samruddhi-d7838.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023767991815:android:91350fb9c1607ee39d7ca2",
+        "android_client_info": {
+          "package_name": "com.quantbit.samruddhi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIDHwFFnXqelLqse-AxyW1Q6f0ZIQW1_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -25,7 +25,7 @@ class _UpdateLeaveState extends State<UpdateLeave> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title:  Text(model.leavedata.name.toString()),
+              title:  Text(model.leavedata.name ?? ""),
               actions: [
                 model.leavedata.docstatus == 0
                     ? IconButton(

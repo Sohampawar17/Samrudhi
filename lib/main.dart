@@ -2,17 +2,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocation/router.locator.dart';
-import 'package:geolocation/screens/home_screen/home_page.dart';
 import 'package:geolocation/screens/splash_screen/splash_screen.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'router.router.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   setupLocator();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -29,11 +30,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
           theme: ThemeData(
             useMaterial3: true,
-            // colorScheme: lightScheme,
-            // extensions: [lightCustomColors],
               primarySwatch: Colors.green
           ),
-
           debugShowCheckedModeBanner: false,
           navigatorKey: StackedService.navigatorKey,
           onGenerateRoute: StackedRouter().onGenerateRoute,

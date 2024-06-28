@@ -33,11 +33,11 @@ initialise(context);
   notifyListeners();
 }
 
-IconData getIconForStatus(String status) {
+IconData getIconForStatus(String? status) {
   switch (status) {
     case 'Draft':
       return
-        Icons.drafts; // Set the color for Draft status// Set the color for On Hold status
+        Icons.hourglass_empty; // Set the color for Draft status// Set the color for On Hold status
     case 'Rejected':
       return Icons.close; // Set the color for To Deliver and Bill status
   // Set the color for To Deliver status
@@ -45,16 +45,16 @@ IconData getIconForStatus(String status) {
       return Icons.check; // Set the color for Completed status
 // Set the color for Closed status
     default:
-      return Icons.drafts; // Set a default color for unknown status
+      return Icons.hourglass_empty; // Set a default color for unknown status
   }
 }
 
-Color getColorForStatus(String status) {
+Color getColorForStatus(String? status) {
   switch (status) {
     case 'Draft':
       return
           Colors
-              .grey; // Set the color for Draft status// Set the color for On Hold status
+              .blue; // Set the color for Draft status// Set the color for On Hold status
     case 'Rejected':
       return Colors.redAccent; // Set the color for To Deliver and Bill status
   // Set the color for To Deliver status
